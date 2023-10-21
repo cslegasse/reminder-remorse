@@ -9,8 +9,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { FriendContainer } from "@/styles";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { userFromDb } from "@/types/userFromDb";
-import { renderToStaticMarkup } from "react-dom/server";
+// import { userFromDb } from "@/types/userFromDb";
+// import { renderToStaticMarkup } from "react-dom/server";
 import toast from "react-hot-toast"
 interface Friend {
   id: number;
@@ -89,7 +89,7 @@ export const Friends = () => {
 
   const handleAddNewFriend = () => {
     fetchEndpoint(`add-friend?id=0&friend_id=${addFriendId}`, "GET")
-    .then((data) => {
+    .then(() => {
       // setAddFriendState(data);
       toast.success("Friend added!");
     });
@@ -98,7 +98,7 @@ export const Friends = () => {
 
   const handleRemoveFriend = () => {
     fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
-    .then((data) => {
+    .then(() => {
       toast("Friend removed.")
     });
     setIsSelectingUser(false);
