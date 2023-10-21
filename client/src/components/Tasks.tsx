@@ -16,7 +16,6 @@ import { EditTask } from ".";
 import {
   CategoriesListContainer,
   CategoryChip,
-  DialogBtn,
   EmojiContainer,
   NoTasks,
   Pinned,
@@ -30,6 +29,8 @@ import {
   TasksContainer,
   TimeLeft,
 } from "../styles";
+import { DialogButton } from "@/components";
+
 import { TaskMenu } from ".";
 import toast from "react-hot-toast";
 import { useResponsiveDisplay } from "../hooks/useResponsiveDisplay";
@@ -591,12 +592,12 @@ export const Tasks = ({ user, setUser }: UserProps): JSX.Element => {
             )}
         </DialogContent>
         <DialogActions>
-          <DialogBtn onClick={cancelDeleteTask} color="primary">
+          <DialogButton onClick={cancelDeleteTask} color="primary">
             Cancel
-          </DialogBtn>
-          <DialogBtn onClick={confirmDeleteTask} color="error">
+          </DialogButton>
+          <DialogButton onClick={confirmDeleteTask} color="error">
             Delete
-          </DialogBtn>
+          </DialogButton>
         </DialogActions>
       </Dialog>
     </>

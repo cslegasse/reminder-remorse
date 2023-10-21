@@ -1,45 +1,20 @@
 import { ClerkProvider } from "@clerk/clerk-react";
-import { dark } from "@clerk/themes";
 import { CLERK_PUBLISHABLE_KEY } from "./config";
-import { useStorageState } from "./hooks/useStorageState";
-import { defaultUser } from "./constants/defaultUser";
-import { User } from "./types/user";
 import { ColorPalette, GlobalStyles, MuiTheme } from "./styles";
-import { ThemeProvider, useTheme } from "@mui/material";
-import { useEffect } from "react";
+import { CssBaseline, ThemeProvider, useTheme } from "@mui/material";
 import { ErrorBoundary } from "./components";
 import { MainLayout } from "./layouts/MainLayout";
 import { AppRouter } from "@/routes";
 import { Toaster } from "react-hot-toast";
 import { useResponsiveDisplay } from "./hooks/useResponsiveDisplay";
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 
 function App() {
-  const [user, setUser] = useStorageState<User>(defaultUser, "user");
-
   const isMobile = useResponsiveDisplay();
-  // Initialize user properties if they are undefined
-  useEffect(() => {
-    if (user.categories === undefined) {
-      setUser({ ...user, categories: defaultUser.categories });
-    }
-    if (
-      user.settings === undefined ||
-      user.settings[0].enableCategories === undefined ||
-      user.settings[0].enableGlow === undefined ||
-      user.settings[0] === undefined
-    ) {
-      setUser({ ...user, settings: defaultUser.settings });
-    }
-  }, [setUser, user]);
-
-  const userProps = { user, setUser };
-  const navigate = useNavigate();
-  const theme = useTheme();
-
   return (
-    <>
+    <BrowserRouter>
       <ThemeProvider theme={MuiTheme}>
+        <CssBaseline />
         <GlobalStyles />
         <Toaster
           position="top-center"
@@ -78,37 +53,42 @@ function App() {
             },
           }}
         />
-        <ClerkProvider
-          publishableKey={CLERK_PUBLISHABLE_KEY}
-          // TODO: Change color
-          appearance={{
-            baseTheme: theme.palette.mode === "dark" ? undefined : dark,
-            variables: {
-              colorPrimary: theme.palette.primary.main,
-              colorDanger: theme.palette.error.main,
-              colorSuccess: theme.palette.success.main,
-              colorWarning: theme.palette.warning.main,
-            },
-            elements: {
-              rootBox: {
-                display: "flex",
-                alignItems: "center",
-              },
-            },
-          }}
-          navigate={(to) => {
-            navigate(to);
-          }}
-        >
-          <ErrorBoundary>
-            <MainLayout {...userProps}>
-              <AppRouter {...userProps} />
-            </MainLayout>
-          </ErrorBoundary>
-        </ClerkProvider>
+        <ErrorBoundary>
+          <AuthWithRoutesProvider />
+        </ErrorBoundary>
       </ThemeProvider>
-    </>
+    </BrowserRouter>
   );
 }
 
+const AuthWithRoutesProvider = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
+  return (
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        variables: {
+          colorPrimary: theme.palette.primary.main,
+          colorDanger: theme.palette.error.main,
+          colorSuccess: theme.palette.success.main,
+          colorWarning: theme.palette.warning.main,
+        },
+        elements: {
+          rootBox: {
+            display: "flex",
+            alignItems: "center",
+          },
+        },
+      }}
+      navigate={(to) => {
+        navigate(to);
+      }}
+    >
+      <MainLayout>
+        <AppRouter />
+      </MainLayout>
+    </ClerkProvider>
+  );
+};
 export default App;

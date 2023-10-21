@@ -1,59 +1,70 @@
-import {
-  SignIn,
-  SignedIn,
-  SignedOut,
-  SignUp,
-  RedirectToSignIn,
-  UserButton,
-} from "@clerk/clerk-react";
 import { Route, Routes } from "react-router-dom";
-import { UserProps } from "@/types/user";
-import {
-  Home,
-  TaskDetails,
-  AddTask,
-  UserSettings,
-  ImportExport,
-  Categories,
-  NotFound,
-} from "@/pages";
+import { SignIn, SignedIn, SignedOut, SignUp, RedirectToSignIn } from "@clerk/clerk-react";
+import { Tasks, TaskDetails, AddTask, NotFound, Landing, Insights, Friends } from "@/pages";
 
-function ProtectedPage() {
+function ProtectedPageParent({ children }: { children: JSX.Element }) {
   return (
     <>
-      <h1>Protected page</h1>
-      <UserButton />
+      <SignedIn>{children}</SignedIn>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
     </>
   );
 }
 
-export const AppRouter = ({ user, setUser }: UserProps): JSX.Element => {
-  const userProps = { user, setUser };
-
+export const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home {...userProps} />} />
-      <Route path="/task/:id" element={<TaskDetails {...userProps} />} />
-      <Route path="/add" element={<AddTask {...userProps} />} />
-      <Route path="/user" element={<UserSettings {...userProps} />} />
-      <Route path="/import-export" element={<ImportExport {...userProps} />} />
-      <Route path="/categories" element={<Categories {...userProps} />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
       <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+
       <Route
-        path="/protected"
+        path="/tasks"
         element={
-          <>
-            <SignedIn>
-              <ProtectedPage />
-            </SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
-          </>
+          <ProtectedPageParent>
+            <Tasks />
+          </ProtectedPageParent>
         }
       />
+
+      <Route
+        path="/tasks/:id"
+        element={
+          <ProtectedPageParent>
+            <TaskDetails />
+          </ProtectedPageParent>
+        }
+      />
+
+      <Route
+        path="/tasks/add"
+        element={
+          <ProtectedPageParent>
+            <AddTask />
+          </ProtectedPageParent>
+        }
+      />
+
+      <Route
+        path="/friends"
+        element={
+          <ProtectedPageParent>
+            <Friends />
+          </ProtectedPageParent>
+        }
+      />
+
+      <Route
+        path="/insights"
+        element={
+          <ProtectedPageParent>
+            <Insights />
+          </ProtectedPageParent>
+        }
+      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { UserProps } from "../types/user";
 import { Emoji, EmojiStyle } from "emoji-picker-react";
-import { TopBar } from "../components";
 import styled from "@emotion/styled";
 import { CategoryChip, ColorPalette } from "../styles";
 import { Avatar } from "@mui/material";
@@ -9,7 +8,7 @@ import { NotFound } from "./NotFound";
 import { Clear, Done } from "@mui/icons-material";
 
 export const TaskDetails = ({ user }: UserProps) => {
-  let { id } = useParams(); // Access the ID parameter from the URL
+  const { id } = useParams(); // Access the ID parameter from the URL
   const formattedId = id?.replace(".", "");
   const task = user.tasks.find((task) => task.id.toString().replace(".", "") === formattedId);
 
@@ -19,8 +18,7 @@ export const TaskDetails = ({ user }: UserProps) => {
 
   return (
     <>
-      <TopBar title="Task Details" />
-
+      <h1>Task Details</h1>
       <Container clr={task?.color || ColorPalette.purple}>
         <TaskName>
           <Emoji unified={task?.emoji || ""} emojiStyle={user.emojisStyle} /> {task?.name}

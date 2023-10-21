@@ -10,7 +10,7 @@ import {
 import { Category, Task, User } from "../types/user";
 import styled from "@emotion/styled";
 import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../constants";
-import { DialogBtn } from "../styles";
+import { DialogButton } from "@/components/DialogButton";
 import { CategorySelect, ColorPicker, CustomEmojiPicker } from ".";
 import toast from "react-hot-toast";
 
@@ -259,14 +259,14 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
         </div>
       </DialogContent>
       <DialogActions>
-        <DialogBtn onClick={handleCancel}>Cancel</DialogBtn>
-        <DialogBtn
+        <DialogButton onClick={handleCancel}>Cancel</DialogButton>
+        <DialogButton
           onClick={handleSave}
           color="primary"
           disabled={nameError || editedTask?.name === ""}
         >
           Save
-        </DialogBtn>
+        </DialogButton>
       </DialogActions>
     </Dialog>
   );

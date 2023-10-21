@@ -26,7 +26,7 @@ export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: Emoji
   // When the currentEmoji state changes, update the parent component's emoji state
   useEffect(() => {
     setEmoji(currentEmoji);
-  }, [currentEmoji]);
+  }, [currentEmoji, setEmoji]);
 
   // When the emoji prop changes to an empty string, set the currentEmoji state to undefined
   useEffect(() => {

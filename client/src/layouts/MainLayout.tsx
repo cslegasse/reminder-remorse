@@ -1,18 +1,25 @@
 import { ReactNode } from "react";
-import { BottomNav, ProfileAvatar } from "../components";
-import { UserProps } from "../types/user";
+import { BottomNav } from "@/components";
+import { Box, Container } from "@mui/material";
+import { Header } from "./Header";
 
-interface MainLayoutProps extends UserProps {
-  children: ReactNode;
-}
-
-export const MainLayout = ({ children, user, setUser }: MainLayoutProps) => {
+export const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <ProfileAvatar user={user} setUser={setUser} />
-      {children}
-      <div style={{ marginTop: "128px" }} />
-      <BottomNav user={user} />
+      <Container
+        sx={{
+          padding: 2,
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Header />
+        <Box component="main" mt={2} flex={1}>
+          {children}
+        </Box>
+        <BottomNav />
+      </Container>
     </>
   );
 };

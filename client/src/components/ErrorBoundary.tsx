@@ -1,5 +1,5 @@
 import React, { ErrorInfo } from "react";
-import { StyledLink } from "../styles";
+import { StyledLink } from "@/components";
 import { Emoji } from "emoji-picker-react";
 
 interface ErrorBoundaryProps {
