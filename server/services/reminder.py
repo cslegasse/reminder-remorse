@@ -24,8 +24,10 @@ def create_reminder(reminder_data):
     r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
     if 'org_id' in reminder_data:
         r.hset(f"r{reminder_id}", 'org_id', int(reminder_data['org_id']))
-    else: # cannot have both org id and friend id
+    elif 'friend_id' in reminder_data:
         r.hset(f"r{reminder_id}", 'friend_id', int(reminder_data['friend_id']))
+    else:
+        raise ValueError("Reminder must have either org_id or friend_id")
 
     return {"id": reminder_id}
 

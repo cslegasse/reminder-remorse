@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000'
+const API_URL = 'http://localhost:8000/api'
 
 export async function fetchEndpoint(endpoint:string, method: 'POST'|'GET', data:object|null=null) {
     const response = await fetch(`${API_URL}/${endpoint}`, {

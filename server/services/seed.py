@@ -1,3 +1,4 @@
+import random
 from services import user, reminder, transaction
 
 def seed_db():
@@ -6,7 +7,7 @@ def seed_db():
         'lname': 'Doe',
         'clerk_id': '6723647823',
         'clerk_json': '{{}}',
-        'created_at': 1697763036,
+        'created_at': 1684169994,
         'last_login': 1697893036
     })
     assert user.create_user({
@@ -14,7 +15,7 @@ def seed_db():
         'lname': 'Doe',
         'clerk_id': '6723647824',
         'clerk_json': '{{}}',
-        'created_at': 1697773036,
+        'created_at': 1684169994,
         'last_login': 1697893046
     })['id'] == 1
 
@@ -37,6 +38,9 @@ def seed_db():
         'incentive_max': 3.2,
         'friend_id': 0
     })
+    reminder.update_reminder(1, {
+        'created_at': 1697963666
+    })
     reminder.check_reminder(0)
 
     assert reminder.create_reminder({
@@ -45,14 +49,16 @@ def seed_db():
         'emoji': '👨‍💻',
         'category': 'Work',
         'owner_id': 0,
-        'created_at': 1697406983,
-        'deadline': 1697806983,
+        'deadline': 1697806983+2*86400,
         'pinned': False,
         'habit_frequency': 0,
         'incentive_min': 2,
         'incentive_max': 5.7,
         'friend_id': 1
     })['id'] == 1
+    reminder.update_reminder(1, {
+        'created_at': 1697406983
+    })
 
     assert reminder.create_reminder({
         'name': 'Go to the gym',
@@ -60,14 +66,16 @@ def seed_db():
         'emoji': '🏋️',
         'category': 'Health/Fitness',
         'owner_id': 0,
-        'created_at': 1666272031,
-        'deadline': 1697808031,
+        'deadline': 1697808031+2*86400,
         'pinned': False,
         'habit_frequency': 2,
         'incentive_min': 2,
         'incentive_max': 5.7,
         'friend_id': 1
     })['id'] == 2
+    reminder.update_reminder(2, {
+        'created_at': 1684169994
+    })
 
     assert reminder.create_reminder({
         'name': 'Go to the gym',
@@ -75,7 +83,6 @@ def seed_db():
         'emoji': '🏋️',
         'category': 'Health/Fitness',
         'owner_id': 1,
-        'created_at': 1666272035,
         'deadline': 1697808031,
         'pinned': False,
         'habit_frequency': 2,
@@ -83,6 +90,9 @@ def seed_db():
         'incentive_max': 5.7,
         'friend_id': 0
     })['id'] == 3
+    reminder.update_reminder(3, {
+        'created_at': 1684169994
+    })
 
     assert reminder.create_reminder({
         'name': 'Study the history of astronomy',
@@ -90,7 +100,6 @@ def seed_db():
         'emoji': '🔭',
         'category': 'Education',
         'owner_id': 0,
-        'created_at': 1695302602,
         'deadline': 1697462602,
         'pinned': False,
         'habit_frequency': 7,
@@ -98,3 +107,50 @@ def seed_db():
         'incentive_max': 0,
         'org_id': 2
     })['id'] == 4
+    reminder.update_reminder(4, {
+        'created_at': 1695302602
+    })
+
+    for i in range(20):
+        reminder.create_reminder({
+            'name': 'Take out the trash',
+            'desc': '',
+            'emoji': '🗑️',
+            'category': 'Home',
+            'owner_id': 0,
+            'deadline': 1695302602 + 86400*5 - i*86400*5,
+            'pinned': False,
+            'habit_frequency': 0,
+            'incentive_min': 0.1,
+            'incentive_max': 0.8,
+            'org_id': 2
+        })
+        # reminder.check_reminder(i+5)
+        reminder.update_reminder(i+5, {
+            'created_at': 1695302602 - i*86400*5
+        })
+        if random.random() > 0.1:
+            reminder.update_reminder(i+5, {
+                'completed_at': 1695302602 + 86400*5 - i*86400*5 - 3600,
+                'completed': int(True)
+            })
+    
+    assert reminder.create_reminder({
+        'name': 'Go to HackHarvard',
+        'desc': '',
+        'emoji': '👨‍💻',
+        'category': 'Work',
+        'owner_id': 0,
+        'deadline': 1697808031,
+        'pinned': False,
+        'habit_frequency': 0,
+        'incentive_min': 1,
+        'incentive_max': 3,
+        'org_id': 0
+    })['id'] == 25
+    reminder.update_reminder(25, {
+        'created_at': 1697808031 - 86400
+    })
+    reminder.check_reminder(25)
+    
+    print(user.get_user(0))
