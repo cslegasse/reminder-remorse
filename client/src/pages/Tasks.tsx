@@ -12,7 +12,7 @@ type Task = {
   "deadline": number;
   "desc": string;
   "emoji": string;
-  "failed": false;
+  "failed": boolean;
   "friend_id": string;
   "habit_frequency": number;
   "id": number;
@@ -20,7 +20,8 @@ type Task = {
   "incentive_min": number,
   "name": string,
   "owner_id": number,
-  "pinned": boolean
+  "pinned": boolean,
+  "charge": number,
 }
 
 export const Tasks = () => {
@@ -56,47 +57,6 @@ export const Tasks = () => {
 
     }).catch((err) => console.error(err));
   }, []);
-
-  const formatDate = (d: number, inFuture = true) => {
-    const roundDay = (n: number) => Math.floor((new Date(n).getTime()) / 86400000);
-
-    if (inFuture && (roundDay(d * 1000) - roundDay(Date.now()) === 0)) {
-      return 'today ' + (new Date(d * 1000).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-      }));
-    } else if (inFuture && (roundDay(d * 1000) - roundDay(Date.now()) === 1)) {
-      return 'tomorrow ' + (new Date(d * 1000).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-      }));
-    }
-
-    let f = new Date(d * 1000).toLocaleDateString('en-US', {
-      weekday: ((roundDay(d * 1000) - roundDay(Date.now())) * (inFuture ? 1 : -1) > 7) ? 'short' : 'long',
-      year: (new Date(d * 1000).getFullYear() === new Date().getFullYear()) ? undefined : 'numeric',
-      month: ((roundDay(d * 1000) - roundDay(Date.now())) * (inFuture ? 1 : -1) > 7) ? 'long' : undefined,
-      day: ((roundDay(d * 1000) - roundDay(Date.now())) * (inFuture ? 1 : -1) > 7) ? 'numeric' : undefined,
-      hour: inFuture ? 'numeric' : undefined,
-      minute: inFuture ? 'numeric' : undefined,
-    });
-    if (!inFuture && (roundDay(d * 1000) - roundDay(Date.now())) * (-1) <= 7) {
-      if (roundDay(d * 1000) - roundDay(Date.now()) === 0) {
-        return 'today';
-      }
-      if (roundDay(d * 1000) - roundDay(Date.now()) === -1) {
-        return 'yesterday';
-      }
-      f = 'last ' + f;
-    }
-    return f;
-  }
-
-  const formatInterval = (d: number) => {
-    return d === 1 ? 'daily' :
-      d == 7 ? 'weekly' :
-        'once every ' + d + ' days';
-  }
 
   return (
     <>

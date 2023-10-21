@@ -25,7 +25,6 @@ interface TaskCardProps {
 };
 
 export const TaskCard = ({ task }: TaskCardProps) => {
-    const missedDeadline = task.completed || Date.now() < task.deadline * 1000;
     return (
         <Paper
             sx={{
