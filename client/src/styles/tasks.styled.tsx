@@ -104,11 +104,6 @@ export const TaskBounty = styled.p`
   margin: 0;
 `;
 
-export const RowFlex = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 export const TaskDate = styled.p`
   margin: 0;
   text-align: right;

@@ -1,6 +1,5 @@
 export { MuiTheme, ColorPalette } from "./theme";
 export * from "./transitions";
-export { GlobalStyles } from "../components/GlobalStyles";
 export {
   GreetingHeader,
   GreetingText,
@@ -13,7 +12,6 @@ export {
   ProgressPercentageContainer,
   Offline,
 } from "./home.styled";
-export { Container, Input, AddTaskButton, StyledInput } from "./addTask.styled";
 export {
   TaskContainer,
   FriendContainer,
@@ -31,5 +29,4 @@ export {
   TimeLeft,
   TaskName,
   TaskBounty,
-  RowFlex,
 } from "./tasks.styled";

@@ -5,7 +5,6 @@ import { CategoryChip, ColorPalette } from "../styles";
 import { Emoji, EmojiStyle } from "emoji-picker-react";
 import { getFontColorFromHex } from "../utils";
 import { CSSProperties } from "react";
-import { MAX_CATEGORIES } from "../constants";
 import toast from "react-hot-toast";
 
 interface CategorySelectProps {
@@ -27,13 +26,6 @@ export const CategorySelect = ({
 }: CategorySelectProps): JSX.Element => {
   const handleCategoryChange = (event: SelectChangeEvent<unknown>): void => {
     const selectedCategoryIds = event.target.value as number[];
-
-    if (selectedCategoryIds.length > MAX_CATEGORIES) {
-      toast.error(`You cannot add more than ${MAX_CATEGORIES} categories`, {
-        position: "top-center",
-      });
-      return;
-    }
 
     const selectedCategories = user.categories.filter((cat) =>
       selectedCategoryIds.includes(cat.id)
@@ -104,7 +96,7 @@ export const CategorySelect = ({
             zIndex: 99,
           }}
         >
-          Select Categories (max {MAX_CATEGORIES})
+          Select Category
         </MenuItem>
 
         {user.categories && user.categories.length > 0 ? (

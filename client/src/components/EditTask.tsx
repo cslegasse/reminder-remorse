@@ -9,9 +9,8 @@ import {
 } from "@mui/material";
 import { Category, Task, User } from "../types/user";
 import styled from "@emotion/styled";
-import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../constants";
 import { DialogButton } from "@/components/DialogButton";
-import { CategorySelect, ColorPicker, CustomEmojiPicker } from ".";
+import { CategorySelect, CustomEmojiPicker } from ".";
 import toast from "react-hot-toast";
 
 interface EditTaskProps {
@@ -55,17 +54,6 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
     const { name, value } = event.target;
     // Update name error state if the name length exceeds the maximum allowed.
 
-    if (name === "name" && value.length > TASK_NAME_MAX_LENGTH) {
-      setNameError(true);
-    } else {
-      setNameError(false);
-    }
-    // Update description error state if the description length exceeds the maximum allowed.
-    if (name === "description" && value.length > DESCRIPTION_MAX_LENGTH) {
-      setDescriptionError(true);
-    } else {
-      setDescriptionError(false);
-    }
     // Update the editedTask state with the changed value.
     setEditedTask((prevTask) => ({
       ...(prevTask as Task),
@@ -145,13 +133,7 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
         )}
       </DialogTitle>
       <DialogContent>
-        <CustomEmojiPicker
-          user={user}
-          emoji={editedTask?.emoji || undefined}
-          setEmoji={setEmoji}
-          color={editedTask?.color}
-          width="400px"
-        />
+        <CustomEmojiPicker emoji={editedTask?.emoji || undefined} setEmoji={setEmoji} />
         <StyledInput
           label="Name"
           name="name"
@@ -159,13 +141,6 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
           onChange={handleInputChange}
           fullWidth
           error={nameError || editedTask?.name === ""}
-          helperText={
-            editedTask?.name === ""
-              ? "Name is required"
-              : nameError
-              ? `Name should be less than or equal to ${TASK_NAME_MAX_LENGTH} characters`
-              : undefined
-          }
         />
         <StyledInput
           label="Description"
@@ -177,10 +152,6 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
           rows={4}
           margin="normal"
           error={descriptionError}
-          helperText={
-            descriptionError &&
-            `Description is too long (maximum ${DESCRIPTION_MAX_LENGTH} characters)`
-          }
         />
 
         {/* FIXME: default date doesnt work (new amazing chrome update) */}
@@ -246,7 +217,7 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
         )}
         <Typography>Color</Typography>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <ColorPicker
+          {/* <ColorPicker
             width={"100%"}
             color={editedTask?.color || "#000000"}
             onColorChange={(color) => {
@@ -255,7 +226,7 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
                 color: color,
               }));
             }}
-          />
+          /> */}
         </div>
       </DialogContent>
       <DialogActions>

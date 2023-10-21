@@ -7,4 +7,3 @@ export { CategorySelect } from "./CategorySelect";
 export { DialogButton } from "./DialogButton";
 export { StyledLink } from "./StyledLink";
 export { GlobalStyles } from "./GlobalStyles";
-export { ColorPicker } from "./ColorPicker";

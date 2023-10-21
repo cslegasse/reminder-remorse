@@ -1,77 +1,46 @@
-import { useState, useEffect, Dispatch, SetStateAction, CSSProperties } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { Avatar, Badge, Button, Tooltip } from "@mui/material";
 import { AddReaction, Edit, RemoveCircleOutline } from "@mui/icons-material";
-import EmojiPicker, { Emoji, EmojiClickData, EmojiStyle, SuggestionMode } from "emoji-picker-react";
-import { getFontColorFromHex } from "../utils";
-import { ColorPalette } from "../styles";
-import { User } from "../types/user";
+import EmojiPicker, { Emoji, EmojiClickData, SuggestionMode } from "emoji-picker-react";
+import { ColorPalette } from "@/styles";
 
 interface EmojiPickerProps {
   emoji?: string;
-  setEmoji: Dispatch<SetStateAction<string | undefined>>;
-  // onEmojiChange: (emojiData: EmojiClickData) => void;
-  user: User;
-  color?: string;
-  width?: CSSProperties["width"];
+  setEmoji: (emoji: string | undefined) => void;
 }
 
-export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: EmojiPickerProps) => {
-  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+export const CustomEmojiPicker = ({ emoji, setEmoji }: EmojiPickerProps) => {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  const [currentEmoji, setCurrentEmoji] = useState<string | undefined>(emoji || undefined);
-
-  // const [emojiData, setEmojiData] = useState<EmojiClickData>();
-
-  // When the currentEmoji state changes, update the parent component's emoji state
-  useEffect(() => {
-    setEmoji(currentEmoji);
-  }, [currentEmoji, setEmoji]);
-
-  // When the emoji prop changes to an empty string, set the currentEmoji state to undefined
-  useEffect(() => {
-    if (emoji === "") {
-      setCurrentEmoji(undefined);
-    }
-  }, [emoji]);
-
-  // Function to toggle the visibility of the EmojiPicker
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prevState) => !prevState);
   };
 
-  // Handler function for when an emoji is clicked in the EmojiPicker
   const handleEmojiClick = (e: EmojiClickData) => {
     toggleEmojiPicker();
-    setCurrentEmoji(e.unified);
-    // setEmojiData(e);
+    setEmoji(e.unified);
     console.log(e);
-    // console.log(e.getImageUrl(user.emojisStyle));
   };
 
   const handleRemoveEmoji = () => {
     toggleEmojiPicker();
-    setCurrentEmoji(undefined);
+    setEmoji(undefined);
   };
 
-  // Function to render the content of the Avatar based on whether an emoji is selected or not
   const renderAvatarContent = () => {
-    if (currentEmoji) {
-      // Determine the size of the emoji based on the user's emoji style preference
-      const emojiSize = user.emojisStyle === EmojiStyle.NATIVE ? 48 : 64;
+    if (emoji) {
       return (
         <div>
-          <Emoji size={emojiSize} emojiStyle={user.emojisStyle} unified={currentEmoji} />
+          <Emoji size={48} unified={emoji} />
         </div>
       );
     } else {
-      // If no emoji is selected, show the AddReaction icon with the specified color or default purple
-      const fontColor = color ? getFontColorFromHex(color) : ColorPalette.fontLight;
       return (
         <AddReaction
           sx={{
-            fontSize: "52px",
-            color: fontColor,
+            fontSize: "48px",
+            color: ColorPalette.fontLight,
             transition: ".3s all",
           }}
         />
@@ -84,11 +53,7 @@ export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: Emoji
       <EmojiContainer>
         <Tooltip
           title={
-            showEmojiPicker
-              ? "Close Emoji Picker"
-              : currentEmoji
-              ? "Change Emoji"
-              : "Choose an Emoji"
+            showEmojiPicker ? "Close Emoji Picker" : emoji ? "Change Emoji" : "Choose an Emoji"
           }
         >
           <Badge
@@ -112,7 +77,7 @@ export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: Emoji
               sx={{
                 width: "96px",
                 height: "96px",
-                background: color || ColorPalette.purple,
+                background: ColorPalette.purple,
                 transition: ".3s all",
                 cursor: "pointer",
               }}
@@ -122,14 +87,12 @@ export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: Emoji
           </Badge>
         </Tooltip>
       </EmojiContainer>
-      {/* {emojiData && <EmojiName>{emojiData.names[0]}</EmojiName>} */}
       {showEmojiPicker && (
         <>
           <EmojiPickerContainer>
             <EmojiPicker
-              width={width || "350px"}
+              width="350px"
               height="500px"
-              emojiStyle={user.emojisStyle}
               suggestedEmojisMode={SuggestionMode.RECENT}
               autoFocusSearch={false}
               lazyLoadEmojis
@@ -141,7 +104,7 @@ export const CustomEmojiPicker = ({ emoji, setEmoji, user, color, width }: Emoji
               }}
             />
           </EmojiPickerContainer>
-          {currentEmoji && (
+          {emoji && (
             <div
               style={{
                 display: "flex",
@@ -172,13 +135,6 @@ const EmojiContainer = styled.div`
   align-items: center;
   margin: 14px;
 `;
-
-// const EmojiName = styled.h5`
-//   text-align: center;
-//   margin: 0;
-//   opacity: 0.8;
-//   text-transform: capitalize;
-// `;
 
 const EmojiPickerContainer = styled.div`
   display: flex;
