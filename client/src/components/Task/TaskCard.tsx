@@ -20,6 +20,7 @@ interface TaskCardProps {
         "name": string,
         "owner_id": number,
         "pinned": boolean,
+        "charge": number,
     }
 };
 
@@ -178,13 +179,13 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 {
                                     task.completed ?
                                         <>
-                                            ${task.incentive_max} saved.
+                                            {task.incentive_max * .001} ETH saved.
                                         </>
                                         :
                                         (task.failed ?
-                                            <> Lost </>
+                                            <> Lost {(task.charge * .001).toFixed(5)} ETH.</>
                                             :
-                                            <>${task.incentive_min} - ${task.incentive_max} AT STAKE</>
+                                            <>{task.incentive_min * .001} ETH - {task.incentive_max * .001} ETH AT STAKE</>
                                         )
                                 }
                             </Typography>
