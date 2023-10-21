@@ -119,7 +119,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                     }}
                                     display="inline"
                                 >
-                                    {(task.completed && '✅') + task.name}{task.category === '' ? '' : ', '}
+                                    {(task.completed ? '✅' : '') + task.name}{task.category === '' ? '' : ', '}
                                     <Typography
                                         sx={{
                                             color: '#c2c2c2',

@@ -64,7 +64,7 @@ export const Tasks = () => {
     <>
       <h1>Tasks</h1>
 
-      {//TODO: replace with recentMisses
+      {
         recentMisses.length > 0 ?
           <>
             <h2>Just Missed 😢</h2>
