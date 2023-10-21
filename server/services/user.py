@@ -56,7 +56,7 @@ def get_habit_upkeep(user_id):
     ))
     habit_upkeep = 0
     for habit in habits:
-        if time.time() - int(r.hget(f"r{habit}", "deadline")) < 86400*int(r.hget(f"r{habit}", "habit_frequency")):
+        if int(time.time()) < int(r.hget(f"r{habit}", "deadline")):
             habit_upkeep += 1
         # if we are past the deadline for this habit, we have failed
     return habit_upkeep
@@ -77,12 +77,21 @@ def get_friends_leaderboard(user_id):
 
 def get_metrics(user_id):
     completion = []
+    habits = []
     for task in reminder.get_reminders(user_id):
         if task['completed']:
             completion.append(task['completed_at'])
+        if task['habit_frequency'] > 0:
+            habits.append({
+                'from': task['created_at'],
+                'to': task['deadline']
+            })
+    startDate = int(r.hget(f"u{user_id}", "created_at"))
     
     return {
         "tasksCompleted": get_tasks_completed(user_id),
         "habitsKept": get_habit_upkeep(user_id),
-        "completion": completion
+        "completion": completion,
+        "habits": habits,
+        "startDate": startDate
     }

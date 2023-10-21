@@ -14,7 +14,7 @@ export const Leaderboard = (): JSX.Element => {
     //handle API to get friends data
     const [leaderboardData, setLeaderboardData] = useState(mockData);
     useEffect(() => {
-        fetchEndpoint("api/leaderboard?id=0", "GET")
+        fetchEndpoint("leaderboard?id=0", "GET")
             .then((data) => {
                 setLeaderboardData(data);
             })
