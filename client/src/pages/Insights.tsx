@@ -244,13 +244,13 @@ export const Insights = () => {
       </div>
       <div>
         <h2>Transactions</h2>
-        <p>Net amount: <b>${transactionSum}</b></p>
+        <p>Net amount: <b>ETH {(transactionSum * 0.001).toFixed(5)}</b></p>
         {
           transactions.map((transaction) => {
             console.log(transaction);
             return (
               <p key={'t'+transaction.id}>
-                {transaction.user} paid {transaction.friend || transaction.org} ${transaction.amt.toFixed(2)}
+                {transaction.user_id === 0 ? 'You' : transaction.user} paid {(transaction.friend && (transaction.friend_id === 0 ? 'you' : transaction.friend)) || transaction.org} ETH {(transaction.amt*0.001).toFixed(5)}
               </p>
             )
           })

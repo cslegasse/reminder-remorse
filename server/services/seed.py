@@ -1,6 +1,6 @@
 import time
 import random
-from services import user, reminder
+from services import user, reminder, transaction
 
 def seed_db():
     user.create_user({
@@ -22,8 +22,18 @@ def seed_db():
         'last_login': 1697893046
     })['id'] == 1
 
+    assert user.create_user({
+        'username': 'abc',
+        'fname': 'Lloyd',
+        'lname': 'Garmadon',
+        'clerk_id': '6723647825',
+        'clerk_json': '{}',
+        'created_at': 1684169994,
+        'last_login': 1697893046
+    })['id'] == 2
+
     user.add_friend(0, 1)
-    user.add_friend(1, 0)
+    user.add_friend(0, 2)
 
     print(user.get_user(0))
 
@@ -270,6 +280,37 @@ def seed_db():
         'incentive_min': 0.1,
         'incentive_max': 0.3,
         'org_id': 2
+    })
+
+    reminder.create_reminder({
+        'name': 'Floss',
+        'desc': 'Keep those pearly whites pearly and white',
+        'emoji': '🦷',
+        'category': 'Health/Fitness',
+        'owner_id': 1,
+        'deadline': 1698091200 - 86400*1 + 3600*5,
+        'habit_frequency': 1,
+        'incentive_min': 0.1,
+        'incentive_max': 0.3,
+        'org_id': 2
+    })
+
+    reminder.create_reminder({
+        'name': 'Train',
+        'desc': '',
+        'emoji': '🏋️',
+        'category': 'Health/Fitness',
+        'owner_id': 2,
+        'deadline': 1698091200 - 86400*1 + 3600*5,
+        'habit_frequency': 1,
+        'incentive_min': 5,
+        'incentive_max': 15,
+        'friend_id': 0
+    })
+    transaction.create_transaction({
+        'user_id': 2,
+        'friend_id': 0,
+        'amt': 10
     })
     
     print(user.get_user(0))

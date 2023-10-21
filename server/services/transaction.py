@@ -1,3 +1,4 @@
+import time
 from services import charity, redis_service
 r = redis_service.redis_manager.redis
 
@@ -15,6 +16,7 @@ def create_transaction(transaction_data):
         raise ValueError("Transaction must specify either friend_id or org_id")
     r.hset(f"t{transaction_id}", "user_id", user_id)
     r.hset(f"t{transaction_id}", "amt", amt)
+    r.hset(f"u{user_id}", 'last_login', int(time.time()))
     r.incr("transaction_id")
     return {"id": transaction_id}
 
@@ -33,6 +35,7 @@ def get_transaction(transaction_id):
             else:
                 transaction_data['org'] = charity.get_charity(transaction_data['org_id'])['name']
     transaction_data['id'] = transaction_id
+    transaction_data['user_id'] = int(transaction_data['user_id'])
     return transaction_data
 
 def get_transactions(user_id):
