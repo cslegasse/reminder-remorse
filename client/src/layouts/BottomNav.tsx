@@ -17,29 +17,25 @@ export const BottomNav = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState<number | undefined>();
 
-  // useEffect hook to set the active button based on the current route
   useEffect(() => {
-    const pathParts = location.pathname.split("/"); // Split the pathname by '/'
-    if (pathParts[1] === "tasks") {
-      setValue(0); // If the user is on a task page, set the value to 0
-    } else {
-      // Handle other routes as before
-      switch (location.pathname) {
-        case "/friends":
-          setValue(1);
-          break;
-        case "/tasks/add":
-          setValue(2);
-          break;
-        case "/insights":
-          setValue(3);
-          break;
-        case "/":
-          setValue(undefined);
-          break;
-        default:
-          setValue(undefined); // Fallback for the undefined route
-      }
+    switch (location.pathname) {
+      case "/":
+        setValue(undefined);
+        break;
+      case "/tasks":
+        setValue(0);
+        break;
+      case "/friends":
+        setValue(1);
+        break;
+      case "/tasks/add":
+        setValue(2);
+        break;
+      case "/insights":
+        setValue(3);
+        break;
+      default:
+        setValue(undefined);
     }
   }, [location.pathname]);
 

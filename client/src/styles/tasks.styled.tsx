@@ -24,6 +24,20 @@ export const TaskContainer = styled.div<TaskContainerProps>`
   border-radius: 24px;
   animation: ${fadeIn} 0.5s ease-in;
 `;
+export const FriendContainer = styled.div<TaskContainerProps>`
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  transition: 0.3s all;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  opacity: ${({ done }) => (done ? 0.7 : 1)};
+  color: ${({ clr }) => clr};
+  border-left: ${({ done }) => (done ? "6px solid #00ff0d" : "6px solid transparent")};
+  box-shadow: ${(props) => (props.glow ? `0 0 128px -28px ${props.backgroundColor}` : "none")};
+  padding: 5px 16px 5px 16px;
+  border-radius: 24px;
+  animation: ${fadeIn} 0.5s ease-in;
+`;
 
 export const LeaderboardContainer = styled.div`
   display: flex;
@@ -88,11 +102,6 @@ export const TaskBounty = styled.p`
   text-align: right;
   font-weight: 600;
   margin: 0;
-`;
-
-export const RowFlex = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 export const TaskDate = styled.p`

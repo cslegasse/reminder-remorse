@@ -1,12 +1,12 @@
 import { ClerkProvider } from "@clerk/clerk-react";
-import { CLERK_PUBLISHABLE_KEY } from "./config";
-import { ColorPalette, GlobalStyles, MuiTheme } from "./styles";
+import { CLERK_PUBLISHABLE_KEY } from "@/config";
+import { ColorPalette, MuiTheme } from "@/styles";
 import { CssBaseline, ThemeProvider, useTheme } from "@mui/material";
-import { ErrorBoundary } from "./components";
-import { MainLayout } from "./layouts/MainLayout";
+import { ErrorBoundary, GlobalStyles } from "@/components";
+import { MainLayout } from "@/layouts/MainLayout";
 import { AppRouter } from "@/routes";
 import { Toaster } from "react-hot-toast";
-import { useResponsiveDisplay } from "./hooks/useResponsiveDisplay";
+import { useResponsiveDisplay } from "@/hooks/useResponsiveDisplay";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 
 function App() {
