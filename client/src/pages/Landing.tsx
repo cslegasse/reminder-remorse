@@ -1,4 +1,4 @@
-import logo from "../../public/screenshots/Reminders_Remorse_logo.png"
+import logo from "../../src/assets/Reminders_Remorse_logo.png"
 
 
 export const Landing = () => {
