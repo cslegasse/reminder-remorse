@@ -3,6 +3,20 @@ import random
 from services import redis_service, transaction
 r = redis_service.redis_manager.redis
 
+def get_reminder_overdue(user_id):
+    reminders = r.smembers(f"{int(user_id)}:reminders")
+    overdue_reminders = []
+    current_reminders = []
+    for reminder_id in reminders:
+        reminder_data = get_reminder(reminder_id)
+        if reminder_data['deadline'] < int(time.time()):
+            overdue_reminders.append(reminder_data)
+            r.sadd(f"{int(user_id)}:overdue_reminders", reminder_id)
+        else:
+            current_reminders.append(reminder_data)
+    return {"overdue_reminders": overdue_reminders, "current_reminders": current_reminders}
+
+
 def create_reminder(reminder_data):
     reminder_id = int(r.get("reminder_id"))
     if 'org_id' in reminder_data:
