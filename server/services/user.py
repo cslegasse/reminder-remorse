@@ -5,8 +5,12 @@ def create_user(user_data):
     user_id = int(r.get("user_id"))
     r.incr("user_id")
     user_data['id'] = user_id
-    for key in user_data:
-        r.hset(f"u{user_id}", key, user_data[key])
+    r.hset(f"u{user_id}", 'fname', user_id['fname'])
+    r.hset(f"u{user_id}", 'lname', user_id['lname'])
+    r.hset(f"u{user_id}", 'clerk_id', user_id['clerk_id'])
+    r.hset(f"u{user_id}", 'clerk_json', user_id['clerk_json'])
+    r.hset(f"u{user_id}", 'created_at', user_id['created_at'])
+    # also included: empty sets for reminders and friends
     return {"id": user_id}
 
 def delete_user(user_id):
