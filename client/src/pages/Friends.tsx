@@ -85,25 +85,22 @@ export const Friends = () => {
     setAddFriendId(e.target.value);
   }
 
-  const [addFriendState, setAddFriendState] = useState<any>(undefined);
+  // const [addFriendState, setAddFriendState] = useState<any>(undefined);
 
   const handleAddNewFriend = () => {
-    setAddFriendState(fetchEndpoint(`remove-friend?id=0&friend_id=${addFriendId}`, "GET"));
+    fetchEndpoint(`add-friend?id=0&friend_id=${addFriendId}`, "GET")
+    .then((data) => {
+      // setAddFriendState(data);
+      toast.success("Friend added!");
+    });
     setIsSelectingUser(false);
   };
 
-  useEffect(() => {
-    addFriendState &&
-      addFriendState.then(() => {
-        toast.success("Friend added!");
-        setAddFriendState(undefined);
-      }).catch(() => {
-        toast.error("Failed to add friend.");
-      });
-  }, [addFriendState]);
-
   const handleRemoveFriend = () => {
-    fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET");
+    fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
+    .then((data) => {
+      toast("Friend removed.")
+    });
     setIsSelectingUser(false);
   }
 
