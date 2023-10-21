@@ -5,7 +5,7 @@ import { CategoryChip, ColorPalette } from "../styles";
 import { Emoji, EmojiStyle } from "emoji-picker-react";
 import { getFontColorFromHex } from "../utils";
 import { CSSProperties } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 interface CategorySelectProps {
   user: User;

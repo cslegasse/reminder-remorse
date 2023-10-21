@@ -25,6 +25,8 @@ export const EditTask = ({ open, task, onClose, onSave, user }: EditTaskProps) =
   const [editedTask, setEditedTask] = useState<Task | undefined>(task);
   const [nameError, setNameError] = useState<boolean>(false);
   const [descriptionError, setDescriptionError] = useState<boolean>(false);
+  setNameError(false);
+  setDescriptionError(false);
   const [emoji, setEmoji] = useState<string | undefined>();
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   // Effect hook to update the editedTask with the selected emoji.

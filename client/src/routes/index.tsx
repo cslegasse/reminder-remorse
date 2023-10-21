@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { SignIn, SignedIn, SignedOut, SignUp, RedirectToSignIn } from "@clerk/clerk-react";
-import { Tasks, TaskDetails, AddTask, NotFound, Landing, Insights, Friends } from "@/pages";
+import { Tasks, AddTask, NotFound, Landing, Insights, Friends } from "@/pages";
 
 function ProtectedPageParent({ children }: { children: JSX.Element }) {
   return (
@@ -29,14 +29,14 @@ export const AppRouter = () => {
         }
       />
 
-      <Route
+      {/* <Route
         path="/tasks/:id"
         element={
           <ProtectedPageParent>
             <TaskDetails />
           </ProtectedPageParent>
         }
-      />
+      /> */}
 
       <Route
         path="/tasks/add"

@@ -102,7 +102,7 @@ def seed_db():
         'owner_id': 0,
         'deadline': 1697462602,
         'pinned': False,
-        'habit_frequency': 7,
+        'habit_frequency': 0,
         'incentive_min': 0,
         'incentive_max': 0,
         'org_id': 2
@@ -172,6 +172,39 @@ def seed_db():
     })['id'] == 1
     reminder.update_reminder(1, {
         'created_at': 1697406983
+    })
+
+    reminder.create_reminder({
+        'name': 'Win Cal Hacks',
+        'desc': 'In it to win it!',
+        'emoji': '💻',
+        'category': 'Work',
+        'owner_id': 0,
+        'deadline': 1684169994,
+        'pinned': True,
+        'habit_frequency': 0,
+        'incentive_min': 2,
+        'incentive_max': 5.7,
+        'friend_id': 1
+    })
+    reminder.check_reminder(17)
+    reminder.update_reminder(17, {
+        'created_at': 1684169994,
+        'completed_at': 1684169995
+    })
+
+    reminder.create_reminder({
+        'name': 'Cook meals at home',
+        'desc': 'Avoid going out unless to see friends',
+        'emoji': '🍳',
+        'category': 'Home',
+        'owner_id': 0,
+        'deadline': 1698091200,
+        'pinned': False,
+        'habit_frequency': 2,
+        'incentive_min': 0,
+        'incentive_max': 0,
+        'org_id': 2
     })
     
     print(user.get_user(0))

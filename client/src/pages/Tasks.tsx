@@ -9,6 +9,7 @@ type Task = {
   pinned: boolean;
   deadline: number;
   completed_at: number;
+  habit_frequency: number;
 }
 
 export const Tasks = () => {
@@ -63,6 +64,10 @@ export const Tasks = () => {
     return f;
   }
 
+  const formatInterval = (d: number) => {
+    d === 1 ? 'Every day' : 'Once every '+d+' days';
+  }
+
   return (
     <>
       <h1>Tasks</h1>
@@ -76,6 +81,7 @@ export const Tasks = () => {
             📌{task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
+            {task.habit_frequency > 0 ? <><br/>{formatInterval(task.habit_frequency)}</> : <></>}
           </li>
         ))}
       </ul>
@@ -88,6 +94,7 @@ export const Tasks = () => {
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
+            {task.habit_frequency > 0 ? <><br/>Once every {task.habit_frequency} days</> : <></>}
           </li>
         ))}
       </ul>
