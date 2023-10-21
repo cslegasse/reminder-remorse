@@ -10,6 +10,7 @@ def create_user(user_data):
     r.hset(f"u{user_id}", 'clerk_id', user_id['clerk_id'])
     r.hset(f"u{user_id}", 'clerk_json', user_id['clerk_json'])
     r.hset(f"u{user_id}", 'created_at', user_id['created_at'])
+    r.hset(f"u{user_id}", 'last_login', user_id['last_login'])
     # also included: empty sets for reminders and friends
     return {"id": user_id}
 
@@ -25,3 +26,16 @@ def get_user(user_id):
     user_data['reminders'] = r.smembers(f"{user_id}:reminders")
     user_data['friends'] = r.smembers(f"{user_id}:friends")
     return user_data
+
+def get_reminders(user_id):
+    return r.smembers(f"{user_id}:reminders")
+
+def get_friends(user_id):
+    return r.smembers(f"{user_id}:friends")
+
+def get_friends_reminders(user_id):
+    friend_ids = r.smembers(f"{user_id}:friends")
+    friend_reminders = []
+    for friend_id in friend_ids:
+        friend_reminders += list(r.smembers(f"{friend_id}:reminders"))
+    return set(friend_reminders)

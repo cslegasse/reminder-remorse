@@ -15,6 +15,7 @@ def create_reminder(reminder_data):
     r.hset(f"r{reminder_id}", 'timestamp', reminder_data['timestamp'])
     r.hset(f"r{reminder_id}", 'completed', reminder_data['completed'])
     r.hset(f"r{reminder_id}", 'pinned', reminder_data['pinned'])
+    r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'])
     return {"id": reminder_id}
 
 def delete_reminder(reminder_id):
@@ -27,3 +28,10 @@ def get_reminder(reminder_id):
     for key in r.hkeys(f"r{reminder_id}"):
         reminder_data[key] = r.hget(f"r{reminder_id}", key)
     return reminder_data
+
+def update_reminder(reminder_id, reminder_data):
+    for key in reminder_data:
+        r.hset(f"r{reminder_id}", key, reminder_data[key])
+
+def fail_reminder(reminder_id):
+    r.hset(f"r{reminder_id}", "completed", False)
