@@ -39,7 +39,7 @@ export const Tasks = () => {
         toast.error(
           <div>
             You missed <b>{data.overdue_reminders.length}</b> tasks,
-            losing {data.charge.toFixed(2) * .001} ETH in total. 😢
+            losing {(data.charge*0.001).toFixed(5)} ETH in total. 😢
           </div>
         );
       }

@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { SignIn, SignedIn, SignedOut, SignUp, RedirectToSignIn } from "@clerk/clerk-react";
 import { Tasks, AddTask, NotFound, Landing, Insights, Friends } from "@/pages";
+import { Container } from "@mui/material";
 
 function ProtectedPageParent({ children }: { children: JSX.Element }) {
   return (
@@ -17,8 +18,35 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-      <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+      <Route
+        path="/sign-in/*"
+        element={
+          <Container
+            sx={{
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <SignIn routing="path" path="/sign-in" />
+          </Container>
+        }
+      />
+
+      <Route
+        path="/sign-up/*"
+        element={
+          <Container
+            sx={{
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <SignUp routing="path" path="/sign-up" />
+          </Container>
+        }
+      />
 
       <Route
         path="/tasks"
