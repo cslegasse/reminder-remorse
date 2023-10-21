@@ -253,7 +253,7 @@ export const AddTask = () => {
         >
           <FormControlLabel
             disabled={hasNoFriends}
-            value={true}
+            value={!hasNoFriends}
             control={<Radio />}
             label="Friend"
             sx={{
@@ -264,7 +264,7 @@ export const AddTask = () => {
               }
             }}
           />
-          <FormControlLabel value={false} control={<Radio />} label="Charity"/>
+          <FormControlLabel value={hasNoFriends} control={<Radio />} label="Charity"/>
         </RadioGroup>
 
         {/* TODO: Fix styling for this */}
