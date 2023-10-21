@@ -16,6 +16,7 @@ export {
 export { Container, Input, AddTaskButton, StyledInput } from "./addTask.styled";
 export {
   TaskContainer,
+  FriendContainer,
   EmojiContainer,
   TaskDate,
   TaskInfo,
