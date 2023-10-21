@@ -115,7 +115,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                         >
                             <>
                                 <Typography
-                                    variant='h5'
+                                    variant='h6'
                                     sx={{
                                         color: '#ffffff',
 
@@ -124,7 +124,6 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 >
                                     {task.name},
                                     <Typography
-                                        variant='h6'
                                         sx={{
                                             color: '#c2c2c2',
 
@@ -169,7 +168,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                             }}
                         >
                             <Typography
-                                variant='h5'
+                                variant='subtitle1'
                                 align="right"
                                 sx={{
                                     color: !(task.completed || task.failed) ? '#FFFF33' : '#c2c2c2',
