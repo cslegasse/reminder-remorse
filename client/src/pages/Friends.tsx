@@ -36,7 +36,7 @@ export const Friends = () => {
   }
 
   const handleAddNewFriend = () => {
-
+    return;
   };
 
   const handleRemoveFriend = () => {
@@ -73,7 +73,7 @@ export const Friends = () => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={(event) => { handleUserSelect(friend) }}
+                  onClick={() => { handleUserSelect(friend) }}
                 >
                   <DeleteIcon />
                 </IconButton>

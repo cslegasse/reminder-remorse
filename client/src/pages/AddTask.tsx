@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Container as MuiContainer, Button, TextField, Typography } from "@mui/material";
@@ -334,14 +334,14 @@ const RowFlex = styled.div`
 `;
 
 const mockFriends = [
-  // {
-  //   id: 1,
-  //   name: "John",
-  // },
-  // {
-  //   id: 2,
-  //   name: "jane",
-  // },
+  {
+    id: 1,
+    name: "John",
+  },
+  {
+    id: 2,
+    name: "jane",
+  },
 ];
 
 const mockCharities = [

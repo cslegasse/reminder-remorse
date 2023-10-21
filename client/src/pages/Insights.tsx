@@ -133,7 +133,10 @@ export const Insights = () => {
       const month = d.getMonth();
       const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const label = `${MONTHS[month]} ${year}`;
-      if (label !== labels[labels.length-1])
+      if (label !== labels[labels.length-1]
+        && !(labels.length >= 2 && label == labels[labels.length-2])
+        && !(labels.length >= 3 && label == labels[labels.length-3])
+        && !(labels.length >= 4 && label == labels[labels.length-4]))
         labels.push(label);
       else
         labels.push('');
@@ -157,7 +160,7 @@ export const Insights = () => {
       labels: labels,
       datasets: [
         {
-          label: 'Habits Kept',
+          label: 'Weekly Habit Upkeep',
           data: per_week,
           fill: false,
           backgroundColor: 'rgb(156, 60, 231)',
