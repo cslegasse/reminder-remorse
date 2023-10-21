@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { fetchEndpoint } from "@/utils/fetch";
 import { Chart, ChartConfiguration } from 'chart.js/auto';
 
+Chart.defaults.color = '#fff';
+Chart.defaults.borderColor = '#fff';
+
 type Metric = {
   tasksCompleted: number;
   habitsKept: number;
@@ -11,22 +14,36 @@ type Metric = {
 export const Insights = () => {
   const user_id = 0;
 
-  const [metrics, setMetrics] = useState<Metric>({
-    tasksCompleted: 0, habitsKept: 0, completion: []
-  });
+  const [metrics, setMetrics] = useState<Metric | null>(null);
+  const [chart, setChart] = useState<Chart|null>(null);
   useEffect(() => {
     fetchEndpoint(`/api/metrics?id=${user_id}`, 'GET').then((data) => {
+      console.log(data);
       setMetrics(data);
-      drawTasksCompletedGraph();
     });
   }, []);
 
+  useEffect(() => {
+    console.log(metrics);
+    if (metrics)
+      drawTasksCompletedGraph();
+  }, [metrics]);
+
   const drawTasksCompletedGraph = () => {
-    let min_month = 0;
-    let max_month = Infinity;
+    if (!metrics)
+      return;
+    if (chart) {
+      chart.destroy();
+    }
+    console.log(metrics.completion);
+    console.log("Here we go!");
+    let min_month = Infinity;
+    let max_month = 0;
     for (let i = 0; i < metrics.completion.length; i++) {
-      const d = new Date(metrics.completion[i]);
+      const d = new Date(metrics.completion[i]*1000);
+      console.log(d);
       const month = d.getFullYear()*12 + d.getMonth();
+      console.log(month);
       if (month < min_month) {
         min_month = month;
       }
@@ -34,7 +51,7 @@ export const Insights = () => {
         max_month = month;
       }
     }
-    if (min_month == 0 || max_month == Infinity) {
+    if (min_month == Infinity || max_month == 0) {
       const d = new Date();
       min_month = d.getFullYear()*12 + d.getMonth();
       max_month = d.getFullYear()*12 + d.getMonth();
@@ -49,12 +66,16 @@ export const Insights = () => {
       labels.push(`${MONTHS[month]} ${year}`);
       per_month.push(0);
     }
+    console.log(per_month);
+    console.log(metrics.completion.length);
 
     for (let i = 0; i < metrics.completion.length; i++) {
-      const d = new Date(metrics.completion[i]);
+      const d = new Date(metrics.completion[i]*1000);
       const month = d.getFullYear()*12 + d.getMonth();
-      per_month[month-min_month]++;
+      console.log(month - min_month);
+      per_month[month-min_month] += 1;
     }
+    console.log(per_month);
 
     const data = {
       labels: labels,
@@ -63,15 +84,14 @@ export const Insights = () => {
           label: 'Tasks Completed',
           data: per_month,
           fill: false,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgba(255, 99, 132, 0.5)',
-          tension: 0.1
+          backgroundColor: 'rgb(156, 60, 231)',
+          tension: 0.1,
         }
       ]
     };
 
     const config: ChartConfiguration = {
-      type: 'line',
+      type: 'bar',
       data: data,
       options: {
         responsive: true,
@@ -80,11 +100,23 @@ export const Insights = () => {
             position: 'top',
           },
         },
+        layout: {
+          padding: {
+            top: 5
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: Math.max(...per_month)+2
+          }
+        }
       }
     };
 
     const ctx = document.getElementById('tasksCompletedGraph') as HTMLCanvasElement;
-    return new Chart(ctx, config);
+    const c = new Chart(ctx, config);
+    setChart(c);
   }
 
 
@@ -94,12 +126,12 @@ export const Insights = () => {
 
       <div>
         <h2>Tasks Completed</h2>
-        <p>{metrics.tasksCompleted}</p>
+        <p>{metrics?.tasksCompleted || ''}</p>
         <canvas id="tasksCompletedGraph" width="500" height="200"></canvas>
       </div>
       <div>
         <h2>Habits Kept</h2>
-        <p>{metrics.habitsKept}</p>
+        <p>{metrics?.habitsKept || ''}</p>
       </div>
     </>
   );

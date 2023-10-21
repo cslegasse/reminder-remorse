@@ -98,3 +98,26 @@ def seed_db():
         'incentive_max': 0,
         'org_id': 2
     })['id'] == 4
+
+    for i in range(20):
+        reminder.create_reminder({
+            'name': 'Take out the trash',
+            'desc': '',
+            'emoji': '🗑️',
+            'category': 'Home',
+            'owner_id': 0,
+            'created_at': 1695302602 - i*86400*5,
+            'deadline': 1695302602 + 86400*5 - i*86400*5,
+            'pinned': False,
+            'habit_frequency': 0,
+            'incentive_min': 0.1,
+            'incentive_max': 0.8,
+            'org_id': 2
+        })
+        # reminder.check_reminder(i+5)
+        reminder.update_reminder(i+5, {
+            'completed_at': 1695302602 + 86400*5 - i*86400*5 - 3600,
+            'completed': int(True)
+        })
+    
+    print(user.get_user(0))

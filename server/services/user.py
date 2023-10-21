@@ -23,7 +23,6 @@ def get_user(user_id):
     user_data = {}
     for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
-    print(user_data)
     for key in ['created_at', 'last_login']:
         user_data[key] = int(user_data[key])
     user_data['reminders'] = list(map(int, r.smembers(f"{user_id}:reminders")))
@@ -42,10 +41,11 @@ def get_friends(user_id):
     return friends
 
 def get_tasks_completed(user_id):
-    tasks = r.smembers(f"{user_id}:reminders")
+    tasks = map(int, r.smembers(f"{user_id}:reminders"))
     tasks_completed = 0
     for task in tasks:
-        if r.hget(f"r{task}", "completed"):
+        completed = bool(int(r.hget(f"r{task}", "completed").decode('utf-8')))
+        if completed:
             tasks_completed += 1
     return tasks_completed
 
@@ -54,7 +54,6 @@ def get_habit_upkeep(user_id):
         lambda task: int(r.hget(f"r{int(task)}", "habit_frequency")) > 0,
         r.smembers(f"{user_id}:reminders")
     ))
-    print(f"HABITS: {habits}")
     habit_upkeep = 0
     for habit in habits:
         if time.time() - int(r.hget(f"r{habit}", "deadline")) < 86400*int(r.hget(f"r{habit}", "habit_frequency")):
@@ -73,7 +72,7 @@ def get_friends_leaderboard(user_id):
             "taskCompleted": get_tasks_completed(friend_id),
             "habitsKept": get_habit_upkeep(friend_id)
         })
-    print(friend_leaderboard)
+    
     return friend_leaderboard
 
 def get_metrics(user_id):
@@ -81,7 +80,9 @@ def get_metrics(user_id):
     for task in reminder.get_reminders(user_id):
         if task['completed']:
             completion.append(task['completed_at'])
+    
     return {
         "tasksCompleted": get_tasks_completed(user_id),
-        "habitsKept": get_habit_upkeep(user_id)
+        "habitsKept": get_habit_upkeep(user_id),
+        "completion": completion
     }
