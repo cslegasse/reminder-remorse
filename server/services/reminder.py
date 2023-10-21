@@ -5,29 +5,38 @@ r = redis_service.redis_manager.redis
 
 def create_reminder(reminder_data):
     reminder_id = int(r.get("reminder_id"))
-    r.incr("reminder_id")
-    reminder_data['id'] = reminder_id
-    owner_id = reminder_data['owner_id']
-    r.sadd(f"{owner_id}:reminders", reminder_id)
-    r.hset(f"r{reminder_id}", 'name', reminder_data['name'])
-    r.hset(f"r{reminder_id}", 'desc', reminder_data['desc'])
-    r.hset(f"r{reminder_id}", 'emoji', reminder_data['emoji'])
-    r.hset(f"r{reminder_id}", 'owner_id', reminder_data['owner_id'])
-    r.hset(f"r{reminder_id}", 'category', reminder_data['category'])
-    r.hset(f"r{reminder_id}", 'created_at', int(time.time()))
-    r.hset(f"r{reminder_id}", 'completed_at', -1)
-    r.hset(f"r{reminder_id}", 'deadline', reminder_data['deadline'])
-    r.hset(f"r{reminder_id}", 'completed', int(False))
-    r.hset(f"r{reminder_id}", 'pinned', int(reminder_data['pinned']))
-    r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'])
-    r.hset(f"r{reminder_id}", 'incentive_min', float(reminder_data['incentive_min']))
-    r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
     if 'org_id' in reminder_data:
         r.hset(f"r{reminder_id}", 'org_id', int(reminder_data['org_id']))
     elif 'friend_id' in reminder_data:
         r.hset(f"r{reminder_id}", 'friend_id', int(reminder_data['friend_id']))
     else:
         raise ValueError("Reminder must have either org_id or friend_id")
+    r.incr("reminder_id")
+    reminder_data['id'] = reminder_id
+    print(reminder_data)
+    owner_id = reminder_data['owner_id']
+    r.sadd(f"{owner_id}:reminders", reminder_id)
+    r.hset(f"r{reminder_id}", 'name', reminder_data['name'])
+    r.hset(f"r{reminder_id}", 'desc', reminder_data['desc'] if 'desc' in reminder_data else '')
+    try:
+        emoji = chr(int('0x'+reminder_data['emoji'], 16))
+    except ValueError:
+        try:
+            emoji = reminder_data['emoji']
+        except KeyError:
+            emoji = ''
+    print("emoji: " + emoji)
+    r.hset(f"r{reminder_id}", 'emoji', emoji)
+    r.hset(f"r{reminder_id}", 'owner_id', reminder_data['owner_id'])
+    r.hset(f"r{reminder_id}", 'category', reminder_data['category'] if 'category' in reminder_data else '')
+    r.hset(f"r{reminder_id}", 'created_at', int(time.time()))
+    r.hset(f"r{reminder_id}", 'completed_at', -1)
+    r.hset(f"r{reminder_id}", 'deadline', reminder_data['deadline'])
+    r.hset(f"r{reminder_id}", 'completed', int(False))
+    r.hset(f"r{reminder_id}", 'pinned', int(False))
+    r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'] if 'habit_frequency' in reminder_data else 0)
+    r.hset(f"r{reminder_id}", 'incentive_min', float(reminder_data['incentive_min']))
+    r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
 
     return {"id": reminder_id}
 
@@ -47,6 +56,7 @@ def get_reminder(reminder_id):
         reminder_data[key] = bool(int(reminder_data[key]))
     for key in ['incentive_min', 'incentive_max']:
         reminder_data[key] = float(reminder_data[key])
+    reminder_data['id'] = reminder_id
     return reminder_data
 
 def get_reminders(user_id):

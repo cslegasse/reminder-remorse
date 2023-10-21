@@ -32,7 +32,6 @@ def seed_db():
         'owner_id': 1,
         'created_at': 1697963666,
         'deadline': 1697983666,
-        'pinned': False,
         'habit_frequency': 0,
         'incentive_min': 0,
         'incentive_max': 3.2,
@@ -50,7 +49,6 @@ def seed_db():
         'category': 'Work',
         'owner_id': 0,
         'deadline': 1697806983+4*86400,
-        'pinned': False,
         'habit_frequency': 0,
         'incentive_min': 2,
         'incentive_max': 5.7,
@@ -67,7 +65,6 @@ def seed_db():
         'category': 'Health/Fitness',
         'owner_id': 0,
         'deadline': 1697808031+3*86400,
-        'pinned': False,
         'habit_frequency': 2,
         'incentive_min': 2,
         'incentive_max': 5.7,
@@ -164,14 +161,14 @@ def seed_db():
         'category': 'Work',
         'owner_id': 0,
         'deadline': 1697976000,
-        'pinned': True,
         'habit_frequency': 0,
         'incentive_min': 2,
         'incentive_max': 5.7,
         'friend_id': 1
     })['id'] == 1
     reminder.update_reminder(1, {
-        'created_at': 1697406983
+        'created_at': 1697406983,
+        'pinned': int(True)
     })
 
     reminder.create_reminder({
@@ -181,7 +178,6 @@ def seed_db():
         'category': 'Work',
         'owner_id': 0,
         'deadline': 1684169994,
-        'pinned': True,
         'habit_frequency': 0,
         'incentive_min': 2,
         'incentive_max': 5.7,
@@ -190,7 +186,8 @@ def seed_db():
     reminder.check_reminder(17)
     reminder.update_reminder(17, {
         'created_at': 1684169994,
-        'completed_at': 1684169995
+        'completed_at': 1684169995,
+        'pinned': int(True)
     })
 
     reminder.create_reminder({
@@ -200,7 +197,6 @@ def seed_db():
         'category': 'Home',
         'owner_id': 0,
         'deadline': 1698091200,
-        'pinned': False,
         'habit_frequency': 2,
         'incentive_min': 0,
         'incentive_max': 0,

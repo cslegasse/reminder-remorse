@@ -5,7 +5,6 @@ from services.redis_service import redis_manager
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 r = redis_manager.redis
 r.flushdb()
@@ -28,15 +27,20 @@ def create_user():
     user_data = request.form.to_dict()
     return user.create_user(user_data)
 
+@app.route('/api/friends')
+def get_friends():
+    user_id = request.args.get("id")
+    return user.get_friends(user_id)
+
 @app.route('/api/get-user')
 def get_user():
     user_id = request.args.get("id")
     return user.get_user(user_id)
 
-@app.route('/api/create-reminder')
+@app.route('/api/create-reminder', methods=['POST'])
 def create_reminder():
-    reminder_data = request.form.to_dict()
-    return reminder.create_reminder(reminder_data)
+    reminder_data = request.json
+    return jsonify(reminder.create_reminder(reminder_data))
 
 @app.route('/api/delete-reminder')
 def delete_reminder():

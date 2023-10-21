@@ -31,6 +31,8 @@ def get_user(user_id):
 
 def add_friend(user_id, friend_id):
     r.sadd(f"{user_id}:friends", friend_id)
+def remove_friend(user_id, friend_id):
+    r.srem(f"{user_id}:friends", friend_id)
 
 def get_friends(user_id):
     friends = []

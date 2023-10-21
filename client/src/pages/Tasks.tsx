@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchEndpoint } from '@/utils/fetch';
 
 type Task = {
+  id: number;
   name: string;
   desc: string;
   emoji: string;
@@ -77,7 +78,7 @@ export const Tasks = () => {
         {tasks.map((task) => (
           task.completed || !task.pinned || Date.now() > task.deadline*1000 ? <></>
           :
-          <li>
+          <li key={task.id}>
             📌{task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
@@ -90,7 +91,7 @@ export const Tasks = () => {
         {tasks.map((task) => (
           task.completed || task.pinned || Date.now() > task.deadline*1000 ? <></>
           :
-          <li>
+          <li key={task.id}>
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
@@ -103,7 +104,7 @@ export const Tasks = () => {
       <ul>
         {tasks.map((task) => (
           task.completed ? 
-          <li>
+          <li key={task.id}>
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Finished {formatDate(task.completed_at, false)}
@@ -118,7 +119,7 @@ export const Tasks = () => {
         {tasks.map((task) => (
           task.completed || Date.now() < task.deadline*1000 ? <></>
           :
-          <li>
+          <li key={task.id}>
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Supposed to do by {formatDate(task.deadline, false)}

@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchEndpoint } from "@/utils/fetch";
 
 import { Container as MuiContainer, Button, TextField, Typography } from "@mui/material";
 
@@ -47,7 +48,7 @@ export const AddTask = () => {
     emoji: undefined,
     category: undefined,
     deadline:
-      Math.floor((new Date().getTime() - new Date().getTimezoneOffset() * 60000) / 1000) + 3600,
+      Math.floor((new Date().getTime() + new Date().getTimezoneOffset() * 60000) / 1000) + 3600,
     habit_frequency: undefined,
     incentive_min: 1,
     incentive_max: 5,
@@ -87,15 +88,25 @@ export const AddTask = () => {
     const newTask: TaskUpload = {
       ...taskUploadData,
     };
+    newTask.deadline -= new Date(newTask.deadline*1000).getTimezoneOffset() * 60;
     setIsSubmitting(true);
     console.log(newTask);
-    setIsSubmitting(false);
-    navigate("/tasks");
-    toast.success(() => (
-      <div>
-        Added task - <b>{newTask.name}</b>
-      </div>
-    ));
+    fetchEndpoint('create-reminder', 'POST', newTask as object)
+    .then((data) => {
+      setIsSubmitting(false);
+      navigate("/tasks");
+      toast.success(() => (
+        <div>
+          Added task - <b>{newTask.name}</b>
+        </div>
+      ));
+    }).catch((err) => {
+      toast.error(() => (
+        <div>
+          Error {err} adding task - <b>{newTask.name}</b>
+        </div>
+      ));
+    });
   };
 
   return (
