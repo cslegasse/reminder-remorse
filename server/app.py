@@ -1,10 +1,17 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+<<<<<<< Updated upstream
 from services import user, reminder, charity, transaction, seed
 from services.redis_service import redis_manager
+=======
+
+from config import settings
+from services import user, reminder, redis_manager, charity, seed, transaction, clerk
+>>>>>>> Stashed changes
 
 app = Flask(__name__)
 cors = CORS(app)
+app.config.from_object(settings)
 
 r = redis_manager.redis
 r.flushdb()
@@ -13,86 +20,119 @@ r.set("reminder_id", 0)
 r.set("transaction_id", 0)
 seed.seed_db()
 
-@app.route('/')
+
+@app.route("/")
 def index():
     return jsonify({"message": "Hello, World!"})
 
-@app.route('/api/test')
+
+@app.route("/api/test")
 def test():
     name = request.args.get("name")
     return jsonify({"message": f"Hello, {name}!"})
 
-@app.route('/api/create-user')
+
+@app.route("/api/create-user")
 def create_user():
     user_data = request.form.to_dict()
     return user.create_user(user_data)
 
-@app.route('/api/get-user')
+
+@app.route("/api/get-user")
 def get_user():
     user_id = int(request.args.get("id"))
     return user.get_user(user_id)
 
-@app.route('/api/user-by-clerk')
+
+@app.post("/api/sync-user")
+def sync_user():
+    headers = dict(request.headers)
+    payload = request.form.to_dict()
+    return clerk.sync_user(headers, payload)
+
+
+@app.route("/api/user-by-clerk")
 def get_user_by_clerk():
     clerk_id = request.args.get("id")
     return user.user_by_clerk_id(clerk_id)
 
-@app.route('/api/create-reminder', methods=['POST'])
+
+@app.route("/api/create-reminder", methods=["POST"])
 def create_reminder():
     reminder_data = request.json
     return jsonify(reminder.create_reminder(reminder_data))
 
-@app.route('/api/delete-reminder')
+
+@app.route("/api/delete-reminder")
 def delete_reminder():
     reminder_id = int(request.args.get("id"))
     return reminder.delete_reminder(reminder_id)
 
-@app.route('/api/get-reminder')
+
+@app.route("/api/get-reminder")
 def get_reminder():
     reminder_id = int(request.args.get("id"))
     return reminder.get_reminder(reminder_id)
 
-@app.route('/api/leaderboard')
+
+@app.route("/api/leaderboard")
 def leaderboard():
     user_id = int(request.args.get("id"))
     return jsonify(user.get_friends_leaderboard(user_id))
 
-@app.route('/api/friends')
+
+@app.route("/api/friends")
 def friends():
     user_id = int(request.args.get("id"))
     return jsonify(user.get_friends(user_id))
 
-@app.route('/api/add-friend')
+
+@app.route("/api/add-friend")
 def add_friend():
     user_id = int(request.args.get("id"))
     friend_id = int(request.args.get("friend_id"))
     return jsonify(user.add_friend(user_id, friend_id))
 
-@app.route('/api/remove-friend')
+
+@app.route("/api/remove-friend")
 def remove_friend():
     user_id = int(request.args.get("id"))
     friend_id = int(request.args.get("friend_id"))
     return jsonify(user.remove_friend(user_id, friend_id))
 
-@app.route('/api/reminders')
+
+@app.route("/api/reminders")
 def reminders():
     user_id = request.args.get("id")
     return jsonify(reminder.get_reminders(user_id))
 
-@app.route('/api/metrics')
+
+@app.route("/api/metrics")
 def metrics():
     user_id = request.args.get("id")
     return jsonify(user.get_metrics(user_id))
 
+<<<<<<< Updated upstream
+@app.route('/api/charity')
+def get_charity():
+    user_id = int(request.args.get("id"))
+    return jsonify(charity.get_charity(user_id))
+
 @app.route('/api/charities')
+=======
+
+@app.route("/api/charities")
+>>>>>>> Stashed changes
 def charities():
     return jsonify(charity.get_charities())
 
-@app.route('/api/overdue-reminders')
+
+@app.route("/api/overdue-reminders")
 def overdue_reminders():
     user_id = int(request.args.get("id"))
     return jsonify(reminder.check_reminder_overdue(user_id))
 
+<<<<<<< Updated upstream
 @app.route('/api/transactions')
 def transactions():
     print("hi")
@@ -101,3 +141,8 @@ def transactions():
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')
+=======
+
+if __name__ == "__main__":
+    app.run(debug=True, host="localhost", port="8000")
+>>>>>>> Stashed changes

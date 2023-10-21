@@ -12,7 +12,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 // import { userFromDb } from "@/types/userFromDb";
 // import { renderToStaticMarkup } from "react-dom/server";
 import toast from "react-hot-toast"
-interface Friend {
+export interface Friend {
   id: number;
   fname: string;
   lname: string;

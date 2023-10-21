@@ -95,7 +95,7 @@ def seed_db():
     })
 
     assert reminder.create_reminder({
-        'name': 'Study the history of astronomy',
+        'name': 'Start studying the history of astronomy',
         'desc': 'Ask librarian for good books',
         'emoji': '🔭',
         'category': 'Education',
@@ -227,6 +227,19 @@ def seed_db():
     })
 
     # overdue reminders
+
+    reminder.create_reminder({
+        'name': 'Learn to cook ceviche',
+        'desc': '',
+        'emoji': '🍣',
+        'category': 'Home',
+        'owner_id': 1,
+        'deadline': 1698091200 - 86400*2 + 3600*5,
+        'habit_frequency': 0,
+        'incentive_min': 1,
+        'incentive_max': 3,
+        'friend_id': 0
+    })
 
     for i in range(40):
         rm = reminder.get_reminder(i)
