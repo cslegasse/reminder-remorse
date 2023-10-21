@@ -416,13 +416,13 @@ export const Tasks = ({ user, setUser }: UserProps): JSX.Element => {
                 <TaskHeader>
                   <TaskName done={task.done}> {task.name}</TaskName>
 
-                  <Tooltip
+                  {/* <Tooltip
                     title={`Created at: ${new Date(task.date).toLocaleDateString()} • ${new Date(
                       task.date
                     ).toLocaleTimeString()}`}
                   >
                     <TaskDate>{formatDate(new Date(task.date))}</TaskDate>
-                  </Tooltip>
+                  </Tooltip> */}
                 </TaskHeader>
                 <TaskBounty>
                   {//TODO
