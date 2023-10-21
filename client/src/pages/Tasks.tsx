@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { fetchEndpoint } from '@/utils/fetch';
 
 import { TaskCard } from '@/components/Task/TaskCard';
+import { MissedTaskCard } from '@/components/Task/MissedTaskCard';
+import { Box, Card, CardContent } from '@mui/material';
 
 type Task = {
   "category": string;
@@ -62,18 +64,50 @@ export const Tasks = () => {
     <>
       <h1>Tasks</h1>
 
-      {recentMisses.length > 0 ?
-        <>
-          <h2>Just Missed 😢</h2>
-          <ul>
-            {recentMisses.map((task) => (
-              <li key={task.id}>
-                {task.emoji} {task.name}
-              </li>
-            ))}
-          </ul>
-        </>
-        : <></>
+      {//TODO: replace with recentMisses
+        tasks.length > 0 ?
+          <>
+            <h2>Just Missed 😢</h2>
+            <Card
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                margin: '0 0 5px 0',
+                backgroundColor: '#23294a',
+
+                maxWidth: '100%',
+                maxHeight: '375px',
+
+                overflow: 'auto'
+              }}
+            >
+              <CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'flex-start',
+                    margin: '0 0 5px 0',
+
+                  }}>
+
+                  {tasks.map((task) => (
+                    <MissedTaskCard task={task} />
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
+            {/* <ul>
+              {tasks.map((task) => (
+                <li key={task.id}>
+                  {task.emoji} {task.name}
+                </li>
+              ))}
+            </ul> */}
+          </>
+          : <></>
       }
 
       <h2>To-Do</h2>

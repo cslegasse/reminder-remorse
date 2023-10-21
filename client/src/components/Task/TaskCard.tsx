@@ -31,7 +31,6 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                 p: 3,
                 paddingTop: ((task.pinned || task.habit_frequency) ? 1 : 3),
                 margin: "auto",
-                maxWidth: 800,
                 flexGrow: 1,
                 backgroundColor: '#200589',
                 borderRadius: 5,
@@ -83,11 +82,9 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                         backgroundColor: '#ab20fd',
                         fontSize: "65px",
                     }}>
-                    {task.emoji || '💸'}
+                    {task.completed ? '✅' : (task.emoji || '💸')}
                 </Paper>
-                <Box>
 
-                </Box>
                 <Box
                     sx={{
                         display: 'flex',
@@ -122,7 +119,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                     }}
                                     display="inline"
                                 >
-                                    {task.name},
+                                    {(task.completed && '✅') + task.name},
                                     <Typography
                                         sx={{
                                             color: '#c2c2c2',
@@ -177,13 +174,13 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 {
                                     task.completed ?
                                         <>
-                                            {task.incentive_max * .001} ETH saved.
+                                            {(task.incentive_max * .001).toFixed(4)} ETH saved.
                                         </>
                                         :
                                         (task.failed ?
-                                            <> Lost {(task.charge * .001).toFixed(5)} ETH.</>
+                                            <> Lost {(task.charge * .001).toFixed(4)} ETH.</>
                                             :
-                                            <>{task.incentive_min * .001} ETH - {task.incentive_max * .001} ETH AT STAKE</>
+                                            <>{(task.incentive_min * .001).toFixed(4)} ETH - {(task.incentive_max * .001).toFixed(4)} ETH AT STAKE</>
                                         )
                                 }
                             </Typography>
