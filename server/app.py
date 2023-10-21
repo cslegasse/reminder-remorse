@@ -27,14 +27,9 @@ def create_user():
     user_data = request.form.to_dict()
     return user.create_user(user_data)
 
-@app.route('/api/friends')
-def get_friends():
-    user_id = request.args.get("id")
-    return user.get_friends(user_id)
-
 @app.route('/api/get-user')
 def get_user():
-    user_id = request.args.get("id")
+    user_id = int(request.args.get("id"))
     return user.get_user(user_id)
 
 @app.route('/api/create-reminder', methods=['POST'])
@@ -44,22 +39,22 @@ def create_reminder():
 
 @app.route('/api/delete-reminder')
 def delete_reminder():
-    reminder_id = request.args.get("id")
+    reminder_id = int(request.args.get("id"))
     return reminder.delete_reminder(reminder_id)
 
 @app.route('/api/get-reminder')
 def get_reminder():
-    reminder_id = request.args.get("id")
+    reminder_id = int(request.args.get("id"))
     return reminder.get_reminder(reminder_id)
 
 @app.route('/api/leaderboard')
 def leaderboard():
-    user_id = request.args.get("id")
+    user_id = int(request.args.get("id"))
     return jsonify(user.get_friends_leaderboard(user_id))
 
 @app.route('/api/friends')
 def friends():
-    user_id = request.args.get("id")
+    user_id = int(request.args.get("id"))
     return jsonify(user.get_friends(user_id))
 
 @app.route('/api/reminders')
