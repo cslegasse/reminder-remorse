@@ -39,7 +39,7 @@ export const Tasks = () => {
         toast.error(
           <div>
             You missed <b>{data.overdue_reminders.length}</b> tasks,
-            losing {(data.charge*0.001).toFixed(5)} ETH in total. 😢
+            losing {(data.charge * 0.001).toFixed(5)} ETH in total. 😢
           </div>
         );
       }
@@ -65,7 +65,7 @@ export const Tasks = () => {
       <h1>Tasks</h1>
 
       {//TODO: replace with recentMisses
-        tasks.length > 0 ?
+        recentMisses.length > 0 ?
           <>
             <h2>Just Missed 😢</h2>
             <Card
@@ -93,7 +93,7 @@ export const Tasks = () => {
 
                   }}>
 
-                  {tasks.map((task) => (
+                  {recentMisses.map((task) => (
                     <MissedTaskCard task={task} />
                   ))}
                 </Box>
