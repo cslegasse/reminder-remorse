@@ -34,7 +34,7 @@ def create_reminder(reminder_data):
     r.hset(f"r{reminder_id}", 'desc', reminder_data['desc'] if 'desc' in reminder_data else '')
     try:
         emoji = chr(int('0x'+reminder_data['emoji'], 16))
-    except ValueError:
+    except:
         try:
             emoji = reminder_data['emoji']
         except KeyError:

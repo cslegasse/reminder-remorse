@@ -2,7 +2,8 @@ import {
   Avatar, Button, Typography, Dialog, DialogTitle, DialogContent,
   DialogActions, IconButton, List, ListItem, ListItemAvatar, ListItemText
 } from "@mui/material";
-import { useState } from "react";
+import { fetchEndpoint } from "@/utils/fetch";
+import { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { FriendContainer } from "@/styles";
@@ -20,12 +21,27 @@ interface Friend {
 //if we decided to go with something similar to this we can change the type instide he types folder
 
 export const Friends = () => {
-  const friends = mockData; //REPLACE
+  const [friends, setFriends] = useState<Friend[]>(mockData);
   const [currentUserSelected, setCurrentUserSelected] = useState<undefined | Friend>(undefined);
 
   //this is for smooth animation; 
   //basing the dialog open/close on the currentUserSelected state will make the user disappear too quickly when we exit the window.
   const [isSelectingUser, setIsSelectingUser] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchEndpoint("leaderboard?id=0", "GET").then((data) => {
+      data = data.sort((a: Friend, b: Friend) => {
+        if (a.fname > b.fname) {
+          return 1;
+        } else if (a.fname < b.fname) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      setFriends(data);
+    })
+  })
 
   const handleUserSelect = (friend: Friend) => {
     setCurrentUserSelected(friend);
@@ -89,7 +105,8 @@ export const Friends = () => {
                       color: "#fa5757",
                       fontStyle: "italic"
                     }}>
-                    This friend has {friend.taskCompleted.toString()} tasks completed.
+                    This friend has {friend.taskCompleted.toString()} tasks completed and{' '}
+                    {friend.habitsKept.toString()} habits kept.
                   </Typography>}
               />
             </ListItem>
@@ -121,7 +138,7 @@ export const Friends = () => {
 };
 
 
-const mockData = [
+const mockData: Friend[] = [
   {
     id: 1,
     fname: "John",

@@ -69,6 +69,8 @@ export const AddTask = () => {
   // After fetching friends, frineds would be populated. If no friends, can only donate to orgs
   const hasNoFriends = friends.length === 0;
   const [isSendingToFriend, setIsSendingToFried] = useState(!hasNoFriends);
+  const [isHabit, setIsHabit] = useState(false);
+  const [friendId, setFriendId] = useState(-1);
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "deadline") {
@@ -194,6 +196,38 @@ export const AddTask = () => {
             }}
           />
         </RowFlex>
+        <RadioGroup
+        row
+        aria-labelledby="HabitType"
+        name="HabitType"
+        value={isHabit}
+        onChange={(e) => {
+          setIsHabit(e.target.value === "true");
+        }}
+        >
+          <FormControlLabel
+            value={true}
+            control={<Radio />}
+            label="Habit"
+          />
+          <FormControlLabel
+            value={false}
+            control={<Radio />}
+            label="Task"
+          />
+        </RadioGroup>
+        {isHabit && <StyledInput
+        label="Frequency (days)"
+        name="habit_frequency"
+        placeholder="Enter frequency in days"
+        value={taskUploadData.habit_frequency}
+        onChange={handleDataChange}
+        focused
+        sx={{
+          color: 'white'
+        }}
+        >
+          </StyledInput>}
 
         <Typography mt="12px">Where do you want to send the money?</Typography>
         <RadioGroup
@@ -210,8 +244,15 @@ export const AddTask = () => {
             value={true}
             control={<Radio />}
             label="Friend"
+            sx={{
+              svg: {
+                select: {
+                  color: 'white'
+                }
+              }
+            }}
           />
-          <FormControlLabel value={false} control={<Radio />} label="Charity" />
+          <FormControlLabel value={false} control={<Radio />} label="Charity"/>
         </RadioGroup>
 
         {/* TODO: Fix styling for this */}
@@ -220,18 +261,22 @@ export const AddTask = () => {
             sx={{
               width: "400px",
               transition: "0.3s all",
+              svg: {
+                color: "white",
+              }
             }}
             id="selectPaymentDestination"
-            value={taskUploadData.friend_id?.toString() ?? ""}
-            defaultValue=""
+            value={friendId.toString() ?? ""}
+            defaultValue={""}
             onChange={(e: SelectChangeEvent<unknown>) => {
+              console.log(e.target.value);
+              setFriendId(parseInt(e.target.value as string));
               setTaskUploadData((prevData) => ({
                 ...prevData,
                 friend_id: parseInt(e.target.value as string),
               }));
             }}
             placeholder="Choose a friend"
-            displayEmpty
           >
             {friends.map((friend) => (
               <MenuItem
@@ -249,7 +294,11 @@ export const AddTask = () => {
           <StyledSelect
             sx={{
               width: "400px",
+              svg: {
+                color: 'white',
+              }
             }}
+            label="Choose a charity"
             id="selectPaymentDestination"
             value={taskUploadData.org_id?.toString() ?? ""}
             defaultValue={""}
@@ -258,9 +307,9 @@ export const AddTask = () => {
                 ...prevData,
                 org_id: parseInt(e.target.value as string),
               }));
+              console.log(taskUploadData);
             }}
             placeholder="Choose a charity"
-            displayEmpty
           >
             {charities.map((charity) => (
               <MenuItem
@@ -280,6 +329,9 @@ export const AddTask = () => {
           sx={{
             marginTop: 2,
             width: "400px",
+            svg: {
+              color: "white",
+            }
           }}
           id="selectCategory"
           placeholder="Choose a category"

@@ -95,7 +95,7 @@ def seed_db():
         'emoji': '🏋️',
         'category': 'Health/Fitness',
         'owner_id': 1,
-        'deadline': 1697808031,
+        'deadline': 1697808031+3*86400,
         'pinned': False,
         'habit_frequency': 2,
         'incentive_min': 2,
@@ -140,12 +140,32 @@ def seed_db():
             'incentive_max': 0.8,
             'org_id': 2
         })
+        reminder.create_reminder({
+            'name': names[task_type],
+            'desc': '',
+            'emoji': emojis[task_type],
+            'category': 'Home',
+            'owner_id': 1,
+            'deadline': 1695302602 + 86400 - i*86400*10,
+            'pinned': False,
+            'habit_frequency': 0,
+            'incentive_min': 0.1,
+            'incentive_max': 0.8,
+            'org_id': 2
+        })
         # reminder.check_reminder(i+5)
-        reminder.update_reminder(i+5, {
+        reminder.update_reminder(2*i+5, {
+            'created_at': 1695302602 - i*86400*10
+        })
+        reminder.update_reminder(2*i+6, {
             'created_at': 1695302602 - i*86400*10
         })
         if random.random() > 0.1:
-            reminder.update_reminder(i+5, {
+            reminder.update_reminder(2*i+5, {
+                'completed_at': 1695302602 + 86400*10 - i*86400*10 - 3600,
+                'completed': int(True)
+            })
+            reminder.update_reminder(2*i+6, {
                 'completed_at': 1695302602 + 86400*10 - i*86400*10 - 3600,
                 'completed': int(True)
             })
@@ -162,9 +182,9 @@ def seed_db():
         'incentive_min': 1,
         'incentive_max': 3,
         'org_id': 0
-    })['id'] == 15
-    reminder.check_reminder(15)
-    reminder.update_reminder(15, {
+    })['id'] == 25
+    reminder.check_reminder(25)
+    reminder.update_reminder(25, {
         'created_at': 1697808031 - 86400,
         'completed_at': 1697831000
     })
@@ -181,7 +201,7 @@ def seed_db():
         'incentive_max': 5.7,
         'friend_id': 1
     })['id'] == 1
-    reminder.update_reminder(1, {
+    reminder.update_reminder(26, {
         'created_at': 1697406983,
         'pinned': int(True)
     })
@@ -198,8 +218,8 @@ def seed_db():
         'incentive_max': 5.7,
         'friend_id': 1
     })
-    reminder.check_reminder(17)
-    reminder.update_reminder(17, {
+    reminder.check_reminder(27)
+    reminder.update_reminder(27, {
         'created_at': 1684169994,
         'completed_at': 1684169995,
         'pinned': int(True)
