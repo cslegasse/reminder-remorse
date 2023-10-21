@@ -29,6 +29,7 @@ export {
   TaskInfo,
   TaskDescription,
   TaskHeader,
+  Header,
   NoTasks,
   CategoriesListContainer,
   TasksContainer,
@@ -36,4 +37,6 @@ export {
   CategoryChip,
   TimeLeft,
   TaskName,
+  TaskBounty,
+  RowFlex,
 } from "./tasks.styled";

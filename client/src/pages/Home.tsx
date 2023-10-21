@@ -11,13 +11,16 @@ import {
   TaskCountTextContainer,
   TasksCount,
   TasksCountContainer,
+  RowFlex,
 } from "../styles";
 import { UserProps } from "../types/user";
 import { displayGreeting, getRandomGreeting, getTaskCompletionText } from "../utils";
 import { Emoji } from "emoji-picker-react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, BoxProps, CircularProgress, Typography } from "@mui/material";
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
 import { WifiOff } from "@mui/icons-material";
+import { Leaderboard } from "../components/Leaderboard/Leaderboard";
+
 
 export const Home = ({ user, setUser }: UserProps) => {
   const [randomGreeting, setRandomGreeting] = useState<string | ReactNode>("");
@@ -107,7 +110,22 @@ export const Home = ({ user, setUser }: UserProps) => {
           <WifiOff /> You're offline but you can use the app!
         </Offline>
       )}
-      <Tasks user={user} setUser={setUser} />
+      <RowFlex>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexGrow: 1,
+            gap: "24px",
+          }}
+        >
+          <Tasks user={user} setUser={setUser} />
+          <Box flexGrow={5}>
+
+            <Leaderboard />
+          </Box>
+        </Box>
+      </RowFlex>
 
       <AddTaskBtn animate={user.tasks.length === 0} user={user} />
     </>

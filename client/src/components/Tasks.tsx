@@ -21,6 +21,7 @@ import {
   NoTasks,
   Pinned,
   TaskContainer,
+  TaskBounty,
   TaskDate,
   TaskDescription,
   TaskHeader,
@@ -29,7 +30,6 @@ import {
   TasksContainer,
   TimeLeft,
 } from "../styles";
-
 import { TaskMenu } from ".";
 import toast from "react-hot-toast";
 import { useResponsiveDisplay } from "../hooks/useResponsiveDisplay";
@@ -423,6 +423,10 @@ export const Tasks = ({ user, setUser }: UserProps): JSX.Element => {
                     <TaskDate>{formatDate(new Date(task.date))}</TaskDate>
                   </Tooltip>
                 </TaskHeader>
+                <TaskBounty>
+                  {//TODO
+                    "You have $500 at stake!"
+                  }</TaskBounty>
                 <TaskDescription done={task.done}>{task.description} </TaskDescription>
 
                 {task.deadline && (
@@ -576,7 +580,7 @@ export const Tasks = ({ user, setUser }: UserProps): JSX.Element => {
 
           {selectedTaskId !== null &&
             user.tasks.find((task) => task.id === selectedTaskId)?.category?.[0]?.name !==
-              undefined && (
+            undefined && (
               <p>
                 <b>Category:</b>{" "}
                 {user.tasks

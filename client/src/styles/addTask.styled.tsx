@@ -56,3 +56,13 @@ export const StyledInput = styled(TextField)`
     color: white;
   }
 `;
+
+export const StyledHalf = styled(TextField)`
+  margin: 8px 24px 12px 12px;
+  .MuiOutlinedInput-root {
+    border-radius: 16px;
+    transition: 0.3s all;
+    width: 190px;
+    color: white;
+  }
+`;

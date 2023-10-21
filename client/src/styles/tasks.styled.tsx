@@ -25,6 +25,20 @@ export const TaskContainer = styled.div<TaskContainerProps>`
   animation: ${fadeIn} 0.5s ease-in;
 `;
 
+export const LeaderboardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 12px;
+  transition: 0.3s all;
+  opacity: 0.7;
+  padding: 16px 16px 16px 16px;
+  background-color: #a834f4;
+
+  border-radius: 24px;
+  animation: ${fadeIn} 0.5s ease-in;
+`;
+
 export const EmojiContainer = styled.span<{ clr: string }>`
   text-decoration: none;
   margin-right: 14px;
@@ -47,6 +61,11 @@ export const TaskInfo = styled.div`
   flex: 1;
 `;
 
+export const Header = styled.div`
+  font-size: 32px;
+  margin: 0 0 5px 0; 
+`;
+
 export const TaskHeader = styled.div`
   display: flex;
   align-items: center;
@@ -63,8 +82,21 @@ export const TaskName = styled.h3<{ done: boolean }>`
   text-decoration: ${({ done }) => (done ? "line-through" : "none")};
 `;
 
+export const TaskBounty = styled.p`
+  color: #ff8080;
+  font-style: italic;
+  text-align: right;
+  font-weight: 600;
+  margin: 0;
+`;
+
+export const RowFlex = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 export const TaskDate = styled.p`
-  margin: 0 6px;
+  margin: 0;
   text-align: right;
   margin-left: auto;
   font-size: 14px;
@@ -137,7 +169,7 @@ interface CategoryChipProps {
   list?: boolean;
 }
 
-export const CategoryChip = styled(Chip)<CategoryChipProps>`
+export const CategoryChip = styled(Chip) <CategoryChipProps>`
   color: ${({ backgroundclr }) => getFontColorFromHex(backgroundclr)};
   background-color: ${({ backgroundclr }) => backgroundclr};
   box-shadow: ${(props) => (props.glow ? `0 0 8px 0 ${props.backgroundclr}` : "none")};
