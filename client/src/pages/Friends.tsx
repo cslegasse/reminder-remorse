@@ -9,8 +9,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { FriendContainer } from "@/styles";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { userFromDb } from "@/types/userFromDb";
-import { renderToStaticMarkup } from "react-dom/server";
+// import { userFromDb } from "@/types/userFromDb";
+// import { renderToStaticMarkup } from "react-dom/server";
 import toast from "react-hot-toast"
 interface Friend {
   id: number;
@@ -25,7 +25,7 @@ export const Friends = () => {
   //hook fetches excessively, so it might be a good idea to 
   //use something else if we'd want to use this in production
   const [currentUserData, setCurrentUserData] = useState<null | any>(null);
-  const [friends, setFriends] = useState<Friend[]>(mockData);
+  const [friends, setFriends] = useState<Friend[]>([]);
   const [currentUserSelected, setCurrentUserSelected] = useState<undefined | Friend>(undefined);
 
   const [isSelectingUser, setIsSelectingUser] = useState<boolean>(false);
@@ -101,7 +101,7 @@ export const Friends = () => {
 
   const handleRemoveFriend = () => {
     fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
-      .then((data) => {
+      .then(() => {
         toast("Friend removed.")
       });
     setIsSelectingUser(false);
@@ -220,23 +220,3 @@ export const Friends = () => {
     </>
   );
 };
-
-
-const mockData: Friend[] = [
-  {
-    id: 1,
-    fname: "John",
-    lname: "Doe",
-    Avatar: undefined,
-    taskCompleted: 100,
-    habitsKept: 1,
-  },
-  {
-    id: 2,
-    fname: "Jane",
-    lname: "Doe",
-    Avatar: undefined,
-    taskCompleted: 25,
-    habitsKept: 3
-  }
-]

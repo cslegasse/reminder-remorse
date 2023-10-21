@@ -1,6 +1,6 @@
 import time
 import random
-from services import user, reminder, transaction, redis_service
+from services import user, reminder
 
 def seed_db():
     user.create_user({
@@ -230,10 +230,8 @@ def seed_db():
 
     for i in range(40):
         rm = reminder.get_reminder(i)
-        if rm is not None and rm['deadline'] < int(time.time()):
-            reminder.update_reminder(i, {
-                'failed': int(True)
-            })
+        if rm is not None and rm['deadline'] < int(time.time()) and not rm['completed']:
+            reminder.fail_reminder(i)
 
     reminder.create_reminder({
         'name': 'Complete New Year\'s Resolution',
@@ -254,7 +252,7 @@ def seed_db():
         'emoji': '🦷',
         'category': 'Health/Fitness',
         'owner_id': 0,
-        'deadline': 1698091200 - 86400*3 + 3600*5,
+        'deadline': 1698091200 - 86400*2 + 3600*5,
         'habit_frequency': 1,
         'incentive_min': 0.1,
         'incentive_max': 0.3,

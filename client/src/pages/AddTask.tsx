@@ -117,7 +117,7 @@ export const AddTask = () => {
     setIsSubmitting(true);
     console.log(newTask);
     fetchEndpoint('create-reminder', 'POST', newTask as object)
-    .then((data) => {
+    .then(() => {
       setIsSubmitting(false);
       navigate("/tasks");
       toast.success(() => (

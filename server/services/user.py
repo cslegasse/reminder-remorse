@@ -24,8 +24,6 @@ def get_user(user_id):
     user_data = {}
     for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
-    print(list(map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}"))))
-    print(user_data)
     for key in ['created_at', 'last_login']:
         user_data[key] = int(user_data[key])
     user_data['reminders'] = list(map(int, r.smembers(f"{user_id}:reminders")))

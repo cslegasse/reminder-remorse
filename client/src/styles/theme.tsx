@@ -89,6 +89,7 @@ export const MuiTheme = createTheme({
             backgroundColor: "#232e58",
             borderRadius: "64px",
           },
+          backgroundAttachment: "fixed",
         },
       },
     },

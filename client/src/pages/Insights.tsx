@@ -164,7 +164,7 @@ export const Insights = () => {
           data: per_week,
           fill: false,
           backgroundColor: 'rgb(156, 60, 231)',
-          borderColor: 'rgba(156, 60, 231, 0.8)',
+          borderColor: 'rgb(156, 60, 231)',
           tension: 0.3,
         }
       ]

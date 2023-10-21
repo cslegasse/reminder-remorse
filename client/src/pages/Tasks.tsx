@@ -118,7 +118,7 @@ export const Tasks = () => {
 
       <h2>To-Do</h2>
       <ul>
-        {tasks.map((task) => (
+        {tasks.slice().reverse().map((task) => (
           task.completed || !task.pinned || Date.now() > task.deadline * 1000 ? <></>
             :
             <TaskCard task={task} />
@@ -132,7 +132,7 @@ export const Tasks = () => {
       </ul>
 
       <ul>
-        {tasks.map((task) => (
+        {tasks.slice().reverse().map((task) => (
           task.completed || task.pinned || Date.now() > task.deadline * 1000 ? <></>
             :
             <TaskCard task={task} />
