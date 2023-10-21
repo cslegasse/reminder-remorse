@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from services import user_service
+from services import user_service, reminder_service
 from services.redis_service import redis_manager
 
 app = Flask(__name__)
@@ -7,6 +7,7 @@ app = Flask(__name__)
 r = redis_manager.redis
 r.flushdb()
 r.set("user_id", 0)
+r.set("reminder_id", 0)
 
 @app.route('/')
 def index():
@@ -21,6 +22,26 @@ def test():
 def create_user():
     user_data = request.form.to_dict()
     return user_service.create_user(user_data)
+
+@app.route('/get-user')
+def get_user():
+    user_id = request.args.get("id")
+    return user_service.get_user(user_id)
+
+@app.route('/create-reminder')
+def create_reminder():
+    reminder_data = request.form.to_dict()
+    return reminder_service.create_reminder(reminder_data)
+
+@app.route('/delete-reminder')
+def delete_reminder():
+    reminder_id = request.args.get("id")
+    return reminder_service.delete_reminder(reminder_id)
+
+@app.route('/get-reminder')
+def get_reminder():
+    reminder_id = request.args.get("id")
+    return reminder_service.get_reminder(reminder_id)
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')
