@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from services import user, reminder, seed
 from services.redis_service import redis_manager
 
@@ -18,32 +18,32 @@ seed.seed_db()
 def index():
     return jsonify({"message": "Hello, World!"})
 
-@app.route('/test')
+@app.route('/api/test')
 def test():
     name = request.args.get("name")
     return jsonify({"message": f"Hello, {name}!"})
 
-@app.route('/create-user')
+@app.route('/api/create-user')
 def create_user():
     user_data = request.form.to_dict()
     return user.create_user(user_data)
 
-@app.route('/get-user')
+@app.route('/api/get-user')
 def get_user():
     user_id = request.args.get("id")
     return user.get_user(user_id)
 
-@app.route('/create-reminder')
+@app.route('/api/create-reminder')
 def create_reminder():
     reminder_data = request.form.to_dict()
     return reminder.create_reminder(reminder_data)
 
-@app.route('/delete-reminder')
+@app.route('/api/delete-reminder')
 def delete_reminder():
     reminder_id = request.args.get("id")
     return reminder.delete_reminder(reminder_id)
 
-@app.route('/get-reminder')
+@app.route('/api/get-reminder')
 def get_reminder():
     reminder_id = request.args.get("id")
     return reminder.get_reminder(reminder_id)
@@ -56,11 +56,17 @@ def leaderboard():
 @app.route('/api/friends')
 def friends():
     user_id = request.args.get("id")
-    print("getting friends")
-    res = jsonify(user.get_friends(user_id))
-    print(res)
-    print(user.get_friends(user_id))
-    return res
+    return jsonify(user.get_friends(user_id))
+
+@app.route('/api/reminders')
+def reminders():
+    user_id = request.args.get("id")
+    return jsonify(reminder.get_reminders(user_id))
+
+@app.route('/api/metrics')
+def metrics():
+    user_id = request.args.get("id")
+    return jsonify(user.get_metrics(user_id))
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')

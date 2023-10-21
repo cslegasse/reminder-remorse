@@ -24,29 +24,34 @@ def seed_db():
     print(user.get_user(0))
 
     reminder.create_reminder({
-        'name': 'Finish TensorFlow tutorial',
+        'name': 'finish TensorFlow tutorial',
         'desc': '',
         'emoji': '👩‍💻',
         'category': 'Work',
         'owner_id': 1,
-        'timestamp': 1697983666,
-        'completed': True,
+        'created_at': 1697963666,
+        'deadline': 1697983666,
         'pinned': False,
-        'bump': 0,
-        'habit_frequency': 0
+        'habit_frequency': 0,
+        'incentive_min': 0,
+        'incentive_max': 3.2,
+        'friend_id': 0
     })
+    reminder.check_reminder(0)
 
     assert reminder.create_reminder({
         'name': 'Finish TensorFlow tutorial',
-        'desc': '',
+        'desc': 'AI grind',
         'emoji': '👨‍💻',
         'category': 'Work',
         'owner_id': 0,
-        'timestamp': 1697806983,
-        'completed': False,
+        'created_at': 1697406983,
+        'deadline': 1697806983,
         'pinned': False,
-        'bump': 1,
-        'habit_frequency': 0
+        'habit_frequency': 0,
+        'incentive_min': 2,
+        'incentive_max': 5.7,
+        'friend_id': 1
     })['id'] == 1
 
     assert reminder.create_reminder({
@@ -55,11 +60,13 @@ def seed_db():
         'emoji': '🏋️',
         'category': 'Health/Fitness',
         'owner_id': 0,
-        'timestamp': 1697808031,
-        'completed': False,
+        'created_at': 1666272031,
+        'deadline': 1697808031,
         'pinned': False,
-        'bump': 1,
-        'habit_frequency': 2
+        'habit_frequency': 2,
+        'incentive_min': 2,
+        'incentive_max': 5.7,
+        'friend_id': 1
     })['id'] == 2
 
     assert reminder.create_reminder({
@@ -68,11 +75,13 @@ def seed_db():
         'emoji': '🏋️',
         'category': 'Health/Fitness',
         'owner_id': 1,
-        'timestamp': 1697808031,
-        'completed': False,
+        'created_at': 1666272035,
+        'deadline': 1697808031,
         'pinned': False,
-        'bump': 0,
-        'habit_frequency': 2
+        'habit_frequency': 2,
+        'incentive_min': 2,
+        'incentive_max': 5.7,
+        'friend_id': 0
     })['id'] == 3
 
     assert reminder.create_reminder({
@@ -81,9 +90,11 @@ def seed_db():
         'emoji': '🔭',
         'category': 'Education',
         'owner_id': 0,
-        'timestamp': 1697462602,
-        'completed': False,
+        'created_at': 1695302602,
+        'deadline': 1697462602,
         'pinned': False,
-        'bump': -1,
-        'habit_frequency': 7
+        'habit_frequency': 7,
+        'incentive_min': 0,
+        'incentive_max': 0,
+        'org_id': 2
     })['id'] == 4

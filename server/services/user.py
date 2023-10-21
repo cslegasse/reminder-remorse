@@ -1,5 +1,5 @@
 import time
-from services import redis_service
+from services import reminder, redis_service
 r = redis_service.redis_manager.redis
 
 def create_user(user_data):
@@ -9,8 +9,8 @@ def create_user(user_data):
     r.hset(f"u{user_id}", 'lname', user_data['lname'])
     r.hset(f"u{user_id}", 'clerk_id', user_data['clerk_id'])
     r.hset(f"u{user_id}", 'clerk_json', user_data['clerk_json'])
-    r.hset(f"u{user_id}", 'created_at', user_data['created_at'])
-    r.hset(f"u{user_id}", 'last_login', user_data['last_login'])
+    r.hset(f"u{user_id}", 'created_at', int(user_data['created_at']))
+    r.hset(f"u{user_id}", 'last_login', int(user_data['last_login']))
     # also included: empty sets for reminders and friends
     return {"id": user_id}
 
@@ -21,17 +21,17 @@ def delete_user(user_id):
 
 def get_user(user_id):
     user_data = {}
-    for key in r.hkeys(f"u{user_id}"):
-        user_data[key] = str(r.hget(f"u{user_id}", key))
+    for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
+        user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
+    print(user_data)
+    for key in ['created_at', 'last_login']:
+        user_data[key] = int(user_data[key])
     user_data['reminders'] = list(map(int, r.smembers(f"{user_id}:reminders")))
     user_data['friends'] = list(map(int, r.smembers(f"{user_id}:friends")))
     return user_data
 
 def add_friend(user_id, friend_id):
     r.sadd(f"{user_id}:friends", friend_id)
-
-def get_reminders(user_id):
-    return r.smembers(f"{user_id}:reminders")
 
 def get_friends(user_id):
     friends = []
@@ -40,16 +40,6 @@ def get_friends(user_id):
         friends.append(get_user(friend_id))
     print(f"friends: {friends}")
     return friends
-
-def get_friends_reminders(user_id):
-    # get all friends reminders that the current user can bump
-    friend_ids = r.smembers(f"{user_id}:friends")
-    friend_reminders = []
-    for friend_id in friend_ids:
-        for reminder_id in r.smembers(f"{friend_id}:reminders"):
-            if r.hget(f"r{reminder_id}", "bump") == user_id:
-                friend_reminders.append(reminder_id)
-    return set(friend_reminders)
 
 def get_tasks_completed(user_id):
     tasks = r.smembers(f"{user_id}:reminders")
@@ -67,7 +57,7 @@ def get_habit_upkeep(user_id):
     print(f"HABITS: {habits}")
     habit_upkeep = 0
     for habit in habits:
-        if time.time() - int(r.hget(f"r{habit}", "timestamp")) < 86400*int(r.hget(f"r{habit}", "habit_frequency")):
+        if time.time() - int(r.hget(f"r{habit}", "deadline")) < 86400*int(r.hget(f"r{habit}", "habit_frequency")):
             habit_upkeep += 1
         # if we are past the deadline for this habit, we have failed
     return habit_upkeep
@@ -87,7 +77,11 @@ def get_friends_leaderboard(user_id):
     return friend_leaderboard
 
 def get_metrics(user_id):
+    completion = []
+    for task in reminder.get_reminders(user_id):
+        if task['completed']:
+            completion.append(task['completed_at'])
     return {
-        "tasks_completed": get_tasks_completed(user_id),
-        "habits_kept": get_habit_upkeep(user_id)
+        "tasksCompleted": get_tasks_completed(user_id),
+        "habitsKept": get_habit_upkeep(user_id)
     }
