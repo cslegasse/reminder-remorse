@@ -65,7 +65,7 @@ export const AddTask = () => {
         deadline: Math.floor(
           (new Date(e.target.value).getTime() -
             new Date(e.target.value).getTimezoneOffset() * 60000) /
-            1000
+          1000
         ),
       }));
       return;
@@ -194,7 +194,7 @@ export const AddTask = () => {
 
         {/* TODO: Fix styling for this */}
         {!hasNoFriends && isSendingToFriend ? (
-          <Select
+          <StyledSelect
             sx={{
               width: "400px",
               borderRadius: "16px",
@@ -205,8 +205,9 @@ export const AddTask = () => {
               transition: "0.3s all",
             }}
             id="selectPaymentDestination"
-            value={taskUploadData.friend_id?.toString()}
-            onChange={(e: SelectChangeEvent) => {
+            value={taskUploadData.friend_id?.toString() ?? ""}
+            defaultValue=""
+            onChange={(e: SelectChangeEvent<unknown>) => {
               setTaskUploadData((prevData) => ({
                 ...prevData,
                 friend_id: parseInt(e.target.value as string),
@@ -216,19 +217,26 @@ export const AddTask = () => {
             label="Choose a friend"
           >
             {friends.map((friend) => (
-              <MenuItem key={friend.id} value={friend.id}>
+              <MenuItem
+                key={friend.id}
+                value={friend.id}
+                sx={{
+                  color: "black"
+                }}
+              >
                 {friend.name}
               </MenuItem>
             ))}
-          </Select>
+          </StyledSelect>
         ) : (
-          <Select
+          <StyledSelect
             sx={{
               width: "400px",
             }}
             id="selectPaymentDestination"
-            value={taskUploadData.org_id?.toString()}
-            onChange={(e: SelectChangeEvent) => {
+            value={taskUploadData.org_id?.toString() ?? ""}
+            defaultValue={""}
+            onChange={(e: SelectChangeEvent<unknown>) => {
               setTaskUploadData((prevData) => ({
                 ...prevData,
                 org_id: parseInt(e.target.value as string),
@@ -238,14 +246,20 @@ export const AddTask = () => {
             label="Choose a charity"
           >
             {charities.map((charity) => (
-              <MenuItem key={charity.id} value={charity.id}>
+              <MenuItem
+                key={charity.id}
+                value={charity.id}
+                sx={{
+                  color: "black"
+                }}
+              >
                 {charity.name}
               </MenuItem>
             ))}
-          </Select>
+          </StyledSelect>
         )}
 
-        <Select
+        <StyledSelect
           sx={{
             marginTop: 2,
             width: "400px",
@@ -253,8 +267,9 @@ export const AddTask = () => {
           id="selectCategory"
           placeholder="Choose a category"
           label="Choose a category"
-          value={taskUploadData.category?.toString()}
-          onChange={(e: SelectChangeEvent) => {
+          value={taskUploadData.category?.toString() ?? ""}
+          defaultValue={""}
+          onChange={(e: SelectChangeEvent<unknown>) => {
             setTaskUploadData((prevData) => ({
               ...prevData,
               category: e.target.value as string,
@@ -262,11 +277,17 @@ export const AddTask = () => {
           }}
         >
           {categories.map((category) => (
-            <MenuItem key={category} value={category}>
+            <MenuItem
+              key={category}
+              value={category}
+              sx={{
+                color: "black"
+              }}
+            >
               {category}
             </MenuItem>
           ))}
-        </Select>
+        </StyledSelect>
 
         <AddTaskButton onClick={handleAddTask} disabled={isSubmitting}>
           Create Task
@@ -275,6 +296,22 @@ export const AddTask = () => {
     </MuiContainer>
   );
 };
+
+const StyledSelect = styled(Select)`
+  margin: 12px;
+  .MuiOutlinedInput-root {
+    border-radius: 16px;
+    transition: 0.3s all;
+    width: 400px;
+    color: ${ColorPalette.purple};
+    '&:before': {
+      borderColor: color,
+  },
+  '&:after': {
+      borderColor: color,
+  }
+  }
+`;
 
 const StyledInput = styled(TextField)`
   margin: 12px;
