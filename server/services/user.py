@@ -2,6 +2,7 @@ import time
 from services import reminder, redis_service
 r = redis_service.redis_manager.redis
 
+
 def create_user(user_data):
     user_id = int(r.get("user_id"))
     r.incr("user_id")
