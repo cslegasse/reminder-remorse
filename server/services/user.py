@@ -5,6 +5,7 @@ r = redis_service.redis_manager.redis
 def create_user(user_data):
     user_id = int(r.get("user_id"))
     r.incr("user_id")
+    r.hset(f"u{user_id}", 'username', user_data['username'])
     r.hset(f"u{user_id}", 'fname', user_data['fname'])
     r.hset(f"u{user_id}", 'lname', user_data['lname'])
     r.hset(f"u{user_id}", 'clerk_id', user_data['clerk_id'])
@@ -31,6 +32,12 @@ def get_user(user_id):
     user_data['friends'] = list(map(int, r.smembers(f"{user_id}:friends")))
     user_data['id'] = user_id
     return user_data
+
+def get_user_by_username(username):
+    for i in range(int(r.get("user_id"))):
+        if r.hget(f"u{i}", "username").decode('utf-8') == username:
+            return get_user(i)
+    return None
 
 def user_by_clerk_id(clerk_id):
     for i in range(int(r.get("user_id"))):
