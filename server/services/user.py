@@ -34,8 +34,11 @@ def get_friends(user_id):
     return r.smembers(f"{user_id}:friends")
 
 def get_friends_reminders(user_id):
+    # get all friends reminders that the current user can bump
     friend_ids = r.smembers(f"{user_id}:friends")
     friend_reminders = []
     for friend_id in friend_ids:
-        friend_reminders += list(r.smembers(f"{friend_id}:reminders"))
+        for reminder_id in r.smembers(f"{friend_id}:reminders"):
+            if r.hget(f"r{reminder_id}", "bump") == user_id:
+                friend_reminders.append(reminder_id)
     return set(friend_reminders)

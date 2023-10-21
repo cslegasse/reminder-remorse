@@ -15,6 +15,7 @@ def create_reminder(reminder_data):
     r.hset(f"r{reminder_id}", 'timestamp', reminder_data['timestamp'])
     r.hset(f"r{reminder_id}", 'completed', reminder_data['completed'])
     r.hset(f"r{reminder_id}", 'pinned', reminder_data['pinned'])
+    r.hset(f"r{reminder_id}", 'bump', reminder_data['bump']) # the friend id who can bump the reminder, optional
     r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'])
     return {"id": reminder_id}
 
