@@ -1,17 +1,22 @@
+import { ClerkProvider } from "@clerk/clerk-react";
+import { dark } from "@clerk/themes";
+import { CLERK_PUBLISHABLE_KEY } from "./config";
 import { useStorageState } from "./hooks/useStorageState";
 import { defaultUser } from "./constants/defaultUser";
 import { User } from "./types/user";
 import { ColorPalette, GlobalStyles, MuiTheme } from "./styles";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { ErrorBoundary } from "./components";
 import { MainLayout } from "./layouts/MainLayout";
-import { AppRouter } from "./router";
+import { AppRouter } from "@/routes";
 import { Toaster } from "react-hot-toast";
 import { useResponsiveDisplay } from "./hooks/useResponsiveDisplay";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useStorageState<User>(defaultUser, "user");
+
   const isMobile = useResponsiveDisplay();
   // Initialize user properties if they are undefined
   useEffect(() => {
@@ -26,8 +31,11 @@ function App() {
     ) {
       setUser({ ...user, settings: defaultUser.settings });
     }
-  }, []);
+  }, [setUser, user]);
+
   const userProps = { user, setUser };
+  const navigate = useNavigate();
+  const theme = useTheme();
 
   return (
     <>
@@ -70,11 +78,34 @@ function App() {
             },
           }}
         />
-        <ErrorBoundary user={user}>
-          <MainLayout {...userProps}>
-            <AppRouter {...userProps} />
-          </MainLayout>
-        </ErrorBoundary>
+        <ClerkProvider
+          publishableKey={CLERK_PUBLISHABLE_KEY}
+          // TODO: Change color
+          appearance={{
+            baseTheme: theme.palette.mode === "dark" ? undefined : dark,
+            variables: {
+              colorPrimary: theme.palette.primary.main,
+              colorDanger: theme.palette.error.main,
+              colorSuccess: theme.palette.success.main,
+              colorWarning: theme.palette.warning.main,
+            },
+            elements: {
+              rootBox: {
+                display: "flex",
+                alignItems: "center",
+              },
+            },
+          }}
+          navigate={(to) => {
+            navigate(to);
+          }}
+        >
+          <ErrorBoundary>
+            <MainLayout {...userProps}>
+              <AppRouter {...userProps} />
+            </MainLayout>
+          </ErrorBoundary>
+        </ClerkProvider>
       </ThemeProvider>
     </>
   );

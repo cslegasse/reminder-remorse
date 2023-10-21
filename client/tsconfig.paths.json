@@ -1,0 +1,9 @@
+{
+  /* Bulletproof React absolute import style. See https://github.com/alan2207/bulletproof-react/blob/master/docs/project-configuration.md#absolute-imports */
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
