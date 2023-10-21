@@ -32,6 +32,12 @@ def get_user(user_id):
     user_data['friends'] = list(map(int, r.smembers(f"{user_id}:friends")))
     return user_data
 
+def user_by_clerk_id(clerk_id):
+    for i in range(int(r.get("user_id"))):
+        if r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
+            return get_user(i)
+    return None
+
 def add_friend(user_id, friend_id):
     r.sadd(f"{user_id}:friends", friend_id)
 def remove_friend(user_id, friend_id):

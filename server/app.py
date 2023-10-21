@@ -32,6 +32,11 @@ def get_user():
     user_id = int(request.args.get("id"))
     return user.get_user(user_id)
 
+@app.route('/api/user-by-clerk')
+def get_user_by_clerk():
+    clerk_id = request.args.get("id")
+    return user.user_by_clerk_id(clerk_id)
+
 @app.route('/api/create-reminder', methods=['POST'])
 def create_reminder():
     reminder_data = request.json
