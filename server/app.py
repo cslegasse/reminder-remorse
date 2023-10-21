@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from services import user_service
-import redis
 from services.redis_service import redis_manager
 
 app = Flask(__name__)
