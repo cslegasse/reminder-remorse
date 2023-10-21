@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from services import user, reminder, seed
+from services import user, reminder, charity, seed
 from services.redis_service import redis_manager
 
 app = Flask(__name__)
@@ -71,6 +71,10 @@ def reminders():
 def metrics():
     user_id = request.args.get("id")
     return jsonify(user.get_metrics(user_id))
+
+@app.route('/api/charities')
+def charities():
+    return jsonify(charity.get_charities())
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')

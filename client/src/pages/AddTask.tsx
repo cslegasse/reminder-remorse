@@ -34,9 +34,14 @@ export type TaskUpload = {
   incentive_max: number;
 };
 
+type Charity = {
+  id: number;
+  name: string;
+}
+
 export const AddTask = () => {
   const [friends, setFriends] = useState(mockFriends);
-  const charities = mockCharities; // TODO: REPLACE
+  const [charities, setCharities] = useState<Charity[]>(mockCharities);
   const categories = mockCategories; // TODO: REPLACE
   const navigate = useNavigate();
   const [taskUploadData, setTaskUploadData] = useState<TaskUpload>({
@@ -59,6 +64,13 @@ export const AddTask = () => {
       .then((data) => {
         console.log(data);
         setFriends(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    fetchEndpoint("charities", "GET")
+      .then((data) => {
+        setCharities(data);
       })
       .catch((err) => {
         console.log(err);
@@ -206,18 +218,18 @@ export const AddTask = () => {
         }}
         >
           <FormControlLabel
-            value={true}
-            control={<Radio />}
-            label="Habit"
-          />
-          <FormControlLabel
             value={false}
             control={<Radio />}
             label="Task"
           />
+          <FormControlLabel
+            value={true}
+            control={<Radio />}
+            label="Habit"
+          />
         </RadioGroup>
         {isHabit && <StyledInput
-        label="Frequency (days)"
+        label="Habit Frequency"
         name="habit_frequency"
         placeholder="Enter frequency in days"
         value={taskUploadData.habit_frequency}

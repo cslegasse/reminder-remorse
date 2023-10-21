@@ -1,20 +1,5 @@
 import random
-import requests
 from services import user, reminder, transaction
-
-
-def get_charity(name, id):
-    response = requests.get('https://api.data.charitynavigator.org/v2/Organizations?app_id=YOUR_APP_ID&app_key=YOUR_APP_KEY&pageSize=1&sort=RATING:DESC')
-    charity_data = response.json()[0]
-    charity = {
-        'name': name,
-        'id': id,
-        'charity_name': charity_data['charityName'],
-        'charity_rating': charity_data['rating']['score'],
-        'charity_website': charity_data['websiteURL']
-    }
-    return charity
-
 
 def seed_db():
     user.create_user({

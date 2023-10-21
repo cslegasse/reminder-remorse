@@ -1,1 +1,1 @@
-from . import user, reminder, redis_service, seed, transaction
+from . import user, reminder, redis_service, charity, seed, transaction
