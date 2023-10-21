@@ -1,5 +1,6 @@
+import time
 import random
-from services import user, reminder, transaction
+from services import user, reminder, transaction, redis_service
 
 def seed_db():
     user.create_user({
@@ -223,20 +224,14 @@ def seed_db():
         'org_id': 2
     })
 
-    reminder.create_reminder({
-        'name': 'Floss',
-        'desc': 'Keep those pearly whites pearly and white',
-        'emoji': '🦷',
-        'category': 'Health/Fitness',
-        'owner_id': 0,
-        'deadline': 1698091200,
-        'habit_frequency': 1,
-        'incentive_min': 0,
-        'incentive_max': 0,
-        'org_id': 2
-    })
-
     # overdue reminders
+
+    for i in range(40):
+        rm = reminder.get_reminder(i)
+        if rm is not None and rm['deadline'] < int(time.time()):
+            reminder.update_reminder(i, {
+                'failed': int(True)
+            })
 
     reminder.create_reminder({
         'name': 'Complete New Year\'s Resolution',
@@ -244,11 +239,24 @@ def seed_db():
         'emoji': '🎉',
         'category': 'Personal',
         'owner_id': 0,
-        'deadline': 1697924665,
+        'deadline': 1697924663,
         'habit_frequency': 0,
         'incentive_min': 1,
         'incentive_max': 3,
         'friend_id': 1
+    })
+
+    reminder.create_reminder({
+        'name': 'Floss',
+        'desc': 'Keep those pearly whites pearly and white',
+        'emoji': '🦷',
+        'category': 'Health/Fitness',
+        'owner_id': 0,
+        'deadline': 1698091200 - 86400*3 + 3600*5,
+        'habit_frequency': 1,
+        'incentive_min': 0.1,
+        'incentive_max': 0.3,
+        'org_id': 2
     })
     
     print(user.get_user(0))

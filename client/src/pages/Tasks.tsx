@@ -12,29 +12,26 @@ type Task = {
   deadline: number;
   completed_at: number;
   habit_frequency: number;
+  charge?: number;
 }
 
 export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [recentMisses, setRecentMisses] = useState<Task[]>([]);
+
   useEffect(() => {
     fetchEndpoint('overdue-reminders?id=0', 'GET').then((data) => {
     
     console.log(data);
-    toast.error(
-      <div>
-        You missed <b>{data.overdue_reminders.length}</b> tasks,
-        losing ${data.charge} in total. 😢<br/>
-        <ul>
-          {data.overdue_reminders.map((task: Task) => {
-            (
-            <li key={task.id}>
-              task.name
-            </li>
-            )
-          })}
-        </ul>
-      </div>
-    )
+    if (data.overdue_reminders.length > 0) {
+      setRecentMisses(data.overdue_reminders);
+      toast.error(
+        <div>
+          You missed <b>{data.overdue_reminders.length}</b> tasks,
+          losing ${data.charge.toFixed(2)} in total. 😢
+        </div>
+      );
+    }
     
     fetchEndpoint('reminders?id=0', 'GET').then((data) => {
       setTasks(data.sort((a:Task,b:Task) => {
@@ -96,6 +93,20 @@ export const Tasks = () => {
   return (
     <>
       <h1>Tasks</h1>
+
+      {recentMisses.length > 0 ?
+      <>
+      <h2>Just Missed 😢</h2>
+      <ul>
+        {recentMisses.map((task) => (
+          <li key={task.id}>
+            {task.emoji} {task.name} (lost ${task.charge?.toFixed(2)})
+          </li>
+        ))}
+      </ul>
+      </>
+      : <></>
+      }
 
       <h2>To-Do</h2>
       <ul>
