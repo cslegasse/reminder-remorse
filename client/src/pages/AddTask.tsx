@@ -197,11 +197,6 @@ export const AddTask = () => {
           <StyledSelect
             sx={{
               width: "400px",
-              borderRadius: "16px",
-              color: "white",
-              "::placeholder": {
-                color: "white",
-              },
               transition: "0.3s all",
             }}
             id="selectPaymentDestination"
@@ -214,7 +209,7 @@ export const AddTask = () => {
               }));
             }}
             placeholder="Choose a friend"
-            label="Choose a friend"
+            displayEmpty
           >
             {friends.map((friend) => (
               <MenuItem
@@ -243,7 +238,7 @@ export const AddTask = () => {
               }));
             }}
             placeholder="Choose a charity"
-            label="Choose a charity"
+            displayEmpty
           >
             {charities.map((charity) => (
               <MenuItem
@@ -266,7 +261,6 @@ export const AddTask = () => {
           }}
           id="selectCategory"
           placeholder="Choose a category"
-          label="Choose a category"
           value={taskUploadData.category?.toString() ?? ""}
           defaultValue={""}
           onChange={(e: SelectChangeEvent<unknown>) => {
@@ -275,6 +269,7 @@ export const AddTask = () => {
               category: e.target.value as string,
             }));
           }}
+          displayEmpty
         >
           {categories.map((category) => (
             <MenuItem
@@ -298,18 +293,13 @@ export const AddTask = () => {
 };
 
 const StyledSelect = styled(Select)`
-  margin: 12px;
-  .MuiOutlinedInput-root {
-    border-radius: 16px;
-    transition: 0.3s all;
-    width: 400px;
-    color: ${ColorPalette.purple};
-    '&:before': {
-      borderColor: color,
-  },
-  '&:after': {
-      borderColor: color,
-  }
+  margin: 12px 0;
+  border-radius: 16px;
+  transition: 0.3s all;
+  color: white;
+  /* border: 3px solid ${ColorPalette.purple}; */
+  & * {
+    border-color: ${ColorPalette.purple};
   }
 `;
 
