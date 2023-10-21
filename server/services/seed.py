@@ -4,6 +4,7 @@ from services import user, reminder, transaction, redis_service
 
 def seed_db():
     user.create_user({
+        'username': 'john_doe',
         'fname': 'John',
         'lname': 'Doe',
         'clerk_id': '6723647823',
@@ -12,6 +13,7 @@ def seed_db():
         'last_login': 1697893036
     })
     assert user.create_user({
+        'username': 'jane_doe',
         'fname': 'Jane',
         'lname': 'Doe',
         'clerk_id': '6723647824',
