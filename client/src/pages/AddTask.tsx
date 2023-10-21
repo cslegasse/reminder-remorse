@@ -265,6 +265,7 @@ export const AddTask = () => {
                 color: "white",
               }
             }}
+            label="Choose a friend"
             id="selectPaymentDestination"
             value={friendId.toString() ?? ""}
             defaultValue={""}

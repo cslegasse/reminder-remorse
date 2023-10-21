@@ -66,7 +66,9 @@ export const Tasks = () => {
   }
 
   const formatInterval = (d: number) => {
-    d === 1 ? 'every day' : 'once every '+d+' days';
+    return d === 1 ? 'daily' :
+    d == 7 ? 'weekly' :
+    'once every '+d+' days';
   }
 
   return (
@@ -82,7 +84,7 @@ export const Tasks = () => {
             📌{task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
-            Habit: {task.habit_frequency > 0 ? <><br/>{formatInterval(task.habit_frequency)}</> : <></>}
+            {task.habit_frequency > 0 ? <><br/>Habit: {formatInterval(task.habit_frequency)}</> : <></>}
           </li>
         ))}
       </ul>
@@ -95,7 +97,7 @@ export const Tasks = () => {
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
-            {task.habit_frequency > 0 ? <><br/>Once every {task.habit_frequency} days</> : <></>}
+            {task.habit_frequency > 0 ? <><br/>Habit: {formatInterval(task.habit_frequency)}</> : <></>}
           </li>
         ))}
       </ul>

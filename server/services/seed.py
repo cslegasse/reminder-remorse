@@ -222,5 +222,18 @@ def seed_db():
         'incentive_max': 0,
         'org_id': 2
     })
+
+    reminder.create_reminder({
+        'name': 'Floss',
+        'desc': 'Keep those pearly whites pearly and white',
+        'emoji': '🦷',
+        'category': 'Health/Fitness',
+        'owner_id': 0,
+        'deadline': 1698091200,
+        'habit_frequency': 1,
+        'incentive_min': 0,
+        'incentive_max': 0,
+        'org_id': 2
+    })
     
     print(user.get_user(0))
