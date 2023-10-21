@@ -3,6 +3,8 @@ import { CLERK_PUBLISHABLE_KEY } from "./config";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import { Routes } from "./Routes";
 import { CssBaseline } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import PageHeader from "./components/PageHeader";
 
 if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -21,12 +23,23 @@ const AuthProviderWithRoutes = () => {
   );
 };
 
+const themeLight = createTheme({
+  palette: {
+    mode: "light",
+    background: {
+      default: "#DBF3FA",
+    }
+  },
+});
+
 function App() {
   return (
-    <BrowserRouter>
-      <CssBaseline />
-      <AuthProviderWithRoutes />
-    </BrowserRouter>
+    <ThemeProvider theme={themeLight}>
+      <BrowserRouter>
+        <CssBaseline />
+        <AuthProviderWithRoutes />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

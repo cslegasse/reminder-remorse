@@ -7,7 +7,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { Route, Routes as RouterRoutes } from "react-router-dom";
-
+import PageHeader from "./components/PageHeader";
 function PublicPage() {
   return (
     <>
@@ -20,6 +20,8 @@ function PublicPage() {
 function ProtectedPage() {
   return (
     <>
+      <PageHeader />
+
       <h1>Protected page</h1>
       <UserButton />
     </>
