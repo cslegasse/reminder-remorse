@@ -1,4 +1,5 @@
-from services import redis_service
+import random
+from services import redis_service, transaction
 r = redis_service.redis_manager.redis
 
 def create_reminder(reminder_data):
@@ -34,5 +35,29 @@ def update_reminder(reminder_id, reminder_data):
     for key in reminder_data:
         r.hset(f"r{reminder_id}", key, reminder_data[key])
 
-def fail_reminder(reminder_id):
+def check_reminder(reminder_id):
+    freq = int(r.hget(reminder_id, "habit_frequency"))
+    if freq > 0:
+        old_time = int(r.hget(reminder_id, "timestamp"))
+        r.hset(reminder_id, "timestamp", old_time + freq*86400)
+    else:
+        r.hset(reminder_id, "completed", True)
+
+def fail_reminder(reminder_id, org_id=None):
     r.hset(f"r{reminder_id}", "completed", False)
+    bump = r.hget(f"r{reminder_id}", "bump")
+    amt = random.randint(1, 10)
+    if org_id is not None:
+        transaction.create_transaction({
+            "org_id": org_id,
+            "amt": amt
+        })
+    elif bump != -1:
+        transaction.create_transaction({
+            "user_id": bump,
+            "amt": amt
+        })
+    freq = int(r.hget(reminder_id, "habit_frequency"))
+    if freq > 0:
+        old_time = int(r.hget(reminder_id, "timestamp"))
+        r.hset(reminder_id, "timestamp", old_time - freq*86400)

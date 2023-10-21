@@ -1,3 +1,4 @@
+import time
 from services import redis_service
 r = redis_service.redis_manager.redis
 
@@ -42,3 +43,41 @@ def get_friends_reminders(user_id):
             if r.hget(f"r{reminder_id}", "bump") == user_id:
                 friend_reminders.append(reminder_id)
     return set(friend_reminders)
+
+def get_tasks_completed(user_id):
+    tasks = r.smembers(f"{user_id}:reminders")
+    tasks_completed = 0
+    for task in tasks:
+        if r.hget(f"r{task}", "completed"):
+            tasks_completed += 1
+    return tasks_completed
+
+def get_habit_upkeep(user_id):
+    habits = list(filter(
+        lambda task: r.hget(f"r{task}", "habit_frequency") > 0,
+        r.smembers(f"{user_id}:reminders"
+    )))
+    habit_upkeep = 0
+    for habit in habits:
+        if time.time() - int(r.hget(f"r{habit}", "timestamp")) < 86400*int(r.hget(f"r{habit}", "habit_frequency")):
+            habit_upkeep += 1
+        # if we are past the deadline for this habit, we have failed
+    return habit_upkeep
+
+def get_friends_leaderboard(user_id):
+    friend_ids = r.smembers(f"{user_id}:friends")
+    friend_leaderboard = []
+    for friend_id in friend_ids:
+        friend_leaderboard.append({
+            "id": friend_id,
+            "fname": r.hget(f"u{friend_id}", "fname"),
+            "lname": r.hget(f"u{friend_id}", "lname"),
+            "tasks_completed": get_tasks_completed(friend_id)
+        })
+    return friend_leaderboard
+
+def get_metrics(user_id):
+    return {
+        "tasks_completed": get_tasks_completed(user_id),
+        "habits_kept": get_habit_upkeep(user_id)
+    }
