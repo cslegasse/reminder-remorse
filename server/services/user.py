@@ -21,14 +21,23 @@ def delete_user(user_id):
     r.delete(f"{user_id}:friends")
 
 def get_user(user_id):
+    print(user_id)
     user_data = {}
     for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
+    print(list(map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}"))))
+    print(user_data)
     for key in ['created_at', 'last_login']:
         user_data[key] = int(user_data[key])
     user_data['reminders'] = list(map(int, r.smembers(f"{user_id}:reminders")))
     user_data['friends'] = list(map(int, r.smembers(f"{user_id}:friends")))
     return user_data
+
+def user_by_clerk_id(clerk_id):
+    for i in range(int(r.get("user_id"))):
+        if r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
+            return get_user(i)
+    return None
 
 def add_friend(user_id, friend_id):
     r.sadd(f"{user_id}:friends", friend_id)
@@ -38,8 +47,8 @@ def remove_friend(user_id, friend_id):
 def get_friends(user_id):
     friends = []
     for friend_id in r.smembers(f"{user_id}:friends"):
-        print(f"friend: {friend_id}, {get_user(friend_id)}")
-        friends.append(get_user(friend_id))
+        print(f"friend: {friend_id}, {get_user(int(friend_id))}")
+        friends.append(get_user(int(friend_id)))
     print(f"friends: {friends}")
     return friends
 

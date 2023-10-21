@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchEndpoint } from "@/utils/fetch";
 
@@ -35,7 +35,7 @@ export type TaskUpload = {
 };
 
 export const AddTask = () => {
-  const friends = mockFriends; // TODO: REPLACE
+  const [friends, setFriends] = useState(mockFriends);
   const charities = mockCharities; // TODO: REPLACE
   const categories = mockCategories; // TODO: REPLACE
   const navigate = useNavigate();
@@ -53,6 +53,17 @@ export const AddTask = () => {
     incentive_min: 1,
     incentive_max: 5,
   });
+
+  useEffect(() => {
+    fetchEndpoint("friends?id=0", "GET")
+      .then((data) => {
+        console.log(data);
+        setFriends(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   // After fetching friends, frineds would be populated. If no friends, can only donate to orgs
@@ -230,7 +241,7 @@ export const AddTask = () => {
                   color: "black"
                 }}
               >
-                {friend.name}
+                {friend.fname}
               </MenuItem>
             ))}
           </StyledSelect>
@@ -374,11 +385,11 @@ const RowFlex = styled.div`
 const mockFriends = [
   {
     id: 1,
-    name: "John",
+    fname: "John",
   },
   {
     id: 2,
-    name: "jane",
+    fname: "Jane",
   },
 ];
 

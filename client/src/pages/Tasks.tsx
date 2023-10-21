@@ -66,7 +66,7 @@ export const Tasks = () => {
   }
 
   const formatInterval = (d: number) => {
-    d === 1 ? 'Every day' : 'Once every '+d+' days';
+    d === 1 ? 'every day' : 'once every '+d+' days';
   }
 
   return (
@@ -82,7 +82,7 @@ export const Tasks = () => {
             📌{task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Do by {formatDate(task.deadline)}
-            {task.habit_frequency > 0 ? <><br/>{formatInterval(task.habit_frequency)}</> : <></>}
+            Habit: {task.habit_frequency > 0 ? <><br/>{formatInterval(task.habit_frequency)}</> : <></>}
           </li>
         ))}
       </ul>
