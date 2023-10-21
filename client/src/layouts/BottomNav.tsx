@@ -1,10 +1,10 @@
-import { Add, People, Insights, TaskAlt } from "@mui/icons-material";
+import { Add, People, Insights, TaskAlt, Login } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Paper, useTheme } from "@mui/material";
 import { pulseAnimation, slideInBottom } from "../styles";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useResponsiveDisplay } from "../hooks/useResponsiveDisplay";
-import { UserButton } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 
 /**
  * Component for rendering the bottom navigation bar.
@@ -12,9 +12,10 @@ import { UserButton } from "@clerk/clerk-react";
 export const BottomNav = () => {
   const isMobile = useResponsiveDisplay();
   const location = useLocation();
-  const [value, setValue] = useState<number | undefined>();
+  const { isLoaded, isSignedIn } = useUser();
   const theme = useTheme();
   const navigate = useNavigate();
+  const [value, setValue] = useState<number | undefined>();
 
   // useEffect hook to set the active button based on the current route
   useEffect(() => {
@@ -33,11 +34,8 @@ export const BottomNav = () => {
         case "/insights":
           setValue(3);
           break;
-        // case "/user":
-        //   setValue(4);
-        //   break;
         case "/":
-          setValue(0);
+          setValue(undefined);
           break;
         default:
           setValue(undefined); // Fallback for the undefined route
@@ -72,7 +70,11 @@ export const BottomNav = () => {
           event.preventDefault();
         }}
       >
-        <BottomNavigationAction onClick={() => navigate("/")} label="Tasks" icon={<TaskAlt />} />
+        <BottomNavigationAction
+          onClick={() => navigate("/tasks")}
+          label="Tasks"
+          icon={<TaskAlt />}
+        />
         <BottomNavigationAction
           onClick={() => navigate("/friends")}
           label="Friends"
@@ -100,7 +102,14 @@ export const BottomNav = () => {
           label="Insights"
           icon={<Insights />}
         />
-        <BottomNavigationAction label="User" icon={<UserButton />} />
+        {isLoaded && isSignedIn && <BottomNavigationAction label="User" icon={<UserButton />} />}
+        {(!isLoaded || !isSignedIn) && (
+          <BottomNavigationAction
+            onClick={() => navigate("/sign-in")}
+            label="Login"
+            icon={<Login />}
+          />
+        )}
       </BottomNavigation>
     </Paper>
   );

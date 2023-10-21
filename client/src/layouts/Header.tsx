@@ -32,42 +32,50 @@ export const Navbar = () => {
       gap={2}
       sx={{ button: { whiteSpace: "nowrap" } }}
     >
-      <IconButton
-        component={RouterLink}
-        to="/tasks/add"
-        color="primary"
-        size="small"
-        aria-label="add task page"
-      >
-        <Add />
-      </IconButton>
-      <IconButton
-        component={RouterLink}
-        to="/tasks"
-        color="primary"
-        size="small"
-        aria-label="tasks page"
-      >
-        <TaskAlt />
-      </IconButton>
-      <IconButton
-        component={RouterLink}
-        to="/friends"
-        color="primary"
-        size="small"
-        aria-label="friends page"
-      >
-        <People />
-      </IconButton>
-      <IconButton
-        component={RouterLink}
-        to="/insights"
-        color="primary"
-        size="small"
-        aria-label="insights page"
-      >
-        <Insights />
-      </IconButton>
+      {isLoaded && isSignedIn && (
+        <IconButton
+          component={RouterLink}
+          to="/tasks/add"
+          color="primary"
+          size="small"
+          aria-label="add task page"
+        >
+          <Add />
+        </IconButton>
+      )}
+      {isLoaded && isSignedIn && (
+        <IconButton
+          component={RouterLink}
+          to="/tasks"
+          color="primary"
+          size="small"
+          aria-label="tasks page"
+        >
+          <TaskAlt />
+        </IconButton>
+      )}
+      {isLoaded && isSignedIn && (
+        <IconButton
+          component={RouterLink}
+          to="/friends"
+          color="primary"
+          size="small"
+          aria-label="friends page"
+        >
+          <People />
+        </IconButton>
+      )}
+      {isLoaded && isSignedIn && (
+        <IconButton
+          component={RouterLink}
+          to="/insights"
+          color="primary"
+          size="small"
+          aria-label="insights page"
+        >
+          <Insights />
+        </IconButton>
+      )}
       <IconButton
         color="primary"
         size="small"

@@ -3,7 +3,6 @@ export { EditTask } from "./EditTask";
 export { CustomEmojiPicker } from "./CustomEmojiPicker";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { TaskMenu } from "./TaskMenu";
-export { BottomNav } from "./BottomNav";
 export { CategorySelect } from "./CategorySelect";
 export { DialogButton } from "./DialogButton";
 export { StyledLink } from "./StyledLink";

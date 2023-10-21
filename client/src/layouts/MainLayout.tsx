@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { BottomNav } from "@/components";
+import { BottomNav } from "./BottomNav";
 import { Box, Container } from "@mui/material";
 import { Header } from "./Header";
 
