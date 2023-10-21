@@ -10,6 +10,8 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { FriendContainer } from "@/styles";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { userFromDb } from "@/types/userFromDb";
+import { renderToStaticMarkup } from "react-dom/server";
+import toast from "react-hot-toast"
 interface Friend {
   id: number;
   fname: string;
@@ -83,10 +85,22 @@ export const Friends = () => {
     setAddFriendId(e.target.value);
   }
 
+  const [addFriendState, setAddFriendState] = useState<any>(undefined);
+
   const handleAddNewFriend = () => {
-    fetchEndpoint(`remove-friend?id=0&friend_id=${addFriendId}`, "GET");
+    setAddFriendState(fetchEndpoint(`remove-friend?id=0&friend_id=${addFriendId}`, "GET"));
     setIsSelectingUser(false);
   };
+
+  useEffect(() => {
+    addFriendState &&
+      addFriendState.then(() => {
+        toast.success("Friend added!");
+        setAddFriendState(undefined);
+      }).catch(() => {
+        toast.error("Failed to add friend.");
+      });
+  }, [addFriendState]);
 
   const handleRemoveFriend = () => {
     fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET");
@@ -184,12 +198,17 @@ export const Friends = () => {
           sx={{
             color: "black"
           }}>
-          <p>Your ID is: <i> {currentUserData?.clerk_id}</i></p>
+          <p>Your ID is: <i> {currentUserData?.id}</i></p>
           Enter a friend's ID to add them as a friend:
           <TextField
             label="Friend ID"
             value={addFriendId}
-            onChange={(e) => { handleChangeNewFriendId(e) }}
+            onChange={handleChangeNewFriendId}
+            sx={{
+              input: {
+                color: "black"
+              }
+            }}
           />
         </DialogContent>
         <DialogActions
