@@ -1,10 +1,10 @@
 const API_URL = 'http://localhost:8000'
 
-export async function fetchEndpoint(endpoint:string, method: 'POST'|'GET', data:object={}) {
+export async function fetchEndpoint(endpoint:string, method: 'POST'|'GET', data:object|null=null) {
     const response = await fetch(`${API_URL}/${endpoint}`, {
       method: method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: data ? JSON.stringify(data) : null,
     });
   
     if (!response.ok) {

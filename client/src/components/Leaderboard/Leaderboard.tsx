@@ -3,6 +3,8 @@ import {
 } from "../../styles";
 import { LeaderboardContainer } from "../../styles/tasks.styled";
 import { Box, Typography } from "@mui/material";
+import { fetchEndpoint } from "../../utils/fetch";
+import { useState, useEffect } from "react";
 
 /**
  * Component to display a list of tasks.
@@ -10,7 +12,17 @@ import { Box, Typography } from "@mui/material";
 
 export const Leaderboard = (): JSX.Element => {
     //handle API to get friends data
-    const leaderboardData = mockData;
+    const [leaderboardData, setLeaderboardData] = useState(mockData);
+    useEffect(() => {
+        fetchEndpoint("api/leaderboard?id=0", "GET")
+            .then((data) => {
+                setLeaderboardData(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
     return (
         <>
             <LeaderboardContainer>
@@ -38,7 +50,7 @@ export const Leaderboard = (): JSX.Element => {
                             </Typography>
                             <Typography
                                 sx={{
-                                    margin: "0 4px 6px",
+                                    margin: "0 2px 6px",
                                 }}
                             >
                                 {friend.lname}
@@ -49,7 +61,7 @@ export const Leaderboard = (): JSX.Element => {
                                     flexGrow: 1,
                                 }}
                             >
-                                {friend.taskCompleted.toString()}
+                                {friend.taskCompleted.toString()}/{friend.habitsKept.toString()}
                             </Typography>
 
                         </Box>
@@ -72,6 +84,7 @@ const mockData = [
         lname: "Doe",
         Avatar: null,
         taskCompleted: 100,
+        habitsKept: 1,
     },
     {
         id: 2,
@@ -79,5 +92,6 @@ const mockData = [
         lname: "Doe",
         Avatar: null,
         taskCompleted: 25,
+        habitsKept: 3
     }
 ]
