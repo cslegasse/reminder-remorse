@@ -46,7 +46,7 @@ export const Friends = () => {
   })
 
 
-  let currentUserSnapshot = useCurrentUser();
+  const currentUserSnapshot = useCurrentUser();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,7 +55,7 @@ export const Friends = () => {
     fetchUser();
   }, [currentUserSnapshot])
 
-  console.log(currentUserData);
+  // console.log(currentUserData);
 
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const Friends = () => {
     fetchUser();
   }, [currentUserSnapshot])
 
-  console.log(currentUserData);
+  // console.log(currentUserData);
 
   const handleUserSelect = (friend: Friend) => {
     setCurrentUserSelected(friend);
@@ -84,12 +84,14 @@ export const Friends = () => {
   }
 
   const handleAddNewFriend = () => {
-    //TODO: add new friend
+    fetchEndpoint(`remove-friend?id=0&friend_id=${addFriendId}`, "GET");
+    setIsSelectingUser(false);
   };
 
   const handleRemoveFriend = () => {
+    fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET");
     setIsSelectingUser(false);
-  } //TODO: remove friend here with api call
+  }
 
   return (
     <>
@@ -159,7 +161,7 @@ export const Friends = () => {
           sx={{
             color: "black"
           }}>
-          <p>Current tasks that has this friend accountable will still be kept. Money will instead be going towards charity.</p>
+          <p>Current tasks that have this friend accountable will still be kept as is.</p>
         </DialogContent>
         <DialogActions
           id="deleteFriendDialog">
@@ -186,41 +188,14 @@ export const Friends = () => {
           Enter a friend's ID to add them as a friend:
           <TextField
             label="Friend ID"
-          />
-        </DialogContent>
-        <DialogActions
-          id="deleteFriendDialog">
-          <Button onClick={handleCloseAddFriend}>Cancel</Button>
-          <Button onClick={handleAddNewFriend}>Remove</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        id="AddFriendDialog"
-        open={isAddingFriend}
-        onClose={handleCloseAddFriend}>
-        <DialogTitle
-          sx={{
-            color: "black"
-          }}>
-          Add a friend with userID
-        </DialogTitle>
-        <DialogContent
-          sx={{
-            color: "black"
-          }}>
-          <p>Your ID is: <i> {currentUserData?.clerk_id}</i></p>
-          Enter a friend's ID to add them as a friend:
-          <TextField
-            label="Friend ID"
             value={addFriendId}
-            onChange={handleChangeNewFriendId}
+            onChange={(e) => { handleChangeNewFriendId(e) }}
           />
         </DialogContent>
         <DialogActions
           id="deleteFriendDialog">
           <Button onClick={handleCloseAddFriend}>Cancel</Button>
-          <Button onClick={handleAddNewFriend}>Remove</Button>
+          <Button onClick={handleAddNewFriend}>Add</Button>
         </DialogActions>
       </Dialog>
     </>

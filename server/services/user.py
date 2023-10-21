@@ -39,9 +39,13 @@ def user_by_clerk_id(clerk_id):
     return None
 
 def add_friend(user_id, friend_id):
+    print("adding friend " + str(friend_id))
     r.sadd(f"{user_id}:friends", friend_id)
+    return 0
 def remove_friend(user_id, friend_id):
+    print("removing friend " + str(friend_id))
     r.srem(f"{user_id}:friends", friend_id)
+    return 0
 
 def get_friends(user_id):
     friends = []

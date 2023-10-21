@@ -7,7 +7,7 @@ def seed_db():
         'fname': 'John',
         'lname': 'Doe',
         'clerk_id': '6723647823',
-        'clerk_json': '{{}}',
+        'clerk_json': '{}',
         'created_at': 1684169994,
         'last_login': 1697893036
     })
@@ -15,7 +15,7 @@ def seed_db():
         'fname': 'Jane',
         'lname': 'Doe',
         'clerk_id': '6723647824',
-        'clerk_json': '{{}}',
+        'clerk_json': '{}',
         'created_at': 1684169994,
         'last_login': 1697893046
     })['id'] == 1

@@ -62,6 +62,18 @@ def friends():
     user_id = int(request.args.get("id"))
     return jsonify(user.get_friends(user_id))
 
+@app.route('/api/add-friend')
+def add_friend():
+    user_id = int(request.args.get("id"))
+    friend_id = int(request.args.get("friend_id"))
+    return jsonify(user.add_friend(user_id, friend_id))
+
+@app.route('/api/remove-friend')
+def remove_friend():
+    user_id = int(request.args.get("id"))
+    friend_id = int(request.args.get("friend_id"))
+    return jsonify(user.remove_friend(user_id, friend_id))
+
 @app.route('/api/reminders')
 def reminders():
     user_id = request.args.get("id")
