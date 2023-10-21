@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from "react";
  */
 export const useResponsiveDisplay = (breakpoint = 768): boolean => {
   const [isSmallerDevice, setIsSmallerDevice] = useState<boolean>(false);
+
   const checkScreenSize = useCallback(() => {
     setIsSmallerDevice(window.innerWidth < breakpoint);
   }, [breakpoint]);
+
   useEffect(() => {
     checkScreenSize();
     const handleResize = () => checkScreenSize();

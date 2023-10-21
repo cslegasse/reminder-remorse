@@ -1,7 +1,7 @@
 export { AddTask } from "./AddTask";
-export { Categories } from "./Categories";
-export { Home } from "./Home";
-export { ImportExport } from "./ImportExport";
+export { Tasks } from "./Tasks";
 export { NotFound } from "./NotFound";
 export { TaskDetails } from "./TaskDetails";
-export { UserSettings } from "./UserSettings";
+export { Landing } from "./Landing";
+export { Insights } from "./Insights";
+export { Friends } from "./Friends";

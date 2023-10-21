@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { fadeIn, fadeInLeft } from "./globalStyles";
+import { fadeIn, fadeInLeft } from "./transitions";
 import { Box } from "@mui/material";
 import { ColorPalette } from ".";
 

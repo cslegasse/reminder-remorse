@@ -7,7 +7,7 @@ import { Edit } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 
 import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../constants";
-import { CategorySelect, ColorPicker, TopBar, CustomEmojiPicker } from "../components";
+import { CategorySelect, ColorPicker, CustomEmojiPicker } from "../components";
 
 import toast from "react-hot-toast";
 import { StyledHalf } from "../styles/addTask.styled";
@@ -31,11 +31,7 @@ export const AddTask = ({ user, setUser }: UserProps) => {
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
-  const n = useNavigate();
-
-  useEffect(() => {
-    document.title = "Todo App - Add Task";
-  }, []);
+  const navigate = useNavigate();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
@@ -106,7 +102,7 @@ export const AddTask = ({ user, setUser }: UserProps) => {
         tasks: [...prevUser.tasks, newTask],
       }));
 
-      n("/");
+      navigate("/");
       toast.success(() => (
         <div>
           Added task - <b>{newTask.name}</b>
@@ -117,7 +113,7 @@ export const AddTask = ({ user, setUser }: UserProps) => {
 
   return (
     <>
-      <TopBar title="Add New Task" />
+      <h1>Add new task</h1>
       <Container>
         <CustomEmojiPicker user={user} setEmoji={setEmoji} color={color} />
         <StyledInput

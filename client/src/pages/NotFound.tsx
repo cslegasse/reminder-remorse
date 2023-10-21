@@ -28,7 +28,7 @@ export const NotFound = () => {
         was not found.
       </Description>
       <BackButton variant="outlined" onClick={() => n("/")}>
-        <ArrowBackIosNew /> &nbsp; Go back to tasks
+        <ArrowBackIosNew /> &nbsp; Go back to home
       </BackButton>
     </Container>
   );

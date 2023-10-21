@@ -1,14 +1,6 @@
 export { MuiTheme, ColorPalette } from "./theme";
-export {
-  GlobalStyles,
-  DialogBtn,
-  fadeInLeft,
-  fadeIn,
-  slideIn,
-  slideInBottom,
-  StyledLink,
-  pulseAnimation,
-} from "./globalStyles";
+export * from "./transitions";
+export { GlobalStyles } from "../components/GlobalStyles";
 export {
   GreetingHeader,
   GreetingText,
