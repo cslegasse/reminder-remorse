@@ -76,5 +76,10 @@ def metrics():
 def charities():
     return jsonify(charity.get_charities())
 
+@app.route('/api/overdue-reminders')
+def overdue_reminders():
+    user_id = int(request.args.get("id"))
+    return jsonify(reminder.check_reminder_overdue(user_id))
+
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')

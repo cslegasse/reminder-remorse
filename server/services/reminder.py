@@ -3,18 +3,23 @@ import random
 from services import redis_service, transaction
 r = redis_service.redis_manager.redis
 
-def get_reminder_overdue(user_id):
-    reminders = r.smembers(f"{int(user_id)}:reminders")
+def check_reminder_overdue(user_id):
+    reminders = map(int, r.smembers(f"{int(user_id)}:reminders"))
     overdue_reminders = []
     current_reminders = []
+    charge = 0
     for reminder_id in reminders:
         reminder_data = get_reminder(reminder_id)
         if reminder_data['deadline'] < int(time.time()):
             overdue_reminders.append(reminder_data)
-            r.sadd(f"{int(user_id)}:overdue_reminders", reminder_id)
+            charge += fail_reminder(reminder_id)
         else:
             current_reminders.append(reminder_data)
-    return {"overdue_reminders": overdue_reminders, "current_reminders": current_reminders}
+    return {
+        "overdue_reminders": overdue_reminders,
+        "current_reminders": current_reminders,
+        "charge": charge
+    }
 
 
 def create_reminder(reminder_data):
@@ -90,9 +95,9 @@ def check_reminder(reminder_id):
         r.hset(f'r{reminder_id}', "completed_at", int(time.time()))
 
 def fail_reminder(reminder_id):
-    owner_id = int(r.hget(reminder_id, "owner_id"))
-    org_id = r.hget(reminder_id, "org_id")
-    friend_id = r.hget(reminder_id, "friend_id")
+    owner_id = int(r.hget(f'r{reminder_id}', "owner_id"))
+    org_id = r.hget(f'r{reminder_id}', "org_id")
+    friend_id = r.hget(f'r{reminder_id}', "friend_id")
     if org_id is not None:
         org_id = int(org_id)
     elif friend_id is not None:
@@ -115,7 +120,8 @@ def fail_reminder(reminder_id):
             "friend_id": friend_id,
             "amt": amt
         })
-    freq = int(r.hget(reminder_id, "habit_frequency"))
+    freq = int(r.hget(f'r{reminder_id}', "habit_frequency"))
     if freq > 0:
         old_time = int(r.hget(f'r{reminder_id}', "deadline"))
         r.hset(f'r{reminder_id}', "deadline", old_time + freq*86400)
+    return amt

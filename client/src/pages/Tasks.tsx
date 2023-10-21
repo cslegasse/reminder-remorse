@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import { fetchEndpoint } from '@/utils/fetch';
 
@@ -16,6 +17,25 @@ type Task = {
 export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   useEffect(() => {
+    fetchEndpoint('overdue-reminders?id=0', 'GET').then((data) => {
+    
+    console.log(data);
+    toast.error(
+      <div>
+        You missed <b>{data.overdue_reminders.length}</b> tasks,
+        losing ${data.charge} in total. 😢<br/>
+        <ul>
+          {data.overdue_reminders.map((task: Task) => {
+            (
+            <li key={task.id}>
+              task.name
+            </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+    
     fetchEndpoint('reminders?id=0', 'GET').then((data) => {
       setTasks(data.sort((a:Task,b:Task) => {
         if (a.deadline > b.deadline) {
@@ -28,6 +48,8 @@ export const Tasks = () => {
       }));
       console.log(data);
     });
+
+    }).catch((err) => console.error(err));
   }, []);
 
   const formatDate = (d: number, inFuture=true) => {

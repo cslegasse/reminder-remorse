@@ -20,7 +20,6 @@ def delete_user(user_id):
     r.delete(f"{user_id}:friends")
 
 def get_user(user_id):
-    print(user_id)
     user_data = {}
     for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
@@ -30,6 +29,7 @@ def get_user(user_id):
         user_data[key] = int(user_data[key])
     user_data['reminders'] = list(map(int, r.smembers(f"{user_id}:reminders")))
     user_data['friends'] = list(map(int, r.smembers(f"{user_id}:friends")))
+    user_data['id'] = user_id
     return user_data
 
 def user_by_clerk_id(clerk_id):

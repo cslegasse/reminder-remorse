@@ -235,5 +235,20 @@ def seed_db():
         'incentive_max': 0,
         'org_id': 2
     })
+
+    # overdue reminders
+
+    reminder.create_reminder({
+        'name': 'Complete New Year\'s Resolution',
+        'desc': 'You can do it!',
+        'emoji': '🎉',
+        'category': 'Personal',
+        'owner_id': 0,
+        'deadline': 1697924665,
+        'habit_frequency': 0,
+        'incentive_min': 1,
+        'incentive_max': 3,
+        'friend_id': 1
+    })
     
     print(user.get_user(0))
