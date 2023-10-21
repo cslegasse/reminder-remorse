@@ -46,8 +46,10 @@ def remove_friend(user_id, friend_id):
 def get_friends(user_id):
     friends = []
     for friend_id in r.smembers(f"{user_id}:friends"):
-        print(f"friend: {friend_id}, {get_user(int(friend_id))}")
-        friends.append(get_user(int(friend_id)))
+        friend = get_user(int(friend_id))
+        friend['id'] = int(friend_id)
+        print(f"friend: {friend_id}, {friend}")
+        friends.append(friend)
     print(f"friends: {friends}")
     return friends
 
