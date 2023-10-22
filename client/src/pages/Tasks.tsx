@@ -158,6 +158,7 @@ export const Tasks = () => {
             {task.emoji} {task.name}
             {task.desc ? <><br/>{task.desc}</> : <></>}
             <br/>Supposed to do by {formatDate(task.deadline, false)}
+            <br/>Lost ${task.charge?.toFixed(2)}
           </li>
         ))}
       </ul>

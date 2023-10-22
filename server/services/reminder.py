@@ -38,6 +38,7 @@ def create_reminder(reminder_data):
     r.hset(f"r{reminder_id}", 'incentive_min', float(reminder_data['incentive_min']))
     r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
     r.hset(f"r{reminder_id}", 'failed', int(False))
+    r.hset(f"r{reminder_id}", 'charge', 0)
 
     return {"id": reminder_id}
 
@@ -79,6 +80,7 @@ def get_reminder(reminder_id):
         reminder_data[key] = bool(int(reminder_data[key]))
     for key in ['incentive_min', 'incentive_max']:
         reminder_data[key] = float(reminder_data[key])
+    reminder_data['charge'] = float(reminder_data['charge'])
     reminder_data['id'] = reminder_id
     return reminder_data
 
@@ -130,4 +132,5 @@ def fail_reminder(reminder_id):
         old_time = int(r.hget(f'r{reminder_id}', "deadline"))
         r.hset(f'r{reminder_id}', "deadline", old_time + freq*86400)
     r.hset(f"r{reminder_id}", "failed", int(True))
+    r.hset(f"r{reminder_id}", "charge", amt)
     return amt
