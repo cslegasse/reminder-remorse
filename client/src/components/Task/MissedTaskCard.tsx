@@ -1,6 +1,4 @@
-import { Paper, Typography, Box } from "@mui/material";
-
-import { formatDate, formatInterval } from "../../utils/formatDate";
+import { Paper, Typography } from "@mui/material";
 
 interface TaskCardProps {
     task: {
