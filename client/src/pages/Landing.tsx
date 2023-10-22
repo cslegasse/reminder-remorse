@@ -1,15 +1,14 @@
-import logo from "../../src/assets/Reminders_Remorse_logo.png"
+import logo from "../../src/assets/RR_curve.png"
 
 
 export const Landing = () => {
-  const text = "Reminder apps are bland and don't keep you on track or help you build consistent habits. Hold yourself and your friends accountable. You’ll be remorseful when it hits your bank account otherwise.";
+  const text = "We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals being a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder's Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder's Remorse better: habit builder, reminder penalties, charity search, and friend exploration."
+    return (
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100vh", marginTop: "-425px" }}>
+        <div style={{ float: "left", marginRight: "-500px" }}>
+          <img src={logo} alt="Reminders Remorse Logo" style={{ width: "40%" }} />
+        </div>
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100vh", textAlign: "center", marginTop: "-135px" }}>
-      <img src={logo} alt="Reminders Remorse Logo" style={{ width: "50%" }} />
-      {text.split('.').map((sentence, index) => (
-        <p key={index} style={{ textAlign: "center", marginBottom: "10px" }}>{sentence.trim()}</p>
-      ))}
-    </div>
-  );
-};
+      </div>
+    );
+  };
