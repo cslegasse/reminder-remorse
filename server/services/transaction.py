@@ -22,7 +22,7 @@ def create_transaction(transaction_data):
 
 def get_transaction(transaction_id):
     transaction_data = {}
-    for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"t{transaction_id}")):
+    for key in map(lambda k: k.decode('utf-8'), r.hscan(f"t{transaction_id}")[1]):
         transaction_data[key] = r.hget(f"t{transaction_id}", key).decode('utf-8')
     transaction_data['user'] = r.hget(f'u{transaction_data["user_id"]}', 'fname').decode('utf-8')
     for key in ['amt']:

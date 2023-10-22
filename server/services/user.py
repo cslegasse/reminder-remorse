@@ -5,13 +5,16 @@ r = redis_service.redis_manager.redis
 def create_user(user_data):
     user_id = int(r.get("user_id"))
     r.incr("user_id")
-    r.hset(f"u{user_id}", 'username', user_data['username'])
-    r.hset(f"u{user_id}", 'fname', user_data['fname'])
-    r.hset(f"u{user_id}", 'lname', user_data['lname'])
-    r.hset(f"u{user_id}", 'clerk_id', user_data['clerk_id'])
-    r.hset(f"u{user_id}", 'clerk_json', user_data['clerk_json'])
-    r.hset(f"u{user_id}", 'created_at', int(user_data['created_at']))
-    r.hset(f"u{user_id}", 'last_login', int(user_data['last_login']))
+    user_data['created_at'] = int(user_data['created_at'])
+    user_data['last_login'] = int(user_data['last_login'])
+    r.hmset(f"u{user_id}", user_data)
+    # r.hset(f"u{user_id}", 'username', user_data['username'])
+    # r.hset(f"u{user_id}", 'fname', user_data['fname'])
+    # r.hset(f"u{user_id}", 'lname', user_data['lname'])
+    # r.hset(f"u{user_id}", 'clerk_id', user_data['clerk_id'])
+    # r.hset(f"u{user_id}", 'clerk_json', user_data['clerk_json'])
+    # r.hset(f"u{user_id}", 'created_at', int(user_data['created_at']))
+    # r.hset(f"u{user_id}", 'last_login', int(user_data['last_login']))
     # also included: empty sets for reminders and friends
     return {"id": user_id}
 
@@ -22,7 +25,7 @@ def delete_user(user_id):
 
 def get_user(user_id):
     user_data = {}
-    for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
+    for key in map(lambda k: k.decode('utf-8'), r.hscan(f"u{user_id}")[1]):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
     for key in ['created_at', 'last_login']:
         user_data[key] = int(user_data[key])

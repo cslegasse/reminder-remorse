@@ -10,14 +10,6 @@ cors = CORS(app)
 app.config.from_object(settings)
 
 
-r = redis_service.redis_manager.redis
-r.flushdb()
-r.set("user_id", 0)
-r.set("reminder_id", 0)
-r.set("transaction_id", 0)
-# seed.seed_db()
-
-
 @app.route("/")
 def index():
     return jsonify({"message": "Hello, World!"})
@@ -145,4 +137,11 @@ def transactions():
 
 
 if __name__ == "__main__":
+    r = redis_service.redis_manager.redis
+    r.flushdb()
+    r.set("user_id", 0)
+    r.set("reminder_id", 0)
+    r.set("transaction_id", 0)
+    seed.seed_db()
+
     app.run(debug=True, host="localhost", port="8000")
