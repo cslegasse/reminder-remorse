@@ -16,6 +16,7 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  InputLabel
 } from "@mui/material";
 import { ColorPalette } from "@/lib/theme";
 
@@ -275,6 +276,13 @@ export const AddTask = () => {
         </RadioGroup>
 
         {/* TODO: Fix styling for this */}
+        {!hasNoFriends && isSendingToFriend ?
+          <InputLabel id="choosePaymentLabel" sx={{
+            color: 'white'
+          }}>Choose a friend</InputLabel>
+        : <InputLabel id="choosePaymentLabel" sx={{
+          color: 'white'
+        }}>Choose a charity</InputLabel>}
         {!hasNoFriends && isSendingToFriend ? (
           <StyledSelect
             sx={{
@@ -284,7 +292,7 @@ export const AddTask = () => {
                 color: "white",
               }
             }}
-            label="Choose a friend"
+            // label="Choose a friend"
             id="selectPaymentDestination"
             value={friendId.toString() ?? ""}
             defaultValue={""}
@@ -318,7 +326,7 @@ export const AddTask = () => {
                 color: 'white',
               }
             }}
-            label="Choose a charity"
+            // label="Choose a charity"
             id="selectPaymentDestination"
             value={taskUploadData.org_id?.toString() ?? ""}
             defaultValue={""}
@@ -345,6 +353,9 @@ export const AddTask = () => {
           </StyledSelect>
         )}
 
+        <InputLabel id="chooseCategoryLabel" sx={{
+          color: 'white'
+        }}>Choose a category</InputLabel>
         <StyledSelect
           sx={{
             marginTop: 2,
