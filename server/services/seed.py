@@ -231,9 +231,10 @@ def seed_db():
     for i in range(40):
         rm = reminder.get_reminder(i)
         if rm is not None and rm['deadline'] < int(time.time()):
-            reminder.update_reminder(i, {
-                'failed': int(True)
-            })
+            # reminder.update_reminder(i, {
+            #     'failed': int(True)
+            # })
+            reminder.fail_reminder(i)
 
     reminder.create_reminder({
         'name': 'Complete New Year\'s Resolution',
