@@ -1,19 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-<<<<<<< Updated upstream
-from services import user, reminder, charity, transaction, seed
-from services.redis_service import redis_manager
-=======
 
 from config import settings
-from services import user, reminder, redis_manager, charity, seed, transaction, clerk
->>>>>>> Stashed changes
+from services import user, reminder, redis_service, charity, seed, transaction, clerk
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config.from_object(settings)
 
-r = redis_manager.redis
+r = redis_service.redis_manager.redis
 r.flushdb()
 r.set("user_id", 0)
 r.set("reminder_id", 0)
@@ -44,7 +39,7 @@ def get_user():
     return user.get_user(user_id)
 
 
-@app.post("/api/sync-user")
+@app.route("/api/sync-user")
 def sync_user():
     headers = dict(request.headers)
     payload = request.form.to_dict()
@@ -112,17 +107,12 @@ def metrics():
     user_id = request.args.get("id")
     return jsonify(user.get_metrics(user_id))
 
-<<<<<<< Updated upstream
 @app.route('/api/charity')
 def get_charity():
     user_id = int(request.args.get("id"))
     return jsonify(charity.get_charity(user_id))
 
 @app.route('/api/charities')
-=======
-
-@app.route("/api/charities")
->>>>>>> Stashed changes
 def charities():
     return jsonify(charity.get_charities())
 
@@ -132,7 +122,6 @@ def overdue_reminders():
     user_id = int(request.args.get("id"))
     return jsonify(reminder.check_reminder_overdue(user_id))
 
-<<<<<<< Updated upstream
 @app.route('/api/transactions')
 def transactions():
     print("hi")
@@ -141,8 +130,3 @@ def transactions():
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port='8000')
-=======
-
-if __name__ == "__main__":
-    app.run(debug=True, host="localhost", port="8000")
->>>>>>> Stashed changes

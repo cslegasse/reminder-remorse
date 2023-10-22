@@ -1,1 +1,2 @@
-from .settings import settings
+from . import configvars
+settings = configvars.Settings()
