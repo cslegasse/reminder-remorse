@@ -4,9 +4,11 @@ from flask_cors import CORS
 from config import settings
 from services import user, reminder, redis_service, charity, seed, transaction, clerk
 
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config.from_object(settings)
+
 
 r = redis_service.redis_manager.redis
 r.flushdb()
@@ -122,10 +124,12 @@ def get_charity():
 def charities():
     return jsonify(charity.get_charities())
 
+
 @app.route("/api/check-reminder")
 def check_reminder():
     reminder_id = int(request.args.get("id"))
     return jsonify(reminder.check_reminder(reminder_id))
+
 
 @app.route("/api/overdue-reminders")
 def overdue_reminders():
