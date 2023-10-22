@@ -1,6 +1,6 @@
 # Reminder's Remorse
 HackHarvard 2023
-Designed and developed by: Legasse Remon, Harys Dalvi, Felix Nguyen, and Khang Luu
+Designed and developed by: Legasse Remon, Harys Dalvi, Felix Nguyen, and Khang Luu\
 🔗 Link to deployed app: https://reminderremorse.us/
 
 ## About
