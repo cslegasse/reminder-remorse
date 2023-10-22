@@ -93,6 +93,11 @@ def update_reminder(reminder_id, reminder_data):
         r.hset(f"r{reminder_id}", key, reminder_data[key])
 
 def check_reminder(reminder_id):
+    prev_comp = bool(int(r.hget(f"r{reminder_id}", "completed")))
+    failed = bool(int(r.hget(f"r{reminder_id}", "failed")))
+    if failed or prev_comp:
+        return {"status": 1}
+    
     freq = int(r.hget(f'r{reminder_id}', "habit_frequency"))
     if freq > 0:
         old_time = int(r.hget(f'r{reminder_id}', "deadline"))

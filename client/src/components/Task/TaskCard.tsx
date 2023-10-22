@@ -58,8 +58,11 @@ export const TaskCard = ({ task, onUpdate }: TaskCardProps) => {
     }
 
     const handleCheckTask = () => {
-        fetchEndpoint(`check-reminder?id=${task.id}`, "GET").then(() => {
-            toast.success("Successfully completed " + task.name + "! You saved " + (task.incentive_max * .001).toFixed(4) + " ETH!");
+        fetchEndpoint(`check-reminder?id=${task.id}`, "GET").then((data) => {
+            if (data.status === 0)
+                toast.success("Successfully completed " + task.name + "! You saved " + (task.incentive_max * .001).toFixed(4) + " ETH!");
+            else
+                toast.error("You aren't able to check off this task.");
             onUpdate();
         });
     }
@@ -159,7 +162,7 @@ export const TaskCard = ({ task, onUpdate }: TaskCardProps) => {
                                     }}
                                     display="inline"
                                 >
-                                    {(task.completed ? '✅' : '') + task.name}{task.category === '' ? '' : ', '}
+                                    {(task.completed ? task.emoji+' ' : '') + task.name}{task.category === '' ? '' : ', '}
                                     <Typography
                                         sx={{
                                             color: '#c2c2c2',
