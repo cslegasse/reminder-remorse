@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 
 from config import settings
@@ -6,8 +6,18 @@ from services import user, reminder, redis_service, charity, seed, transaction, 
 
 
 app = Flask(__name__)
-cors = CORS(app)
 app.config.from_object(settings)
+# preflight missing allow origin header
+CORS(
+    app,
+    resources={r"*": {"origins": "*"}},
+)
+
+
+@app.before_request
+def basic_authentication():
+    if request.method.lower() == "options":
+        return Response()
 
 
 @app.route("/")
