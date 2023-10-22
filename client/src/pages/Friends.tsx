@@ -25,7 +25,7 @@ export const Friends = () => {
   //hook fetches excessively, so it might be a good idea to 
   //use something else if we'd want to use this in production
   const [currentUserData, setCurrentUserData] = useState<null | any>(null);
-  const [friends, setFriends] = useState<Friend[]>(mockData);
+  const [friends, setFriends] = useState<Friend[]>([]);
   const [currentUserSelected, setCurrentUserSelected] = useState<undefined | Friend>(undefined);
 
   const [isSelectingUser, setIsSelectingUser] = useState<boolean>(false);

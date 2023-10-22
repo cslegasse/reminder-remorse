@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 
 export const Leaderboard = (): JSX.Element => {
     //handle API to get friends data
-    const [leaderboardData, setLeaderboardData] = useState(mockData);
+    const [leaderboardData, setLeaderboardData] = useState([]);
     useEffect(() => {
         fetchEndpoint("leaderboard?id=0", "GET")
             .then((data) => {

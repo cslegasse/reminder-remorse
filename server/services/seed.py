@@ -230,7 +230,7 @@ def seed_db():
 
     for i in range(40):
         rm = reminder.get_reminder(i)
-        if rm is not None and rm['deadline'] < int(time.time()):
+        if rm is not None and rm['deadline'] < int(time.time()) and not rm['completed']:
             # reminder.update_reminder(i, {
             #     'failed': int(True)
             # })

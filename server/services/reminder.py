@@ -14,7 +14,6 @@ def create_reminder(reminder_data):
         raise ValueError("Reminder must have either org_id or friend_id")
     r.incr("reminder_id")
     reminder_data['id'] = reminder_id
-    print(reminder_data)
     owner_id = reminder_data['owner_id']
     r.sadd(f"{owner_id}:reminders", reminder_id)
     r.hset(f"r{reminder_id}", 'name', reminder_data['name'])
@@ -49,7 +48,7 @@ def check_reminder_overdue(user_id):
     total_charge = 0
     for reminder_id in reminders:
         reminder_data = get_reminder(reminder_id)
-        if not reminder_data['failed'] and reminder_data['deadline'] < int(time.time()):
+        if not reminder_data['failed'] and not reminder_data['completed'] and reminder_data['deadline'] < int(time.time()):
             charge = fail_reminder(reminder_id)
             reminder_data['charge'] = charge
             overdue_reminders.append(reminder_data)
@@ -113,18 +112,19 @@ def fail_reminder(reminder_id):
     i_min = float(r.hget(f"r{reminder_id}", "incentive_min"))
     i_max = float(r.hget(f"r{reminder_id}", "incentive_max"))
     amt = int(random.uniform(i_min, i_max)*100)/100.0
-    if org_id is not None:
-        transaction.create_transaction({
-            "user_id": owner_id,
-            "org_id": org_id,
-            "amt": amt
-        })
-    elif friend_id is not None:
-        transaction.create_transaction({
-            "user_id": owner_id,
-            "friend_id": friend_id,
-            "amt": amt
-        })
+    if amt > 0:
+        if org_id is not None:
+            transaction.create_transaction({
+                "user_id": owner_id,
+                "org_id": org_id,
+                "amt": amt
+            })
+        elif friend_id is not None:
+            transaction.create_transaction({
+                "user_id": owner_id,
+                "friend_id": friend_id,
+                "amt": amt
+            })
     freq = int(r.hget(f'r{reminder_id}', "habit_frequency"))
     if freq > 0:
         old_time = int(r.hget(f'r{reminder_id}', "deadline"))
