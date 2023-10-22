@@ -70,7 +70,8 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                 flexGrow: 1,
                 backgroundColor: '#200589',
                 borderRadius: 5,
-                marginBottom: 5
+                marginBottom: 3,
+                width: "80%",
             }}>
             {
                 task.habit_frequency != 0 &&
