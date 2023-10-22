@@ -85,7 +85,7 @@ def get_reminder(reminder_id):
     if not r.exists(f"r{reminder_id}"):
         return None
     reminder_data = {}
-    for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"r{reminder_id}")):
+    for key in map(lambda k: k.decode('utf-8'), r.hscan(f"r{reminder_id}")[1]):
         reminder_data[key] = r.hget(f"r{reminder_id}", key).decode('utf-8')
     for key in ['owner_id', 'deadline', 'created_at', 'completed_at', 'habit_frequency']:
         reminder_data[key] = int(reminder_data[key])

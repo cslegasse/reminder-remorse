@@ -22,7 +22,7 @@ def delete_user(user_id):
 
 def get_user(user_id):
     user_data = {}
-    for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"u{user_id}")):
+    for key in map(lambda k: k.decode('utf-8'), r.hscan(f"u{user_id}")[1]):
         user_data[key] = r.hget(f"u{user_id}", key).decode('utf-8')
     for key in ['created_at', 'last_login']:
         user_data[key] = int(user_data[key])
