@@ -32,7 +32,7 @@ export const Friends = () => {
   const [isAddingFriend, setIsAddingFriend] = useState<boolean>(false);
   const [addFriendId, setAddFriendId] = useState<string>("");
 
-  useEffect(() => {
+  const updateFriends = () => {
     fetchEndpoint("leaderboard?id=0", "GET").then((data) => {
       data = data.sort((a: Friend, b: Friend) => {
         if (a.fname > b.fname) {
@@ -44,8 +44,9 @@ export const Friends = () => {
         }
       });
       setFriends(data);
-    })
-  })
+    });
+  }
+  useEffect(updateFriends, []);
 
 
   const currentUserSnapshot = useCurrentUser();
@@ -93,6 +94,7 @@ export const Friends = () => {
         // setAddFriendState(data);
         toast.success("Friend added!");
         setIsAddingFriend(false);
+        updateFriends();
       }).catch((_) => {
         toast.error("Error adding friend. Please try again.");
       });
@@ -102,7 +104,8 @@ export const Friends = () => {
   const handleRemoveFriend = () => {
     fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
       .then(() => {
-        toast("Friend removed.")
+        toast("Friend removed.");
+        updateFriends();
       });
     setIsSelectingUser(false);
   }

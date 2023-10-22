@@ -23,7 +23,7 @@ import { ColorPalette } from "@/lib/theme";
 export type TaskUpload = {
   owner_id: number;
   org_id?: number;
-  friend_id?: number;
+  friend_id?: number|string;
   name: string;
   desc?: string;
   emoji?: string;
@@ -40,21 +40,21 @@ type Charity = {
 }
 
 export const AddTask = () => {
-  const [friends, setFriends] = useState(mockFriends);
-  const [charities, setCharities] = useState<Charity[]>(mockCharities);
+  const [friends, setFriends] = useState([]);
+  const [charities, setCharities] = useState<Charity[]>([]);
   const categories = mockCategories; // TODO: REPLACE
   const navigate = useNavigate();
   const [taskUploadData, setTaskUploadData] = useState<TaskUpload>({
     owner_id: 0,
-    org_id: undefined,
-    friend_id: undefined,
+    org_id: 0,
+    friend_id: '1',
     name: "",
-    desc: undefined,
+    desc: "",
     emoji: undefined,
-    category: undefined,
+    category: "None",
     deadline:
       Math.floor((new Date().getTime() + new Date().getTimezoneOffset() * 60000) / 1000) + 3600,
-    habit_frequency: undefined,
+    habit_frequency: 1,
     incentive_min: 1,
     incentive_max: 5,
   });
@@ -82,7 +82,7 @@ export const AddTask = () => {
   const hasNoFriends = friends.length === 0;
   const [isSendingToFriend, setIsSendingToFried] = useState(!hasNoFriends);
   const [isHabit, setIsHabit] = useState(false);
-  const [friendId, setFriendId] = useState(-1);
+  const [friendId, setFriendId] = useState('1');
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "deadline") {
@@ -116,6 +116,12 @@ export const AddTask = () => {
     newTask.deadline -= new Date(newTask.deadline*1000).getTimezoneOffset() * 60;
     setIsSubmitting(true);
     console.log(newTask);
+    if (!isHabit) {
+      newTask.habit_frequency = 0;
+    }
+    if (newTask.category === 'None') {
+      newTask.category = '';
+    }
     fetchEndpoint('create-reminder', 'POST', newTask as object)
     .then(() => {
       setIsSubmitting(false);
@@ -283,7 +289,7 @@ export const AddTask = () => {
             defaultValue={""}
             onChange={(e: SelectChangeEvent<unknown>) => {
               console.log(e.target.value);
-              setFriendId(parseInt(e.target.value as string));
+              setFriendId(e.target.value);
               setTaskUploadData((prevData) => ({
                 ...prevData,
                 friend_id: parseInt(e.target.value as string),
@@ -353,7 +359,7 @@ export const AddTask = () => {
           onChange={(e: SelectChangeEvent<unknown>) => {
             setTaskUploadData((prevData) => ({
               ...prevData,
-              category: e.target.value as string,
+              category: e.target.value as string
             }));
           }}
           displayEmpty
@@ -447,26 +453,4 @@ const RowFlex = styled.div`
   flex-direction: row;
 `;
 
-const mockFriends = [
-  {
-    id: 1,
-    fname: "John",
-  },
-  {
-    id: 2,
-    fname: "Jane",
-  },
-];
-
-const mockCharities = [
-  {
-    id: 1,
-    name: "charity1",
-  },
-  {
-    id: 2,
-    name: "charity2",
-  },
-];
-
-const mockCategories = ["Work", "School", "Health", "Family"];
+const mockCategories = ["None", "Work", "School", "Health", "Family"];

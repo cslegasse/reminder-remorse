@@ -136,6 +136,7 @@ def fail_reminder(reminder_id):
         while t < time.time():
             t += freq*86400
         r.hset(f'r{reminder_id}', "deadline", t)
-    r.hset(f"r{reminder_id}", "failed", int(True))
+    else:
+        r.hset(f"r{reminder_id}", "failed", int(True))
     r.hset(f"r{reminder_id}", "charge", amt)
     return amt
