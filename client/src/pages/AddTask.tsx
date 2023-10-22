@@ -55,7 +55,7 @@ export const AddTask = () => {
     emoji: undefined,
     category: "None",
     deadline:
-      Math.floor((new Date().getTime() + new Date().getTimezoneOffset() * 60000) / 1000) + 3600,
+      Math.floor((new Date().getTime() - new Date().getTimezoneOffset() * 60000) / 1000) + 3600,
     habit_frequency: 1,
     incentive_min: 1,
     incentive_max: 5,
@@ -115,7 +115,7 @@ export const AddTask = () => {
     const newTask: TaskUpload = {
       ...taskUploadData,
     };
-    newTask.deadline -= new Date(newTask.deadline * 1000).getTimezoneOffset() * 60;
+    newTask.deadline += new Date(newTask.deadline * 1000).getTimezoneOffset() * 60;
     setIsSubmitting(true);
     console.log(newTask);
     if (!isHabit) {
