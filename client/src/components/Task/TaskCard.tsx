@@ -164,9 +164,9 @@ export const TaskCard = ({ task, onUpdate }: TaskCardProps) => {
                                     }}
                                     display="inline"
                                 >   {task.completed || task.failed ?
-                                    <><s>{(task.completed ? task.emoji + ' ' : '') + task.name}</s>{task.category === '' ? '' : ', '}</>
+                                    <><s>{((task.completed || task.failed) ? task.emoji + ' ' : '') + task.name}</s>{task.category === '' ? '' : ', '}</>
                                     :
-                                    <>{(task.completed ? task.emoji + ' ' : '') + task.name}{task.category === '' ? '' : ', '}</>}
+                                    <>{((task.completed || task.failed) ? task.emoji + ' ' : '') + task.name}{task.category === '' ? '' : ', '}</>}
 
                                     <Typography
                                         sx={{
