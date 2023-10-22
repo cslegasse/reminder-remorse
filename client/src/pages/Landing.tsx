@@ -28,13 +28,13 @@ export const Landing = () => {
         <p>
           Reminder apps are <i>bland</i> and don't keep you on track. ReminderRemosrse want to change that. Hold yourself and your friends accountable.<br />
           <br />
-          Reminder's Remorse charges you when you miss a reminder and sends the money to a charity or a friend. Reminder's Remorse not only keeps track of your reminders, it shows your consistent habits, your all time total tasks, and penalizes you financially. This app is designed to help you stay on top of your tasks and help others in the process.
+          Reminder Remorse charges you when you miss a reminder and sends the money to a charity or a friend. Reminder Remorse not only keeps track of your reminders, it shows your consistent habits, your all time total tasks, and penalizes you financially. This app is designed to help you stay on top of your tasks and help others in the process.
         </p>
         <br />
         <h2>Inspiration</h2>
         <p>
           We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals a big part of our lives, the reminders app could be so much more.
-          <br />There are four useful components that make Reminder's Remorse better: habit builder, reminder penalties, charity search, and friend exploration.
+          <br />There are four useful components that make Reminder Remorse better: habit builder, reminder penalties, charity search, and friend exploration.
         </p>
         <br />
 
