@@ -39,11 +39,15 @@ def get_user():
     return user.get_user(user_id)
 
 
-@app.route("/api/sync-user")
+@app.route("/api/sync-user", methods=["POST"])
 def sync_user():
     headers = dict(request.headers)
-    payload = request.form.to_dict()
-    return clerk.sync_user(headers, payload)
+    payload = request.get_data()
+    try:
+        clerk.sync_user(headers, payload)
+    except Exception as e:
+        return jsonify({"message": e})
+    return "User data synced", 204
 
 
 @app.route("/api/user-by-clerk")
@@ -107,12 +111,14 @@ def metrics():
     user_id = request.args.get("id")
     return jsonify(user.get_metrics(user_id))
 
-@app.route('/api/charity')
+
+@app.route("/api/charity")
 def get_charity():
     user_id = int(request.args.get("id"))
     return jsonify(charity.get_charity(user_id))
 
-@app.route('/api/charities')
+
+@app.route("/api/charities")
 def charities():
     return jsonify(charity.get_charities())
 
@@ -122,11 +128,13 @@ def overdue_reminders():
     user_id = int(request.args.get("id"))
     return jsonify(reminder.check_reminder_overdue(user_id))
 
-@app.route('/api/transactions')
+
+@app.route("/api/transactions")
 def transactions():
     print("hi")
     user_id = int(request.args.get("id"))
     return jsonify(transaction.get_transactions(user_id))
 
-if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port='8000')
+
+if __name__ == "__main__":
+    app.run(debug=True, host="localhost", port="8000")
