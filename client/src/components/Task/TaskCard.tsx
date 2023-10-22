@@ -1,6 +1,24 @@
-import { Paper, Typography, Box } from "@mui/material";
+import {
+    IconButton,
+    Button,
+    Paper,
+    Typography,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
+} from "@mui/material";
+
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { fetchEndpoint } from "@/utils/fetch";
+import { useState } from "react";
 
 import { formatDate, formatInterval } from "../../utils/formatDate";
+
+import { toast } from "react-hot-toast";
 
 interface TaskCardProps {
     task: {
@@ -25,10 +43,28 @@ interface TaskCardProps {
 };
 
 export const TaskCard = ({ task }: TaskCardProps) => {
+
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+    const handleDeleteTask = () => {
+        fetchEndpoint(`delete-rerminder?id=${task.id}`, "POST").then(() => {
+            toast.success("Task deleted.");
+        }).catch(() => {
+            toast.error("Error deleting task.");
+        });
+        setIsDeleting(false);
+    }
+
+    const handleCheckTask = () => {
+        fetchEndpoint(`check-reminder?id=${task.id}`, "POST").then(() => {
+            toast.success("Successfully checked tasks! You saved " + (task.incentive_max * .001).toFixed(4) + " ETH!");
+        });
+    }
+
     return (
         <Paper
             sx={{
-                p: 3,
+                paddingLeft: 3,
                 paddingTop: ((task.pinned || task.habit_frequency) ? 1 : 3),
                 margin: "auto",
                 flexGrow: 1,
@@ -185,6 +221,35 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 }
                             </Typography>
                         </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                p: 1
+                            }}
+                        >
+                            <IconButton
+                                id="checkbutton"
+                                onClick={() => { handleCheckTask }}
+                                sx={{
+                                    color: "white",
+                                    marginBottom: 1
+                                }}
+                            >
+                                {task.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+                            </IconButton>
+                            <IconButton
+                                id="deleteButton"
+                                onClick={() => { setIsDeleting(true) }}
+                                sx={{
+                                    color: "white"
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
+
                     </Box>
                     <Typography
                         sx={{
@@ -195,7 +260,28 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                     </Typography>
                 </Box>
             </Box>
-
+            <Dialog
+                id="deleteFriendDialog"
+                open={isDeleting}
+                onClose={() => { setIsDeleting(false) }}>
+                <DialogTitle
+                    sx={{
+                        color: "black"
+                    }}>
+                    Remove {task.name}?
+                </DialogTitle>
+                <DialogContent
+                    sx={{
+                        color: "black"
+                    }}>
+                    <p>This action cannot be undone.</p>
+                </DialogContent>
+                <DialogActions
+                    id="deleteFriendDialog">
+                    <Button onClick={() => { setIsDeleting(false) }}>Cancel</Button>
+                    <Button onClick={handleDeleteTask}>Remove</Button>
+                </DialogActions>
+            </Dialog>
         </Paper >
     );
 }
