@@ -16,7 +16,7 @@ def create_user(user_data):
     return {"id": user_id}
 
 def delete_user(user_id):
-    r.delete(user_id)
+    r.delete(f'u{user_id}')
     r.delete(f"{user_id}:reminders")
     r.delete(f"{user_id}:friends")
 
@@ -33,13 +33,13 @@ def get_user(user_id):
 
 def get_user_by_username(username):
     for i in range(int(r.get("user_id"))):
-        if r.hget(f"u{i}", "username").decode('utf-8') == username:
+        if r.hget(f"u{i}", "username") is not None and r.hget(f"u{i}", "username").decode('utf-8') == username:
             return get_user(i)
     return None
 
 def user_by_clerk_id(clerk_id):
     for i in range(int(r.get("user_id"))):
-        if r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
+        if r.hget(f"u{i}", "clerk_id") is not None and r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
             return get_user(i)
     return None
 

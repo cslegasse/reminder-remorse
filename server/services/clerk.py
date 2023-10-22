@@ -15,10 +15,10 @@ def sync_user(headers, payload):
         raise Exception("Invalid webhook signature")
     data = evt["data"]
     print(data)
-    external_id = data["id"]
+    external_id = data["user_id"] if "user_id" in data else data["id"]
     # print(data['user_id'])
 
-    prev_u = user.user_by_clerk_id(data['id'])
+    prev_u = user.user_by_clerk_id(external_id)
     if prev_u is None:
         user.create_user({
             'fname': 'Random',
@@ -33,6 +33,6 @@ def sync_user(headers, payload):
         attributes = {key: value for key, value in data.items() if key != "id"}
         return
     elif evt["type"] == "user.deleted":
-        uid = user.user_by_clerk_id(data['user_id'])
+        uid = user.user_by_clerk_id(external_id)['id']
         user.delete_user(uid)
         return
