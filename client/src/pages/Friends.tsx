@@ -89,18 +89,21 @@ export const Friends = () => {
 
   const handleAddNewFriend = () => {
     fetchEndpoint(`add-friend?id=0&friend_id=${addFriendId}`, "GET")
-    .then(() => {
-      // setAddFriendState(data);
-      toast.success("Friend added!");
-    });
+      .then((_) => {
+        // setAddFriendState(data);
+        toast.success("Friend added!");
+        setIsAddingFriend(false);
+      }).catch((_) => {
+        toast.error("Error adding friend. Please try again.");
+      });
     setIsSelectingUser(false);
   };
 
   const handleRemoveFriend = () => {
     fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
-    .then(() => {
-      toast("Friend removed.")
-    });
+      .then(() => {
+        toast("Friend removed.")
+      });
     setIsSelectingUser(false);
   }
 

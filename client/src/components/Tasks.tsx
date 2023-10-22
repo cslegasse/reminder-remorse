@@ -1,6 +1,6 @@
 import { Category, Task, UserProps } from "../types/user";
 import { useEffect, useState } from "react";
-import { calculateDateDifference, formatDate, getFontColorFromHex } from "../utils";
+import { calculateDateDifference, getFontColorFromHex } from "../utils";
 import { Alarm, Done, MoreVert, PushPin } from "@mui/icons-material";
 import {
   Avatar,
@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Tooltip,
 } from "@mui/material";
 import { Emoji, EmojiStyle } from "emoji-picker-react";
 import { EditTask } from ".";
@@ -21,7 +20,6 @@ import {
   Pinned,
   TaskContainer,
   TaskBounty,
-  TaskDate,
   TaskDescription,
   TaskHeader,
   TaskInfo,
@@ -416,13 +414,13 @@ export const Tasks = ({ user, setUser }: UserProps): JSX.Element => {
                 <TaskHeader>
                   <TaskName done={task.done}> {task.name}</TaskName>
 
-                  <Tooltip
+                  {/* <Tooltip
                     title={`Created at: ${new Date(task.date).toLocaleDateString()} • ${new Date(
                       task.date
                     ).toLocaleTimeString()}`}
                   >
                     <TaskDate>{formatDate(new Date(task.date))}</TaskDate>
-                  </Tooltip>
+                  </Tooltip> */}
                 </TaskHeader>
                 <TaskBounty>
                   {//TODO
