@@ -122,7 +122,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                     }}
                                     display="inline"
                                 >
-                                    {task.name},
+                                    {task.name}{task.category === '' ? '' : ', '}
                                     <Typography
                                         sx={{
                                             color: '#c2c2c2',
@@ -130,7 +130,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                         }}
                                         display="inline"
                                     >
-                                        <i> {task.category}</i>
+                                        <i>{task.category}</i>
                                     </Typography>
                                 </Typography>
                             </>
@@ -143,7 +143,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 {
                                     task.completed ?
                                         <>
-                                            Finished at {formatDate(task.completed_at)}
+                                            Finished {formatDate(task.completed_at)}
                                         </>
 
                                         :

@@ -95,7 +95,7 @@ def seed_db():
     })
 
     assert reminder.create_reminder({
-        'name': 'Start studying the history of astronomy',
+        'name': 'Start studying history of astronomy',
         'desc': 'Ask librarian for good books',
         'emoji': '🔭',
         'category': 'Education',
