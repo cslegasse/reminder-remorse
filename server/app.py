@@ -122,6 +122,10 @@ def get_charity():
 def charities():
     return jsonify(charity.get_charities())
 
+@app.route("/api/check-reminder")
+def check_reminder():
+    reminder_id = int(request.args.get("id"))
+    return jsonify(reminder.check_reminder(reminder_id))
 
 @app.route("/api/overdue-reminders")
 def overdue_reminders():

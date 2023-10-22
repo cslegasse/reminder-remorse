@@ -12,10 +12,12 @@ def sync_user(headers, payload):
     except WebhookVerificationError:
         raise Exception("Invalid webhook signature")
     data = evt["data"]
+    print(data)
     external_id = data["id"]
 
     if evt["type"] in {"user.created", "user.updated"}:
         attributes = {key: value for key, value in data.items() if key != "id"}
+        print(attributes)
         return
     elif evt["type"] == "user.deleted":
         return
