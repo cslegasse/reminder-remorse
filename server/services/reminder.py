@@ -129,8 +129,10 @@ def fail_reminder(reminder_id):
             })
     freq = int(r.hget(f'r{reminder_id}', "habit_frequency"))
     if freq > 0:
-        old_time = int(r.hget(f'r{reminder_id}', "deadline"))
-        r.hset(f'r{reminder_id}', "deadline", old_time + freq*86400)
+        t = int(r.hget(f'r{reminder_id}', "deadline"))
+        while t < time.time():
+            t += freq*86400
+        r.hset(f'r{reminder_id}', "deadline", t)
     r.hset(f"r{reminder_id}", "failed", int(True))
     r.hset(f"r{reminder_id}", "charge", amt)
     return amt
