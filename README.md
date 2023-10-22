@@ -11,8 +11,8 @@ Reminder apps are bland and don't keep you on track or help you build consistent
 We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder's Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder's Remorse better: habit builder, reminder penalties, charity search, and friend exploration. 
 
 ## Tech Stack
-Frontend: React, Typescript
-Backend: Flask, Redis, Python
+Frontend: React, Typescript\
+Backend: Flask, Redis, Python\
 Server: GoDaddy, Cloudflare Pages
 
 ## Features
