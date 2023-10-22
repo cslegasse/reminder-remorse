@@ -16,8 +16,10 @@ def create_reminder(reminder_data):
     reminder_data['id'] = reminder_id
     owner_id = reminder_data['owner_id']
     r.sadd(f"{owner_id}:reminders", reminder_id)
-    r.hset(f"r{reminder_id}", 'name', reminder_data['name'])
-    r.hset(f"r{reminder_id}", 'desc', reminder_data['desc'] if 'desc' in reminder_data else '')
+    if not 'desc' in reminder_data:
+        reminder_data['desc'] = ''
+    # r.hset(f"r{reminder_id}", 'name', reminder_data['name'])
+    # r.hset(f"r{reminder_id}", 'desc', reminder_data['desc'] if 'desc' in reminder_data else '')
     try:
         emoji = chr(int('0x'+reminder_data['emoji'], 16))
     except:
@@ -25,20 +27,30 @@ def create_reminder(reminder_data):
             emoji = reminder_data['emoji']
         except KeyError:
             emoji = ''
+    reminder_data['emoji'] = emoji
+    reminder_data['completed'] = int(False)
+    reminder_data['failed'] = int(False)
+    reminder_data['pinned'] = int(False)
+    reminder_data['completed_at'] = -1
+    reminder_data['created_at'] = int(time.time())
+    reminder_data['habit_frequency'] = int(reminder_data['habit_frequency']) if 'habit_frequency' in reminder_data else 0
+    reminder_data['charge'] = 0
+    reminder_data['category'] = reminder_data['category'] if 'category' in reminder_data else ''
     print("emoji: " + emoji)
-    r.hset(f"r{reminder_id}", 'emoji', emoji)
-    r.hset(f"r{reminder_id}", 'owner_id', reminder_data['owner_id'])
-    r.hset(f"r{reminder_id}", 'category', reminder_data['category'] if 'category' in reminder_data else '')
-    r.hset(f"r{reminder_id}", 'created_at', int(time.time()))
-    r.hset(f"r{reminder_id}", 'completed_at', -1)
-    r.hset(f"r{reminder_id}", 'deadline', reminder_data['deadline'])
-    r.hset(f"r{reminder_id}", 'completed', int(False))
-    r.hset(f"r{reminder_id}", 'pinned', int(False))
-    r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'] if 'habit_frequency' in reminder_data else 0)
-    r.hset(f"r{reminder_id}", 'incentive_min', float(reminder_data['incentive_min']))
-    r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
-    r.hset(f"r{reminder_id}", 'failed', int(False))
-    r.hset(f"r{reminder_id}", 'charge', 0)
+    r.hmset(f"r{reminder_id}", reminder_data)
+    # r.hset(f"r{reminder_id}", 'emoji', emoji)
+    # r.hset(f"r{reminder_id}", 'owner_id', reminder_data['owner_id'])
+    # r.hset(f"r{reminder_id}", 'category', reminder_data['category'] if 'category' in reminder_data else '')
+    # r.hset(f"r{reminder_id}", 'created_at', int(time.time()))
+    # r.hset(f"r{reminder_id}", 'completed_at', -1)
+    # r.hset(f"r{reminder_id}", 'deadline', reminder_data['deadline'])
+    # r.hset(f"r{reminder_id}", 'completed', int(False))
+    # r.hset(f"r{reminder_id}", 'pinned', int(False))
+    # r.hset(f"r{reminder_id}", 'habit_frequency', reminder_data['habit_frequency'] if 'habit_frequency' in reminder_data else 0)
+    # r.hset(f"r{reminder_id}", 'incentive_min', float(reminder_data['incentive_min']))
+    # r.hset(f"r{reminder_id}", 'incentive_max', float(reminder_data['incentive_max']))
+    # r.hset(f"r{reminder_id}", 'failed', int(False))
+    # r.hset(f"r{reminder_id}", 'charge', 0)
 
     return {"id": reminder_id}
 
