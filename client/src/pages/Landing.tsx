@@ -1,7 +1,7 @@
 import logo from "@/assets/RR_curve.png";
 
 export const Landing = () => {
-  // const text = "We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals being a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder's Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder's Remorse better: habit builder, reminder penalties, charity search, and friend exploration."
+  // const text = "We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals being a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder Remorse better: habit builder, reminder penalties, charity search, and friend exploration."
   return (
     <div
       style={{
@@ -23,12 +23,12 @@ export const Landing = () => {
       <b>Otherwise, you’ll be remorseful when it hits your bank account.</b>
       </p>
       <p>
-      Reminder's Remorse charges you when you miss a reminder and sends the money to a charity or a friend. Reminder's Remorse not only keeps track of your reminders, it shows your consistent habits, your all time total tasks, and penalizes you by sending money to a friend or charity when you don't complete a task on time. This app is designed to help you stay on top of your tasks and help others in the process. 
+      Reminder Remorse charges you when you miss a reminder and sends the money to a charity or a friend. Reminder Remorse not only keeps track of your reminders, it shows your consistent habits, your all time total tasks, and penalizes you by sending money to a friend or charity when you don't complete a task on time. This app is designed to help you stay on top of your tasks and help others in the process. 
       </p>
 
       <h2>Inspiration</h2>
       <p>
-      We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder's Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder's Remorse better: habit builder, reminder penalties, charity search, and friend exploration.
+      We were frustrated with the normal reminders app we all have on our phones. They are limited in their usefulness and are not very motivating. With goals a big part of our lives, we wanted an app that could be so much more alongside our friends. We designed Reminder Remorse to give people motivation to become consistent goal setters and create positive habits for themselves. There are four useful components that make Reminder Remorse better: habit builder, reminder penalties, charity search, and friend exploration.
       </p>
 
       <h2>Tech Stack</h2>

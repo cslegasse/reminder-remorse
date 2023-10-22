@@ -38,17 +38,19 @@ interface TaskCardProps {
         "name": string,
         "owner_id": number,
         "pinned": boolean,
-        "charge": number,
-    }
-};
+        "charge": number
+    },
+    onUpdate: () => void
+}
 
-export const TaskCard = ({ task }: TaskCardProps) => {
+export const TaskCard = ({ task, onUpdate }: TaskCardProps) => {
 
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     const handleDeleteTask = () => {
-        fetchEndpoint(`delete-rerminder?id=${task.id}`, "POST").then(() => {
+        fetchEndpoint(`delete-reminder?id=${task.id}`, "GET").then(() => {
             toast.success("Task deleted.");
+            onUpdate();
         }).catch(() => {
             toast.error("Error deleting task.");
         });
@@ -56,8 +58,9 @@ export const TaskCard = ({ task }: TaskCardProps) => {
     }
 
     const handleCheckTask = () => {
-        fetchEndpoint(`check-reminder?id=${task.id}`, "POST").then(() => {
-            toast.success("Successfully checked tasks! You saved " + (task.incentive_max * .001).toFixed(4) + " ETH!");
+        fetchEndpoint(`check-reminder?id=${task.id}`, "GET").then(() => {
+            toast.success("Successfully completed " + task.name + "! You saved " + (task.incentive_max * .001).toFixed(4) + " ETH!");
+            onUpdate();
         });
     }
 
@@ -232,7 +235,7 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                         >
                             <IconButton
                                 id="checkbutton"
-                                onClick={() => { handleCheckTask }}
+                                onClick={() => { handleCheckTask() }}
                                 sx={{
                                     color: "white",
                                     marginBottom: 1
