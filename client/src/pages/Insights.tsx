@@ -232,6 +232,7 @@ export const Insights = () => {
     });
     fetchEndpoint(`transactions?id=${user_id}`, "GET").then(async (data) => {
       console.log(data);
+      console.log("fetching here");
       let tsum = 0;
       for (let i = 0; i < data.length; i++) {
         if (data[i].user_id === 0) {
@@ -251,7 +252,7 @@ export const Insights = () => {
       drawTasksCompletedGraph();
       drawHabitsKeptGraph();
     }
-  }, [drawHabitsKeptGraph, drawTasksCompletedGraph, metrics]);
+  }, [metrics]);
 
   return (
     <>
