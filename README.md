@@ -1,7 +1,7 @@
-![RR_GIT](https://github.com/cslegasse/reminder-remorse/assets/102162055/8b24d8c5-0d03-48d4-80a0-acb0b51f640b)
+#![RR_Github](https://github.com/cslegasse/reminder-remorse/assets/102162055/9d2c4318-182c-46b6-a03d-ddeac748eb93)
 
-## **Hack Harvard 2023** 
-Designed and developed by: Legasse Remon, Harys Dalvi, Felix Nguyen, and Khang Luu\
+# **Hack Harvard 2023** 
+Designed and developed by: Harys Dalvi, Legasse Remon, Felix Nguyen, and Khang Luu\
 🔗 Website: https://reminderremorse.us/
 
 ## About
