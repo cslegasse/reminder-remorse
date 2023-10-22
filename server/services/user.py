@@ -43,7 +43,8 @@ def user_by_clerk_id(clerk_id):
             return get_user(i)
     return None
 
-def add_friend(user_id, friend_id):
+def add_friend(user_id, friend_username):
+    friend_id = get_user_by_username(friend_username)['id']
     print("adding friend " + str(friend_id))
     r.sadd(f"{user_id}:friends", friend_id)
     r.sadd(f"{friend_id}:friends", user_id)

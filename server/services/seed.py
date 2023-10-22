@@ -32,8 +32,8 @@ def seed_db():
         'last_login': 1697893046
     })['id'] == 2
 
-    user.add_friend(0, 1)
-    user.add_friend(0, 2)
+    user.add_friend(0, 'jane_doe')
+    user.add_friend(0, 'abc')
 
     print(user.get_user(0))
 
@@ -131,7 +131,7 @@ def seed_db():
             'emoji': emojis[task_type],
             'category': 'Home',
             'owner_id': 0,
-            'deadline': 1695302602 + 86400 - i*86400*10,
+            'deadline': int(1695302602 + 86400 - i*86400*10 +  3600*2*random.random() - 3600),
             'pinned': False,
             'habit_frequency': 0,
             'incentive_min': 0.1,

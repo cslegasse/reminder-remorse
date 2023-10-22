@@ -89,7 +89,7 @@ export const Friends = () => {
   // const [addFriendState, setAddFriendState] = useState<any>(undefined);
 
   const handleAddNewFriend = () => {
-    fetchEndpoint(`add-friend?id=0&friend_id=${addFriendId}`, "GET")
+    fetchEndpoint(`add-friend?id=0&friend_username=${addFriendId}`, "GET")
       .then((_) => {
         // setAddFriendState(data);
         toast.success("Friend added!");
@@ -156,8 +156,8 @@ export const Friends = () => {
                       color: "#fa5757",
                       fontStyle: "italic"
                     }}>
-                    This friend has {friend.taskCompleted.toString()} tasks completed and{' '}
-                    {friend.habitsKept.toString()} habits kept.
+                    This friend has {friend.taskCompleted.toString()} {friend.taskCompleted === 1 ? 'task' : 'tasks'} completed and{' '}
+                    {friend.habitsKept.toString()} {friend.habitsKept === 1 ? 'habit' : 'habits'} kept.
                   </Typography>}
               />
             </ListItem>
@@ -201,8 +201,8 @@ export const Friends = () => {
           sx={{
             color: "black"
           }}>
-          <p>Your ID is: <i> {currentUserData?.id}</i></p>
-          Enter a friend's ID to add them as a friend:
+          <p>Your ID is: <i> {currentUserData?.username}</i></p>
+          Enter a friend's username to add them as a friend:
           <TextField
             label="Friend ID"
             value={addFriendId}

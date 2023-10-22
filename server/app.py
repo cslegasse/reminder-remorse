@@ -85,8 +85,8 @@ def friends():
 @app.route("/api/add-friend")
 def add_friend():
     user_id = int(request.args.get("id"))
-    friend_id = int(request.args.get("friend_id"))
-    return jsonify(user.add_friend(user_id, friend_id))
+    friend_username = request.args.get("friend_username")
+    return jsonify(user.add_friend(user_id, friend_username))
 
 
 @app.route("/api/remove-friend")
