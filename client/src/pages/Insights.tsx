@@ -255,7 +255,9 @@ export const Insights = () => {
             )
           })
         }
+        <br/><br/>
       </div>
+      <br/>
     </>
   );
 };

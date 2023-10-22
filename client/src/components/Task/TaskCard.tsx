@@ -177,13 +177,13 @@ export const TaskCard = ({ task }: TaskCardProps) => {
                                 {
                                     task.completed ?
                                         <>
-                                            {task.incentive_max * .001} ETH saved.
+                                            {(task.incentive_max * .001).toFixed(5)} ETH saved.
                                         </>
                                         :
                                         (task.failed ?
                                             <> Lost {(task.charge * .001).toFixed(5)} ETH.</>
                                             :
-                                            <>{task.incentive_min * .001} ETH - {task.incentive_max * .001} ETH AT STAKE</>
+                                            <>{(task.incentive_min * .001).toFixed(5)} ETH &ndash; {(task.incentive_max * .001).toFixed(5)} ETH AT STAKE</>
                                         )
                                 }
                             </Typography>
