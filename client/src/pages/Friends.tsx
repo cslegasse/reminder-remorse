@@ -1,17 +1,27 @@
 import {
-  Avatar, Button, Typography, Dialog, DialogTitle, DialogContent,
-  DialogActions, IconButton, List, ListItem, ListItemAvatar, ListItemText,
-  TextField
+  Avatar,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  TextField,
 } from "@mui/material";
 import { fetchEndpoint } from "@/utils/fetch";
 import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { FriendContainer } from "@/styles";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 // import { userFromDb } from "@/types/userFromDb";
 // import { renderToStaticMarkup } from "react-dom/server";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 export interface Friend {
   id: number;
   fname: string;
@@ -22,7 +32,7 @@ export interface Friend {
 }
 
 export const Friends = () => {
-  //hook fetches excessively, so it might be a good idea to 
+  //hook fetches excessively, so it might be a good idea to
   //use something else if we'd want to use this in production
   const [currentUserData, setCurrentUserData] = useState<null | any>(null);
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -45,106 +55,104 @@ export const Friends = () => {
       });
       setFriends(data);
     });
-  }
+  };
   useEffect(updateFriends, []);
-
 
   const currentUserSnapshot = useCurrentUser();
 
   useEffect(() => {
     const fetchUser = async () => {
       setCurrentUserData(await currentUserSnapshot);
-    }
+    };
     fetchUser();
-  }, [currentUserSnapshot])
+  }, [currentUserSnapshot]);
 
   // console.log(currentUserData);
-
 
   useEffect(() => {
     const fetchUser = async () => {
       setCurrentUserData(await currentUserSnapshot);
-    }
+    };
     fetchUser();
-  }, [currentUserSnapshot])
+  }, [currentUserSnapshot]);
 
   // console.log(currentUserData);
 
   const handleUserSelect = (friend: Friend) => {
     setCurrentUserSelected(friend);
     setIsSelectingUser(true);
-  }
+  };
   const handleClose = () => {
     setIsSelectingUser(false);
-  }
+  };
 
   const handleCloseAddFriend = () => {
     setIsAddingFriend(false);
-  }
+  };
 
   const handleChangeNewFriendId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddFriendId(e.target.value);
-  }
+  };
 
   // const [addFriendState, setAddFriendState] = useState<any>(undefined);
 
   const handleAddNewFriend = () => {
     fetchEndpoint(`add-friend?id=0&friend_username=${addFriendId}`, "GET")
-      .then((_) => {
+      .then(() => {
         // setAddFriendState(data);
         toast.success("Friend added!");
         setIsAddingFriend(false);
         updateFriends();
-      }).catch((_) => {
+      })
+      .catch(() => {
         toast.error("Error adding friend. Please try again.");
       });
     setIsSelectingUser(false);
   };
 
   const handleRemoveFriend = () => {
-    fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET")
-      .then(() => {
-        toast("Friend removed.");
-        updateFriends();
-      });
+    fetchEndpoint(`remove-friend?id=0&friend_id=${currentUserSelected?.id}`, "GET").then(() => {
+      toast("Friend removed.");
+      updateFriends();
+    });
     setIsSelectingUser(false);
-  }
+  };
 
   return (
     <>
       <h1>Friends</h1>
       <Button
         variant="outlined"
-        onClick={() => { setIsAddingFriend(true) }}
+        onClick={() => {
+          setIsAddingFriend(true);
+        }}
         startIcon={
           <PersonAddAlt1Icon
             sx={{
-              color: "white"
-            }} />}
+              color: "white",
+            }}
+          />
+        }
       >
-
         Add a new friend
       </Button>
       <List>
         {friends.map((friend) => (
-          <FriendContainer
-            backgroundColor={"#2d26a6"}
-            clr="#ffffff"
-            glow={false}
-            done={false}
-          >
-
+          <FriendContainer backgroundColor={"#2d26a6"} clr="#ffffff" glow={false} done={false}>
             <ListItem
               alignItems="flex-start"
               secondaryAction={
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => { handleUserSelect(friend) }}
+                  onClick={() => {
+                    handleUserSelect(friend);
+                  }}
                 >
                   <DeleteIcon />
                 </IconButton>
-              }>
+              }
+            >
               <ListItemAvatar>
                 <Avatar alt="avatar" src={friend.Avatar} />
               </ListItemAvatar>
@@ -154,54 +162,57 @@ export const Friends = () => {
                   <Typography
                     sx={{
                       color: "#fa5757",
-                      fontStyle: "italic"
-                    }}>
-                    This friend has {friend.taskCompleted.toString()} {friend.taskCompleted === 1 ? 'task' : 'tasks'} completed and{' '}
-                    {friend.habitsKept.toString()} {friend.habitsKept === 1 ? 'habit' : 'habits'} kept.
-                  </Typography>}
+                      fontStyle: "italic",
+                    }}
+                  >
+                    This friend has {friend.taskCompleted.toString()}{" "}
+                    {friend.taskCompleted === 1 ? "task" : "tasks"} completed and{" "}
+                    {friend.habitsKept.toString()} {friend.habitsKept === 1 ? "habit" : "habits"}{" "}
+                    kept.
+                  </Typography>
+                }
               />
             </ListItem>
           </FriendContainer>
         ))}
-      </List >
-      <Dialog
-        id="deleteFriendDialog"
-        open={isSelectingUser}
-        onClose={handleClose}>
+      </List>
+      <Dialog id="deleteFriendDialog" open={isSelectingUser} onClose={handleClose}>
         <DialogTitle
           sx={{
-            color: "black"
-          }}>
+            color: "black",
+          }}
+        >
           Remove {currentUserSelected?.fname} {currentUserSelected?.lname} as a friend?
         </DialogTitle>
         <DialogContent
           sx={{
-            color: "black"
-          }}>
+            color: "black",
+          }}
+        >
           <p>Current tasks that have this friend accountable will still be kept as is.</p>
         </DialogContent>
-        <DialogActions
-          id="deleteFriendDialog">
+        <DialogActions id="deleteFriendDialog">
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleRemoveFriend}>Remove</Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        id="AddFriendDialog"
-        open={isAddingFriend}
-        onClose={handleCloseAddFriend}>
+      <Dialog id="AddFriendDialog" open={isAddingFriend} onClose={handleCloseAddFriend}>
         <DialogTitle
           sx={{
-            color: "black"
-          }}>
+            color: "black",
+          }}
+        >
           Add a friend with userID
         </DialogTitle>
         <DialogContent
           sx={{
-            color: "black"
-          }}>
-          <p>Your ID is: <i> {currentUserData?.username}</i></p>
+            color: "black",
+          }}
+        >
+          <p>
+            Your ID is: <i> {currentUserData?.username}</i>
+          </p>
           Enter a friend's username to add them as a friend:
           <TextField
             label="Friend ID"
@@ -209,13 +220,12 @@ export const Friends = () => {
             onChange={handleChangeNewFriendId}
             sx={{
               input: {
-                color: "black"
-              }
+                color: "black",
+              },
             }}
           />
         </DialogContent>
-        <DialogActions
-          id="deleteFriendDialog">
+        <DialogActions id="deleteFriendDialog">
           <Button onClick={handleCloseAddFriend}>Cancel</Button>
           <Button onClick={handleAddNewFriend}>Add</Button>
         </DialogActions>
