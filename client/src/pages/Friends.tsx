@@ -217,23 +217,3 @@ export const Friends = () => {
     </>
   );
 };
-
-
-const mockData: Friend[] = [
-  {
-    id: 1,
-    fname: "John",
-    lname: "Doe",
-    Avatar: undefined,
-    taskCompleted: 100,
-    habitsKept: 1,
-  },
-  {
-    id: 2,
-    fname: "Jane",
-    lname: "Doe",
-    Avatar: undefined,
-    taskCompleted: 25,
-    habitsKept: 3
-  }
-]
