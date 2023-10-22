@@ -13,7 +13,7 @@ r.flushdb()
 r.set("user_id", 0)
 r.set("reminder_id", 0)
 r.set("transaction_id", 0)
-seed.seed_db()
+# seed.seed_db()
 
 
 @app.route("/")
