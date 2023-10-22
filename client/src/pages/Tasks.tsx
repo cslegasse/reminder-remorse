@@ -30,6 +30,21 @@ export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [recentMisses, setRecentMisses] = useState<Task[]>([]);
 
+  const onUpdateTasks = () => {
+    fetchEndpoint('reminders?id=0', 'GET').then((data) => {
+      setTasks(data.sort((a: Task, b: Task) => {
+        if (a.deadline > b.deadline) {
+          return -1;
+        } else if (a.deadline < b.deadline) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }));
+      console.log(data);
+    });
+  }
+
   useEffect(() => {
     fetchEndpoint('overdue-reminders?id=0', 'GET').then((data) => {
 
@@ -44,18 +59,7 @@ export const Tasks = () => {
         );
       }
 
-      fetchEndpoint('reminders?id=0', 'GET').then((data) => {
-        setTasks(data.sort((a: Task, b: Task) => {
-          if (a.deadline > b.deadline) {
-            return -1;
-          } else if (a.deadline < b.deadline) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }));
-        console.log(data);
-      });
+      onUpdateTasks();
 
     }).catch((err) => console.error(err));
   }, []);
@@ -115,7 +119,7 @@ export const Tasks = () => {
         {tasks.slice().reverse().map((task) => (
           task.completed || !task.pinned || Date.now() > task.deadline * 1000 ? <></>
             :
-            <TaskCard task={task} />
+            <TaskCard task={task} onUpdate={onUpdateTasks} />
           // <li key={task.id}>
           //   📌{task.emoji} {task.name}
           //   {task.desc ? <><br />{task.desc}</> : <></>}
@@ -129,7 +133,7 @@ export const Tasks = () => {
         {tasks.slice().reverse().map((task) => (
           task.completed || task.pinned || Date.now() > task.deadline * 1000 ? <></>
             :
-            <TaskCard task={task} />
+            <TaskCard task={task} onUpdate={onUpdateTasks} />
           // <li key={task.id}>
           //   {task.emoji} {task.name}
           //   {task.desc ? <><br />{task.desc}</> : <></>}
@@ -143,7 +147,7 @@ export const Tasks = () => {
       <ul>
         {tasks.map((task) => (
           task.completed &&
-          <TaskCard task={task} />
+          <TaskCard task={task} onUpdate={onUpdateTasks} />
           // <li key={task.id}>
           //   {task.emoji} {task.name}
           //   {task.desc ? <><br />{task.desc}</> : <></>}
@@ -160,7 +164,7 @@ export const Tasks = () => {
         {tasks.map((task) => (
           task.completed || Date.now() < task.deadline * 1000 ? <></>
             :
-            <TaskCard task={{ ...task, failed: true }} />
+            <TaskCard task={{ ...task, failed: true }} onUpdate={onUpdateTasks} />
 
           // <li key={task.id}>
           //   {task.emoji} {task.name}

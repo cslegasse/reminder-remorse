@@ -63,9 +63,10 @@ def check_reminder_overdue(user_id):
     }
 
 def delete_reminder(reminder_id):
-    user_id = r.hget(f'r{reminder_id}', "user_id")
+    user_id = int(r.hget(f'r{reminder_id}', "owner_id"))
     r.srem(f"{user_id}:reminders", reminder_id)
     r.delete(reminder_id)
+    return {"status": 0}
 
 def get_reminder(reminder_id):
     reminder_id = int(reminder_id)
@@ -94,11 +95,12 @@ def update_reminder(reminder_id, reminder_data):
 def check_reminder(reminder_id):
     freq = int(r.hget(f'r{reminder_id}', "habit_frequency"))
     if freq > 0:
-        old_time = int(r.hget(reminder_id, "deadline"))
+        old_time = int(r.hget(f'r{reminder_id}', "deadline"))
         r.hset(f'r{reminder_id}', "deadline", old_time + freq*86400)
     else:
         r.hset(f'r{reminder_id}', "completed", int(True))
         r.hset(f'r{reminder_id}', "completed_at", int(time.time()))
+    return {"status": 0}
 
 def fail_reminder(reminder_id):
     owner_id = int(r.hget(f'r{reminder_id}', "owner_id"))

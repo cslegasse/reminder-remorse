@@ -1,5 +1,5 @@
 export const formatDate = (d: number, inFuture = true) => {
-  const roundDay = (n: number) => Math.floor((new Date(n).getTime()) / 86400000);
+  const roundDay = (n: number) => Math.floor((new Date(n).getTime() - new Date(n).getTimezoneOffset()*60*1000) / 86400000);
 
   if (inFuture && (roundDay(d * 1000) - roundDay(Date.now()) === 0)) {
     return 'today ' + (new Date(d * 1000).toLocaleTimeString('en-US', {
