@@ -16,7 +16,7 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import { ColorPalette } from "@/lib/theme";
 
@@ -25,7 +25,7 @@ import { ColorPalette } from "@/lib/theme";
 export type TaskUpload = {
   owner_id: number;
   org_id?: number;
-  friend_id?: number|string;
+  friend_id?: number | string;
   name: string;
   desc?: string;
   emoji?: string;
@@ -39,7 +39,7 @@ export type TaskUpload = {
 type Charity = {
   id: number;
   name: string;
-}
+};
 
 export const AddTask = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -49,7 +49,7 @@ export const AddTask = () => {
   const [taskUploadData, setTaskUploadData] = useState<TaskUpload>({
     owner_id: 0,
     org_id: 0,
-    friend_id: '1',
+    friend_id: "1",
     name: "",
     desc: "",
     emoji: undefined,
@@ -84,7 +84,7 @@ export const AddTask = () => {
   const hasNoFriends = friends.length === 0;
   const [isSendingToFriend, setIsSendingToFried] = useState(!hasNoFriends);
   const [isHabit, setIsHabit] = useState(false);
-  const [friendId, setFriendId] = useState('1');
+  const [friendId, setFriendId] = useState("1");
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "deadline") {
@@ -93,7 +93,7 @@ export const AddTask = () => {
         deadline: Math.floor(
           (new Date(e.target.value).getTime() -
             new Date(e.target.value).getTimezoneOffset() * 60000) /
-          1000
+            1000
         ),
       }));
       return;
@@ -115,31 +115,32 @@ export const AddTask = () => {
     const newTask: TaskUpload = {
       ...taskUploadData,
     };
-    newTask.deadline -= new Date(newTask.deadline*1000).getTimezoneOffset() * 60;
+    newTask.deadline -= new Date(newTask.deadline * 1000).getTimezoneOffset() * 60;
     setIsSubmitting(true);
     console.log(newTask);
     if (!isHabit) {
       newTask.habit_frequency = 0;
     }
-    if (newTask.category === 'None') {
-      newTask.category = '';
+    if (newTask.category === "None") {
+      newTask.category = "";
     }
-    fetchEndpoint('create-reminder', 'POST', newTask as object)
-    .then(() => {
-      setIsSubmitting(false);
-      navigate("/tasks");
-      toast.success(() => (
-        <div>
-          Added task - <b>{newTask.name}</b>
-        </div>
-      ));
-    }).catch((err) => {
-      toast.error(() => (
-        <div>
-          Error {err} adding task - <b>{newTask.name}</b>
-        </div>
-      ));
-    });
+    fetchEndpoint("create-reminder", "POST", newTask as object)
+      .then(() => {
+        setIsSubmitting(false);
+        navigate("/tasks");
+        toast.success(() => (
+          <div>
+            Added task - <b>{newTask.name}</b>
+          </div>
+        ));
+      })
+      .catch((err) => {
+        toast.error(() => (
+          <div>
+            Error {err} adding task - <b>{newTask.name}</b>
+          </div>
+        ));
+      });
   };
 
   return (
@@ -217,37 +218,30 @@ export const AddTask = () => {
           />
         </RowFlex>
         <RadioGroup
-        row
-        aria-labelledby="HabitType"
-        name="HabitType"
-        value={isHabit}
-        onChange={(e) => {
-          setIsHabit(e.target.value === "true");
-        }}
+          row
+          aria-labelledby="HabitType"
+          name="HabitType"
+          value={isHabit}
+          onChange={(e) => {
+            setIsHabit(e.target.value === "true");
+          }}
         >
-          <FormControlLabel
-            value={false}
-            control={<Radio />}
-            label="Task"
-          />
-          <FormControlLabel
-            value={true}
-            control={<Radio />}
-            label="Habit"
-          />
+          <FormControlLabel value={false} control={<Radio />} label="Task" />
+          <FormControlLabel value={true} control={<Radio />} label="Habit" />
         </RadioGroup>
-        {isHabit && <StyledInput
-        label="Habit Frequency"
-        name="habit_frequency"
-        placeholder="Enter frequency in days"
-        value={taskUploadData.habit_frequency}
-        onChange={handleDataChange}
-        focused
-        sx={{
-          color: 'white'
-        }}
-        >
-          </StyledInput>}
+        {isHabit && (
+          <StyledInput
+            label="Habit Frequency"
+            name="habit_frequency"
+            placeholder="Enter frequency in days"
+            value={taskUploadData.habit_frequency}
+            onChange={handleDataChange}
+            focused
+            sx={{
+              color: "white",
+            }}
+          ></StyledInput>
+        )}
 
         <Typography mt="12px">Where do you want to send the money?</Typography>
         <RadioGroup
@@ -267,22 +261,34 @@ export const AddTask = () => {
             sx={{
               svg: {
                 select: {
-                  color: 'white'
-                }
-              }
+                  color: "white",
+                },
+              },
             }}
           />
-          <FormControlLabel value={hasNoFriends} control={<Radio />} label="Charity"/>
+          <FormControlLabel value={hasNoFriends} control={<Radio />} label="Charity" />
         </RadioGroup>
 
         {/* TODO: Fix styling for this */}
-        {!hasNoFriends && isSendingToFriend ?
-          <InputLabel id="choosePaymentLabel" sx={{
-            color: 'white'
-          }}>Choose a friend</InputLabel>
-        : <InputLabel id="choosePaymentLabel" sx={{
-          color: 'white'
-        }}>Choose a charity</InputLabel>}
+        {!hasNoFriends && isSendingToFriend ? (
+          <InputLabel
+            id="choosePaymentLabel"
+            sx={{
+              color: "white",
+            }}
+          >
+            Choose a friend
+          </InputLabel>
+        ) : (
+          <InputLabel
+            id="choosePaymentLabel"
+            sx={{
+              color: "white",
+            }}
+          >
+            Choose a charity
+          </InputLabel>
+        )}
         {!hasNoFriends && isSendingToFriend ? (
           <StyledSelect
             sx={{
@@ -290,7 +296,7 @@ export const AddTask = () => {
               transition: "0.3s all",
               svg: {
                 color: "white",
-              }
+              },
             }}
             // label="Choose a friend"
             id="selectPaymentDestination"
@@ -311,7 +317,7 @@ export const AddTask = () => {
                 key={friend.id}
                 value={friend.id}
                 sx={{
-                  color: "black"
+                  color: "black",
                 }}
               >
                 {friend.fname}
@@ -323,8 +329,8 @@ export const AddTask = () => {
             sx={{
               width: "400px",
               svg: {
-                color: 'white',
-              }
+                color: "white",
+              },
             }}
             // label="Choose a charity"
             id="selectPaymentDestination"
@@ -344,7 +350,7 @@ export const AddTask = () => {
                 key={charity.id}
                 value={charity.id}
                 sx={{
-                  color: "black"
+                  color: "black",
                 }}
               >
                 {charity.name}
@@ -353,16 +359,21 @@ export const AddTask = () => {
           </StyledSelect>
         )}
 
-        <InputLabel id="chooseCategoryLabel" sx={{
-          color: 'white'
-        }}>Choose a category</InputLabel>
+        <InputLabel
+          id="chooseCategoryLabel"
+          sx={{
+            color: "white",
+          }}
+        >
+          Choose a category
+        </InputLabel>
         <StyledSelect
           sx={{
             marginTop: 2,
             width: "400px",
             svg: {
               color: "white",
-            }
+            },
           }}
           id="selectCategory"
           placeholder="Choose a category"
@@ -371,7 +382,7 @@ export const AddTask = () => {
           onChange={(e: SelectChangeEvent<unknown>) => {
             setTaskUploadData((prevData) => ({
               ...prevData,
-              category: e.target.value as string
+              category: e.target.value as string,
             }));
           }}
           displayEmpty
@@ -381,7 +392,7 @@ export const AddTask = () => {
               key={category}
               value={category}
               sx={{
-                color: "black"
+                color: "black",
               }}
             >
               {category}
