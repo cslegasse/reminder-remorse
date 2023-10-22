@@ -1,11 +1,12 @@
 import { Add, People, Insights, TaskAlt, GitHub } from "@mui/icons-material";
-import { Button, IconButton, Link, Paper, Stack } from "@mui/material";
-import Logo from "@/assets/logo256.png";
+import { Button, IconButton, Link, Paper, Stack, useTheme } from "@mui/material";
+import Logo from "@/assets/logo96.png";
 import { Link as RouterLink } from "react-router-dom";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useResponsiveDisplay } from "@/hooks/useResponsiveDisplay";
 
 export const ProductLogo = () => {
+  const theme = useTheme();
   return (
     <Link
       component={RouterLink}
@@ -17,7 +18,15 @@ export const ProductLogo = () => {
         margin: 1,
       }}
     >
-      <img src={Logo} width={70} height={70} />
+      <img
+        src={Logo}
+        width={70}
+        height={70}
+        alt="Reminder Remorse Logo"
+        style={{
+          borderRadius: theme.shape.borderRadius,
+        }}
+      />
     </Link>
   );
 };

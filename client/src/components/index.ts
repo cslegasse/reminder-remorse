@@ -1,9 +1,5 @@
-export { Tasks } from "./Tasks";
-export { EditTask } from "./EditTask";
 export { CustomEmojiPicker } from "./CustomEmojiPicker";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { TaskMenu } from "./TaskMenu";
-export { CategorySelect } from "./CategorySelect";
-export { DialogButton } from "./DialogButton";
 export { StyledLink } from "./StyledLink";
 export { GlobalStyles } from "./GlobalStyles";
