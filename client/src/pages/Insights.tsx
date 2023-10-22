@@ -16,6 +16,16 @@ type Metric = {
   habits: HabitMetric[];
   startDate: number
 }
+type Transaction = {
+  id: number;
+  user_id: number;
+  friend_id?: number;
+  org_id?: number;
+  amt: number;
+  user?: string;
+  friend?: string;
+  org?: string;
+}
 
 export const Insights = () => {
   const user_id = 0;
@@ -23,10 +33,25 @@ export const Insights = () => {
   const [metrics, setMetrics] = useState<Metric | null>(null);
   const [chart, setChart] = useState<Chart|null>(null);
   const [chart2, setChart2] = useState<Chart|null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactionSum, setTransactionSum] = useState<number>(0);
   useEffect(() => {
     fetchEndpoint(`metrics?id=${user_id}`, 'GET').then((data) => {
       console.log(data);
       setMetrics(data);
+    });
+    fetchEndpoint(`transactions?id=${user_id}`, 'GET').then(async (data) => {
+      console.log(data);
+      let tsum = 0;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].user_id === 0) {
+          tsum -= data[i].amt;
+        } else if (data[i].friend_id === 0) {
+          tsum += data[i].amt;
+        }
+      }
+      setTransactions(data);
+      setTransactionSum(tsum);
     });
   }, []);
 
@@ -216,6 +241,20 @@ export const Insights = () => {
         <h2>Habits Kept</h2>
         <p>{metrics?.habitsKept || ''}</p>
         <canvas id="habitsKeptGraph" width="500" height="200"></canvas>
+      </div>
+      <div>
+        <h2>Transactions</h2>
+        <p>Net amount: <b>${transactionSum}</b></p>
+        {
+          transactions.map((transaction) => {
+            console.log(transaction);
+            return (
+              <p key={'t'+transaction.id}>
+                {transaction.user} paid {transaction.friend || transaction.org} ${transaction.amt.toFixed(2)}
+              </p>
+            )
+          })
+        }
       </div>
     </>
   );

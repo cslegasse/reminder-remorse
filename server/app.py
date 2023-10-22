@@ -84,6 +84,11 @@ def metrics():
     user_id = request.args.get("id")
     return jsonify(user.get_metrics(user_id))
 
+@app.route('/api/charity')
+def get_charity():
+    user_id = int(request.args.get("id"))
+    return jsonify(charity.get_charity(user_id))
+
 @app.route('/api/charities')
 def charities():
     return jsonify(charity.get_charities())

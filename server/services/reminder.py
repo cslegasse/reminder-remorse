@@ -110,6 +110,9 @@ def fail_reminder(reminder_id):
         friend_id = int(friend_id)
     else:
         raise ValueError("Reminder must have either org_id or friend_id")
+    old_failed = bool(int(r.hget(f"r{reminder_id}", "failed")))
+    if old_failed:
+        return 1
     r.hset(f"r{reminder_id}", "completed", int(False))
     i_min = float(r.hget(f"r{reminder_id}", "incentive_min"))
     i_max = float(r.hget(f"r{reminder_id}", "incentive_max"))

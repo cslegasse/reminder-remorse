@@ -5,6 +5,7 @@ import { LeaderboardContainer } from "../../styles/tasks.styled";
 import { Box, Typography } from "@mui/material";
 import { fetchEndpoint } from "../../utils/fetch";
 import { useState, useEffect } from "react";
+import { Friend } from "../../pages/Friends";
 
 /**
  * Component to display a list of tasks.
@@ -12,7 +13,7 @@ import { useState, useEffect } from "react";
 
 export const Leaderboard = (): JSX.Element => {
     //handle API to get friends data
-    const [leaderboardData, setLeaderboardData] = useState([]);
+    const [leaderboardData, setLeaderboardData] = useState<Friend[]>([]);
     useEffect(() => {
         fetchEndpoint("leaderboard?id=0", "GET")
             .then((data) => {

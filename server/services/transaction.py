@@ -1,4 +1,4 @@
-from services import redis_service
+from services import charity, redis_service
 r = redis_service.redis_manager.redis
 
 def create_transaction(transaction_data):
@@ -22,11 +22,16 @@ def get_transaction(transaction_id):
     transaction_data = {}
     for key in map(lambda k: k.decode('utf-8'), r.hkeys(f"t{transaction_id}")):
         transaction_data[key] = r.hget(f"t{transaction_id}", key).decode('utf-8')
+    transaction_data['user'] = r.hget(f'u{transaction_data["user_id"]}', 'fname').decode('utf-8')
     for key in ['amt']:
         transaction_data[key] = float(transaction_data[key])
     for key in ['friend_id', 'org_id']:
         if key in transaction_data:
             transaction_data[key] = int(transaction_data[key])
+            if key == 'friend_id':
+                transaction_data['friend'] = r.hget(f'u{transaction_data["friend_id"]}', 'fname').decode('utf-8')
+            else:
+                transaction_data['org'] = charity.get_charity(transaction_data['org_id'])['name']
     transaction_data['id'] = transaction_id
     return transaction_data
 
