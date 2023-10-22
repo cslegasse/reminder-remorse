@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchEndpoint } from "@/utils/fetch";
+import { Friend } from "@/pages/Friends";
 
 import { Container as MuiContainer, Button, TextField, Typography } from "@mui/material";
 
@@ -40,7 +41,7 @@ type Charity = {
 }
 
 export const AddTask = () => {
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
   const [charities, setCharities] = useState<Charity[]>([]);
   const categories = mockCategories; // TODO: REPLACE
   const navigate = useNavigate();
@@ -289,7 +290,7 @@ export const AddTask = () => {
             defaultValue={""}
             onChange={(e: SelectChangeEvent<unknown>) => {
               console.log(e.target.value);
-              setFriendId(e.target.value);
+              setFriendId(e.target.value as string);
               setTaskUploadData((prevData) => ({
                 ...prevData,
                 friend_id: parseInt(e.target.value as string),
