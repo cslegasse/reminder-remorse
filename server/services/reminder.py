@@ -25,7 +25,7 @@ def create_reminder(reminder_data):
             emoji = reminder_data['emoji']
         except KeyError:
             emoji = ''
-    print("emoji: " + emoji)
+    # print("emoji: " + emoji)
     r.hset(f"r{reminder_id}", 'emoji', emoji)
     r.hset(f"r{reminder_id}", 'owner_id', reminder_data['owner_id'])
     r.hset(f"r{reminder_id}", 'category', reminder_data['category'] if 'category' in reminder_data else '')

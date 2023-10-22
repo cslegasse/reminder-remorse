@@ -35,7 +35,7 @@ def seed_db():
     user.add_friend(0, 'jane_doe')
     user.add_friend(0, 'abc')
 
-    print(user.get_user(0))
+    # print(user.get_user(0))
 
     reminder.create_reminder({
         'name': 'finish TensorFlow tutorial',
@@ -313,4 +313,4 @@ def seed_db():
         'amt': 10
     })
     
-    print(user.get_user(0))
+    # print(user.get_user(0))

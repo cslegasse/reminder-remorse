@@ -45,12 +45,12 @@ def user_by_clerk_id(clerk_id):
 
 def add_friend(user_id, friend_username):
     friend_id = get_user_by_username(friend_username)['id']
-    print("adding friend " + str(friend_id))
+    # print("adding friend " + str(friend_id))
     r.sadd(f"{user_id}:friends", friend_id)
     r.sadd(f"{friend_id}:friends", user_id)
     return 0
 def remove_friend(user_id, friend_id):
-    print("removing friend " + str(friend_id))
+    # print("removing friend " + str(friend_id))
     r.srem(f"{user_id}:friends", friend_id)
     r.srem(f"{friend_id}:friends", user_id)
     return 0
@@ -60,9 +60,9 @@ def get_friends(user_id):
     for friend_id in r.smembers(f"{user_id}:friends"):
         friend = get_user(int(friend_id))
         friend['id'] = int(friend_id)
-        print(f"friend: {friend_id}, {friend}")
+        # print(f"friend: {friend_id}, {friend}")
         friends.append(friend)
-    print(f"friends: {friends}")
+    # print(f"friends: {friends}")
     return friends
 
 def get_tasks_completed(user_id):
