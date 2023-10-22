@@ -19,7 +19,7 @@ def sync_user(headers, payload):
     # print(data['user_id'])
 
     prev_u = user.user_by_clerk_id(external_id)
-    if prev_u is None:
+    if prev_u is None and 'created_at' in data:
         user.create_user({
             'fname': 'Random',
             'lname': 'Person',
