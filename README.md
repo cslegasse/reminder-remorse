@@ -1,5 +1,6 @@
 ![RR_GIT](https://github.com/cslegasse/reminder-remorse/assets/102162055/8b24d8c5-0d03-48d4-80a0-acb0b51f640b)\
-HackHarvard 2023
+\
+##**HackHarvard 2023** \
 Designed and developed by: Legasse Remon, Harys Dalvi, Felix Nguyen, and Khang Luu\
 🔗 https://reminderremorse.us/
 
