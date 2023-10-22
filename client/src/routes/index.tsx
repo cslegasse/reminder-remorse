@@ -18,6 +18,7 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+
       <Route
         path="/sign-in/*"
         element={
@@ -57,15 +58,6 @@ export const AppRouter = () => {
         }
       />
 
-      {/* <Route
-        path="/tasks/:id"
-        element={
-          <ProtectedPageParent>
-            <TaskDetails />
-          </ProtectedPageParent>
-        }
-      /> */}
-
       <Route
         path="/tasks/add"
         element={
@@ -92,6 +84,7 @@ export const AppRouter = () => {
           </ProtectedPageParent>
         }
       />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

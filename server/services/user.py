@@ -19,7 +19,7 @@ def create_user(user_data):
     return {"id": user_id}
 
 def delete_user(user_id):
-    r.delete(user_id)
+    r.delete(f'u{user_id}')
     r.delete(f"{user_id}:reminders")
     r.delete(f"{user_id}:friends")
 
@@ -36,24 +36,24 @@ def get_user(user_id):
 
 def get_user_by_username(username):
     for i in range(int(r.get("user_id"))):
-        if r.hget(f"u{i}", "username").decode('utf-8') == username:
+        if r.hget(f"u{i}", "username") is not None and r.hget(f"u{i}", "username").decode('utf-8') == username:
             return get_user(i)
     return None
 
 def user_by_clerk_id(clerk_id):
     for i in range(int(r.get("user_id"))):
-        if r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
+        if r.hget(f"u{i}", "clerk_id") is not None and r.hget(f"u{i}", "clerk_id").decode('utf-8') == clerk_id:
             return get_user(i)
     return None
 
 def add_friend(user_id, friend_username):
     friend_id = get_user_by_username(friend_username)['id']
-    print("adding friend " + str(friend_id))
+    # print("adding friend " + str(friend_id))
     r.sadd(f"{user_id}:friends", friend_id)
     r.sadd(f"{friend_id}:friends", user_id)
     return 0
 def remove_friend(user_id, friend_id):
-    print("removing friend " + str(friend_id))
+    # print("removing friend " + str(friend_id))
     r.srem(f"{user_id}:friends", friend_id)
     r.srem(f"{friend_id}:friends", user_id)
     return 0
@@ -63,9 +63,9 @@ def get_friends(user_id):
     for friend_id in r.smembers(f"{user_id}:friends"):
         friend = get_user(int(friend_id))
         friend['id'] = int(friend_id)
-        print(f"friend: {friend_id}, {friend}")
+        # print(f"friend: {friend_id}, {friend}")
         friends.append(friend)
-    print(f"friends: {friends}")
+    # print(f"friends: {friends}")
     return friends
 
 def get_tasks_completed(user_id):

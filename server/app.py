@@ -131,7 +131,7 @@ def overdue_reminders():
 
 @app.route("/api/transactions")
 def transactions():
-    print("hi")
+    # print("hi")
     user_id = int(request.args.get("id"))
     return jsonify(transaction.get_transactions(user_id))
 

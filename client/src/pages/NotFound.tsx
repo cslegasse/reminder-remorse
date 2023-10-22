@@ -3,20 +3,13 @@ import { ArrowBackIosNew } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ColorPalette } from "../styles";
-import { useEffect } from "react";
 import TaskNotFound from "../assets/TaskNotFound.png";
 
 export const NotFound = () => {
-  const n = useNavigate();
-
-  useEffect(() => {
-    document.title = "Todo App - Page Not Found";
-  }, []);
-
+  const navigate = useNavigate();
   return (
     <Container>
       <ErrorCode>404</ErrorCode>
-
       <NotFoundImg src={TaskNotFound} />
       <Description>
         Page{" "}
@@ -27,7 +20,7 @@ export const NotFound = () => {
         </PathName>{" "}
         was not found.
       </Description>
-      <BackButton variant="outlined" onClick={() => n("/")}>
+      <BackButton variant="outlined" onClick={() => navigate("/")}>
         <ArrowBackIosNew /> &nbsp; Go back to home
       </BackButton>
     </Container>

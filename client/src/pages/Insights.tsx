@@ -271,7 +271,7 @@ export const Insights = () => {
       <div>
         <h2>Transactions</h2>
         <p>
-          Net amount: <b>ETH {(transactionSum * 0.001).toFixed(5)}</b>
+          Net amount: <b>{(transactionSum * 0.001).toFixed(5)} ETH</b>
         </p>
         {transactions.map((transaction) => {
           console.log(transaction);
@@ -280,7 +280,7 @@ export const Insights = () => {
               {transaction.user_id === 0 ? "You" : transaction.user} paid{" "}
               {(transaction.friend && (transaction.friend_id === 0 ? "you" : transaction.friend)) ||
                 transaction.org}{" "}
-              ETH {(transaction.amt * 0.001).toFixed(5)}
+              {(transaction.amt * 0.001).toFixed(5)} ETH
             </p>
           );
         })}
